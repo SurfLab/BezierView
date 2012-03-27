@@ -9,3 +9,5 @@ Release
 *.ncb
 *.suo
 *.opensdf
+ui_mainwindow.h
+build/
