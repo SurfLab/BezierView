@@ -7,8 +7,7 @@
  * -------------------------------------------------------------
  */
 
-#define FREEGLUT_STATIC 1
-#include <GL/glut.h>
+#include <stdheaders.h>
 #include "glob.h"
 
 void set_lights();

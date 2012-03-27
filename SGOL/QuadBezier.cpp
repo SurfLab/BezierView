@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define FREEGLUT_STATIC 1
-#include <GL/glut.h>
+#include <stdheaders.h>
 #include <math.h>
 #include "QuadBezier.h"
 #include "curvature.h"

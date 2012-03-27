@@ -7,8 +7,7 @@
  *           keyboard event handling.
  * -------------------------------------------------------------
  */
-#define FREEGLUT_STATIC 1
-#include <GL/glut.h>
+#include <stdheaders.h>
 #include <string.h>
 #include <stdlib.h>
 #include "glob.h"
@@ -565,6 +564,7 @@ void menu_proc(int entry)
     glutPostRedisplay();
 }
 
+
 /*
  * keyboard controls
  */
@@ -572,8 +572,8 @@ void keyboard(unsigned char key, int x, int y)
 {
     static int blend =0;
 /*	char logstring[255];
-	sprintf(logstring, "Key striked: %c", key);
-	logMessage(logstring);
+    sprintf(logstring, "Key striked: %c", key);
+    logMessage(logstring);
 */
     switch(key)
     {
@@ -581,41 +581,41 @@ void keyboard(unsigned char key, int x, int y)
     case 'q':
         exit(0);
     case 'z':
-		zoomin();
+        zoomin();
         break;
     case 'Z':
-		zoomout();
+        zoomout();
         break;
-	case 'd':
-		ToggleMode(g_current_grp, SMOOTH);
-		break;
+    case 'd':
+        ToggleMode(g_current_grp, SMOOTH);
+        break;
     case 'm':
-		ToggleMode(g_current_grp, DRAWMESH);
+        ToggleMode(g_current_grp, DRAWMESH);
         break;
     case 'p':
-		ToggleMode(g_current_grp, DRAWPATCH);
+        ToggleMode(g_current_grp, DRAWPATCH);
         break;
     case 'M':
-		ToggleMode(g_current_grp, DRAWPOLYMESH);
+        ToggleMode(g_current_grp, DRAWPOLYMESH);
         break;
     case 'P':
-		ToggleMode(g_current_grp, DRAWPOLYPATCH);
+        ToggleMode(g_current_grp, DRAWPOLYPATCH);
         break;
     case 'c':
-		ToggleMode(g_current_grp, DRAWCRV);
+        ToggleMode(g_current_grp, DRAWCRV);
 //		DisableMode(g_current_grp, DRAWPATCH); // disable the patch display
 //		DisableMode(g_current_grp, DRAWPOLYPATCH); // disable the patch display
-		DisableMode(g_current_grp, DRAWHIGHLIGHT); // disable the highlight display
-		DisableMode(g_current_grp, DRAWREFLLINE); // disable the highlight display
-		DisableMode(g_current_grp, ENVMAPPING);
-		define_crv();
+        DisableMode(g_current_grp, DRAWHIGHLIGHT); // disable the highlight display
+        DisableMode(g_current_grp, DRAWREFLLINE); // disable the highlight display
+        DisableMode(g_current_grp, ENVMAPPING);
+        define_crv();
         break;
     case 'n':
-		ToggleMode(g_current_grp, DRAWCRVNEEDLE);
-		define_crv();
-		break;
+        ToggleMode(g_current_grp, DRAWCRVNEEDLE);
+        define_crv();
+        break;
     case 'B':
-        blend = !blend;                     // Toggle blend TRUE / FALSE    
+        blend = !blend;                     // Toggle blend TRUE / FALSE
         if(blend)                           // Is blend TRUE?
         {
             glEnable(GL_BLEND);             // Turn Blending On
@@ -628,75 +628,75 @@ void keyboard(unsigned char key, int x, int y)
         }
         break;
     case 'h':
-		ToggleMode(g_current_grp, DRAWHIGHLIGHT);
+        ToggleMode(g_current_grp, DRAWHIGHLIGHT);
 //		DisableMode(g_current_grp, DRAWPATCH); // disable the patch display
 //		DisableMode(g_current_grp, DRAWPOLYPATCH); // disable the patch display
-		DisableMode(g_current_grp, DRAWCRV); // disable the highlight display
-		DisableMode(g_current_grp, DRAWREFLLINE); // disable the highlight display
-		DisableMode(g_current_grp, ENVMAPPING);
+        DisableMode(g_current_grp, DRAWCRV); // disable the highlight display
+        DisableMode(g_current_grp, DRAWREFLLINE); // disable the highlight display
+        DisableMode(g_current_grp, ENVMAPPING);
         break;
     case 'r':
-		ToggleMode(g_current_grp, DRAWREFLLINE);
+        ToggleMode(g_current_grp, DRAWREFLLINE);
 //		DisableMode(g_current_grp, DRAWPATCH); // disable the patch display
 //		DisableMode(g_current_grp, DRAWPOLYPATCH); // disable the patch display
-		DisableMode(g_current_grp, DRAWCRV); // disable the highlight display
-		DisableMode(g_current_grp, DRAWHIGHLIGHT); // disable the highlight display
-		DisableMode(g_current_grp, ENVMAPPING);
+        DisableMode(g_current_grp, DRAWCRV); // disable the highlight display
+        DisableMode(g_current_grp, DRAWHIGHLIGHT); // disable the highlight display
+        DisableMode(g_current_grp, ENVMAPPING);
         break;
-	case '-':
-	case '_':
-		decrease_highlight();
-		g_redisplay = 1;
-		break;
-	case '+':
-	case '=':
-		increase_highlight();
-		g_redisplay = 1;
-		break;
-	case 'f':
-		flip_normal();
-		break;
-	case 'x':
-		export_eps();
-		return;
-	case 'i':  
-		export_igs();
-		return;
+    case '-':
+    case '_':
+        decrease_highlight();
+        g_redisplay = 1;
+        break;
+    case '+':
+    case '=':
+        increase_highlight();
+        g_redisplay = 1;
+        break;
+    case 'f':
+        flip_normal();
+        break;
+    case 'x':
+        export_eps();
+        return;
+    case 'i':
+        export_igs();
+        return;
     case 'e':
-		ToggleMode(g_current_grp, ENVMAPPING);
-		break;
-	case 'b':
-		drawbox = !drawbox;
-		break;
+        ToggleMode(g_current_grp, ENVMAPPING);
+        break;
+    case 'b':
+        drawbox = !drawbox;
+        break;
     case 'l':
-		needle_length *= 2;
-		g_redisplay = 1;
+        needle_length *= 2;
+        g_redisplay = 1;
         break;
     case 'L':
-		needle_length /= 2;
-		g_redisplay = 1;
-		break;
+        needle_length /= 2;
+        g_redisplay = 1;
+        break;
 
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-		if( cur_clipping_plane != key-'1')
-			cur_clipping_plane = key-'1';
-		else
-			cur_clipping_plane = -1;
-		break;
+    case '1':
+    case '2':
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+    case '7':
+    case '8':
+    case '9':
+        if( cur_clipping_plane != key-'1')
+            cur_clipping_plane = key-'1';
+        else
+            cur_clipping_plane = -1;
+        break;
 
     default:
         return;
     }
-	//m_redisplay = 1;
-	menu_init();   // re-create the menu
+    //m_redisplay = 1;
+    menu_init();   // re-create the menu
 //	logMessage(" ... Command processed\n");
     glutPostRedisplay();
 }
@@ -706,21 +706,20 @@ void advkeyboard(int key, int x, int y)
 {
     switch(key) {
     case 101: // up
-		ViewCenter[1] -= 0.1*ViewSize;
-        break;     
+        ViewCenter[1] -= 0.1*ViewSize;
+        break;
     case 100: // left
-		ViewCenter[0] += 0.1*ViewSize;
+        ViewCenter[0] += 0.1*ViewSize;
         break;
     case 103:  // down
-		ViewCenter[1] += 0.1*ViewSize;
-        break;     
+        ViewCenter[1] += 0.1*ViewSize;
+        break;
     case 102:  // right
-		ViewCenter[0] -= 0.1*ViewSize;
+        ViewCenter[0] -= 0.1*ViewSize;
         break;
     default:
         return;
     }
-	project_init();
-	glutPostRedisplay();
+    project_init();
+    glutPostRedisplay();
 }
-

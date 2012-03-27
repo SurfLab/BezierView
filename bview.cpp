@@ -23,23 +23,11 @@
 #include <stdlib.h>
 #include <time.h>  // gettimeofday
 #include <string.h>
-#define FREEGLUT_STATIC 1
-#include <GL/glut.h>
+#include <stdheaders.h>
 #include "glob.h"
 #include "draw.h"
+#include "bview.h"
 
-// opengl initialize             -- later in this file 
-void windowinit(int argc, char *argv[]);
-void project_init();
-void modelview_init();
-void light_init();
-void menu_init();
-void parse_arg(int argc, char* argv[]);
-void readin_curv_bounds();
-void read_clipping(const char* filename) ; // in SGOL
-void define_scene(FILE* fp);
-void printkeys();
-void flip_normal();
 
 // groups           
 int  c_grp; // current group
@@ -48,14 +36,6 @@ void set_grp(int gid, char* string);  // set a group name
 // Read the next patch type into kind and return 1 on success
 int  get_kind(FILE* fp, int *kind);
 void set_volumn();
-
-// glut callbacks                 -- in rotate.cpp
-void display();
-void mouseButton(int button, int state, int x, int y);
-void mouseMotion(int x, int y);
-void keyboard(unsigned char key, int x, int y);
-void spin();
-void advkeyboard(int key, int x, int y);
 
 // in SGOL library
 void set_special_curvature(REAL curvature_ratio_a, REAL curvature_ratio_b);
@@ -67,52 +47,8 @@ char programDir[500];
 int manualSubDepth;
 
 
-/* ------------------------------------------------------------------ 
- *    Main function
- *
- */ 
 
-int main( int argc, char *argv[])
-{
-    FILE  *fp;     /* input file handle */
-
-    /* parse arguments */
-    parse_arg(argc, argv);
-	readin_curv_bounds();
-
-	/* normal clipping planes */
-	read_clipping("IN.Clipping");
-
-    /* -- Open the input file  -- */
-    if ((fp = fopen(dataFileName,"r")) == NULL) {
-		char systemDataFile[1024];
-		strcpy(systemDataFile, programDir);
-		strcat(systemDataFile, dataFileName);
-	    if ((fp = fopen(systemDataFile,"r")) == NULL) {
-			printf("can't open file: %s\n", dataFileName);
-			return(-1);
-		}
-		strcpy(dataFileName, systemDataFile);
-    }
-    
-    /* glut initialization */
-    windowinit(argc, argv);
-	init_flags();
-
-    define_scene(fp);	  /* read in all objects and define objects */
-    fclose(fp);
-
-    /* coordinate system initialization */
-    project_init();
-    modelview_init();
-
-    /* create menus */
-    menu_init();
-
-    glutMainLoop(); /* enter event loop */
-
-    return 0;
-}
+void flip_normal();
 
 
 void print_usage_and_exist(const char* exe)
@@ -176,37 +112,6 @@ void parse_arg(int argc, char* argv[])
 }
 
 
-/* ------------------------------------------------------------------
- *  initialize the window
- */
-void windowinit(int argc, char *argv[])
-{
-
-    char title[255];
-    glutInit(&argc,argv);
-    glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-
-    glutInitWindowSize(winWidth,winHeight);  /* 700 x 700 pixel window */
-    glutInitWindowPosition(80,80);  /* place window top left on display */
-	sprintf(title, "%s - SurfLab (ESC to quit)", argv[0]);
-    glutCreateWindow(title); /* window title */
-   
-    glutKeyboardFunc(keyboard);   /* set glut callback functions */
-    glutSpecialFunc(advkeyboard);   /* set glut callback functions */
-    glutIdleFunc(spin);
-    glutMouseFunc(mouseButton);
-    glutMotionFunc(mouseMotion);
-    glutDisplayFunc(display); 
-
-    light_init(); /* initialize the lights */
-
-	/* window background */
-
-    glShadeModel(GL_SMOOTH); /* enable smooth shading */
-//    glEnable(GL_AUTO_NORMAL);
-    glEnable(GL_NORMALIZE);
-
-}
 
 
 /* ------------------------------------------------------------------------
@@ -554,4 +459,57 @@ void readin_curv_bounds()
 		}
 	    fclose(crvfile);
 	}
+}
+
+
+
+FILE* read_input_file(char * dataFileName){
+    FILE* fp;
+
+    /* -- Open the input file  -- */
+    if ((fp = fopen(dataFileName,"r")) == NULL) {
+        char systemDataFile[1024];
+        strcpy(systemDataFile, programDir);
+        strcat(systemDataFile, dataFileName);
+        if ((fp = fopen(systemDataFile,"r")) == NULL) {
+            printf("can't open file: %s\n", dataFileName);
+            exit(-1);
+        }
+        strcpy(dataFileName, systemDataFile);
+    }
+    return fp;
+}
+
+
+void initGL(){
+    FILE  *fp = read_input_file(dataFileName);     /* input file handle */
+    light_init(); /* initialize the lights */
+
+    /* window background */
+
+    glShadeModel(GL_SMOOTH); /* enable smooth shading */
+//    glEnable(GL_AUTO_NORMAL);
+    glEnable(GL_NORMALIZE);
+
+    init_flags();
+
+    define_scene(fp);	  /* read in all objects and define objects */
+    fclose(fp);
+
+    /* coordinate system initialization */
+    project_init();
+    modelview_init();
+    glViewport(0,0,winWidth,winHeight);
+
+}
+
+void init_bezierview(int argc, char* argv[]){
+    /* parse arguments */
+    parse_arg(argc, argv);
+    readin_curv_bounds();
+
+    /* normal clipping planes */
+    read_clipping("IN.Clipping");
+
+
 }

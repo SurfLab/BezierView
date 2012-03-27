@@ -9,8 +9,7 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
-#define FREEGLUT_STATIC 1
-#include <GL/glut.h>
+#include <stdheaders.h>
 #include "glob.h"
 #include "util.h"
 #include "Bezier.h"

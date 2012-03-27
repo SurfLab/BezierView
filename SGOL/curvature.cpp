@@ -12,9 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h> 	/* sqrt */
-#define FREEGLUT_STATIC 1
-#define FREEGLUT_STATIC 1
-#include <GL/glut.h>
+#include <stdheaders.h>
 #include "type.h"
 #include "util.h"
 

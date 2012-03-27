@@ -9,8 +9,7 @@
 /* Modified from a rotating cube demo with trackball in openGL book */
 #include <math.h>
 #include <time.h> // for clock()
-#define FREEGLUT_STATIC 1
-#include <GL/glut.h>
+#include <stdheaders.h>
 #include "glob.h"
 #include "menu.h"
 #include "util.h"
@@ -312,8 +311,8 @@ void display(void)
     /* Use to save the previous modelview matrix */
     GLdouble modelview[16];
 
-	glClearColor(g_BackColor[back_choice][0], g_BackColor[back_choice][1], 
-					g_BackColor[back_choice][2], 1.0);
+    glClearColor(g_BackColor[back_choice][0], g_BackColor[back_choice][1],
+                    g_BackColor[back_choice][2], 1.0);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
     /* modelview transform */
@@ -326,7 +325,6 @@ void display(void)
         glMultMatrixd(modelview);
     }
     draw();
-    glutSwapBuffers();
 }
 
 /*----------------------------------------------------------------------*/

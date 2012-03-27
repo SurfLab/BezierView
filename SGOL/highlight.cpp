@@ -10,9 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#define FREEGLUT_STATIC 1
-#define FREEGLUT_STATIC 1
-#include <GL/glut.h>
+#include <stdheaders.h>
 #include "util.h"
 #include "type.h"
 

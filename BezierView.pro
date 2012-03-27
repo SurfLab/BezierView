@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui opengl
 
 TARGET = BezierView
 TEMPLATE= app
@@ -16,7 +16,6 @@ SOURCES += main.cpp\
     rotate.cpp \
     pick.cpp \
     Patch.cpp \
-    menu.cpp \
     main.cpp \
     light.cpp \
     glob.cpp \
@@ -27,12 +26,14 @@ SOURCES += main.cpp\
     SGOL/QuadBezier.cpp \
     SGOL/Polygon.cpp \
     SGOL/highlight.cpp \
-    SGOL/curvature.cpp
+    SGOL/curvature.cpp \
+    bvglut.cpp \
+    menu.cpp \
+    bvglwidget.cpp
 
 HEADERS  += mainwindow.h \
     texture.h \
     Patch.h \
-    menu.h \
     glob.h \
     draw.h \
     SGOL/util.h \
@@ -43,14 +44,18 @@ HEADERS  += mainwindow.h \
     SGOL/Object.h \
     SGOL/highlight.h \
     SGOL/curvature.h \
-    SGOL/Bezier.h
+    SGOL/Bezier.h \
+    bview.h \
+    stdheaders.h \
+    menu.h \
+    bvglwidget.h
 
 FORMS    += mainwindow.ui
 
 
 win32: LIBS += -L$$PWD/dependencies/lib/Win32/ -lfreeglut_static
 
-INCLUDEPATH += SGOL; $$PWD/dependencies/include
+INCLUDEPATH += SGOL $$PWD/dependencies/include
 DEPENDPATH += $$PWD/dependencies/include
 
 win32: PRE_TARGETDEPS += $$PWD/dependencies/lib/Win32/freeglut_static.lib
