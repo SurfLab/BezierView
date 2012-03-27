@@ -7,6 +7,7 @@
  *           keyboard event handling.
  * -------------------------------------------------------------
  */
+#define FREEGLUT_STATIC 1
 #include <GL/glut.h>
 #include <string.h>
 #include <stdlib.h>

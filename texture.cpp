@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#define FREEGLUT_STATIC 1
 #include <GL/glut.h>
 #include <GL/glu.h>
 

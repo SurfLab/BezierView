@@ -10,6 +10,7 @@
  */
 
 #include <stdio.h>
+#define FREEGLUT_STATIC 1
 #include <GL/glut.h>
 #include "type.h" // GAUSS
 #include "glob.h"

@@ -23,6 +23,7 @@
 #include <stdlib.h>
 #include <time.h>  // gettimeofday
 #include <string.h>
+#define FREEGLUT_STATIC 1
 #include <GL/glut.h>
 #include "glob.h"
 #include "draw.h"

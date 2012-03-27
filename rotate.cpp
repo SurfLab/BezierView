@@ -9,6 +9,7 @@
 /* Modified from a rotating cube demo with trackball in openGL book */
 #include <math.h>
 #include <time.h> // for clock()
+#define FREEGLUT_STATIC 1
 #include <GL/glut.h>
 #include "glob.h"
 #include "menu.h"
