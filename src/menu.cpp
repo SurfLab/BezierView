@@ -32,236 +32,6 @@ void    re_evaluate(int substeps);
 extern  char   mat_name[][20];
 extern  int    clip_item;
 
-/* menu creation */
-
-void addCheckedMenu(const char* item, int entry, int checked)
-{
-    char string[255];
-	if(checked) 
-		sprintf(string, " v  %s", item);
-	else 
-		sprintf(string, "     %s", item);
-	glutAddMenuEntry(string,  entry);
-}
-
-void menu_init()
-{
-    int i,c;
-    static int mainmenu, colormenu, displaymenu, crvmenu, 
-          loadmenu, savemenu, clipmenu, crvstylemenu, bckgndmenu, 
-		  optionmenu, hldensemenu, evalmenu, grpmenu, pencolormenu,
-		  linewidthmenu;
-    static int first_run=1;
-
-//	char dummy_string0[] = "______________";
-	char dummy_string0[] = "~~~~~~~~~~";
-//	char dummy_string1[] = "     __________________";
-	char dummy_string1[] = "     ~~~~~~~~~~~~";
-
-	if(!first_run) {   // if not the first time, delete the menus first
-		glutDestroyMenu(mainmenu);
-		glutDestroyMenu(optionmenu);
-		glutDestroyMenu(colormenu);
-		glutDestroyMenu(displaymenu);
-		glutDestroyMenu(crvmenu);
-		glutDestroyMenu(loadmenu);
-		glutDestroyMenu(savemenu);
-		glutDestroyMenu(clipmenu);
-		glutDestroyMenu(crvstylemenu);
-		glutDestroyMenu(bckgndmenu);
-		glutDestroyMenu(hldensemenu);
-		glutDestroyMenu(evalmenu);
-		glutDestroyMenu(pencolormenu);
-		glutDestroyMenu(linewidthmenu);
- 	    if(group_num >0)  glutDestroyMenu(grpmenu);
-	}
-	else
-		first_run=0;
-
-
-    // create/re-create the menus
-    mainmenu     = glutCreateMenu(menu_proc);
-    optionmenu   = glutCreateMenu(menu_proc);
-    colormenu    = glutCreateMenu(color_proc);
-    crvstylemenu = glutCreateMenu(menu_proc);
-    displaymenu  = glutCreateMenu(menu_proc);
-    crvmenu      = glutCreateMenu(menu_proc);
-    loadmenu     = glutCreateMenu(menu_proc);
-    savemenu     = glutCreateMenu(menu_proc);
-    clipmenu     = glutCreateMenu(menu_proc);
-    bckgndmenu   = glutCreateMenu(menu_proc);
-    hldensemenu  = glutCreateMenu(menu_proc);
-	evalmenu     = glutCreateMenu(menu_proc);
-	pencolormenu = glutCreateMenu(menu_proc);
-	linewidthmenu = glutCreateMenu(menu_proc);
-
-    if(group_num >0) // if there are more than one group
-    {
-        // all group
-        grpmenu = glutCreateMenu(group_proc);
-        glutSetMenu(grpmenu);
-	    addCheckedMenu ("All Groups", 0, g_current_grp==0);
-        for(i=1;i<=group_num; i++)
-		    addCheckedMenu (group[i].name, i, g_current_grp==i );
-    }
-
-    glutSetMenu(colormenu);
-      for(c=0;c<COLORNUM; c++)
-	    addCheckedMenu (mat_name[c], c, g_Material[g_current_grp] ==c);
-
-    glutSetMenu(displaymenu);
-
-	if(has_patch)  {  // if there is a smooth patch
-	    addCheckedMenu ("Patch  \t (p)", PATCH, isEnabled(g_current_grp, DRAWPATCH));
-	    addCheckedMenu ("Control Mesh \t (m)", MESH, isEnabled(g_current_grp, DRAWMESH));
-	}
-
-	if(has_polygon)  {  // if there is a polygon
-	    addCheckedMenu ("Polygon Face   \t (P)", POLYPATCH, isEnabled(g_current_grp, DRAWPOLYPATCH));
-	    addCheckedMenu ("Polygon Mesh   \t (M)", POLYMESH, isEnabled(g_current_grp, DRAWPOLYMESH));
-	}
-
-    glutAddMenuEntry(dummy_string1, DUMMY);
-
-	if(has_patch)  {  // if there is a smooth patch
-	    addCheckedMenu ("Curvature   \t (c)", CURVA, 
-			isEnabled(g_current_grp, DRAWCRV));
-	    addCheckedMenu ("Curvature Needles \t (n)", CURVANEEDLE, 
-			isEnabled(g_current_grp, DRAWCRVNEEDLE));
-	}
-
-    addCheckedMenu ("Highlight Lines \t (r)", HIGHLIGHT, 
-						isEnabled(g_current_grp, DRAWHIGHLIGHT));
-    addCheckedMenu ("Reflection Lines \t (r)", REFLINE, 
-						isEnabled(g_current_grp, DRAWREFLLINE));
-    addCheckedMenu ("Environment Mapping \t (e)", ENVMAP, 
-						isEnabled(g_current_grp, ENVMAPPING));
-    addCheckedMenu ("Bounding Box \t (b)", DRAWBOX, drawbox);
-
-    glutSetMenu(crvmenu);
-      addCheckedMenu ("Gaussian", GAUSS_CRV, crv_choice == GAUSS_CRV);
-      addCheckedMenu ("Mean", MEAN_CRV, crv_choice == MEAN_CRV);
-      addCheckedMenu ("Max" , MAX_CRV , crv_choice == MAX_CRV );
-      addCheckedMenu ("Min" , MIN_CRV , crv_choice == MIN_CRV );
-
-	  if(special_curv){
-	    char string[255];
-		if(crv_choice == SPECIAL_CRV)
-			sprintf(string , " v  (%.1f)*Gauss+(%.1f)*Mean^2", curvature_ratio_a, curvature_ratio_b);
-		else
-			sprintf(string , "     (%.1f)*Gauss+(%.1f)*Mean^2 ", curvature_ratio_a, curvature_ratio_b);
-		glutAddMenuEntry(string,  SPECIAL_CRV);
-	  }
-
-    glutSetMenu(crvstylemenu);
-      addCheckedMenu ("Color Shade", CRVSTYLE1, crv_style==1);
-      addCheckedMenu ("Gray Shade" , CRVSTYLE2, crv_style==2);
-      addCheckedMenu ("Curvature lines" , CRVSTYLE0, crv_style==0);
-
-    glutSetMenu(hldensemenu);
-      glutAddMenuEntry("Increase density   (+)", INHLDENSE);
-      glutAddMenuEntry("Decrease density   (-)", DEHLDENSE);
-
-	glutSetMenu(bckgndmenu);
-  	  for(i=0;i<10;i++)
-	     addCheckedMenu (g_BackColorNames[i], BLACKBACK+i, i==back_choice);
-
-	glutSetMenu(pencolormenu);
-  	  for(i=0;i<10;i++)
-	     addCheckedMenu (g_penColorNames[i], BLACKPEN+i, i==g_PenColor[g_current_grp]);
-
-	glutSetMenu(linewidthmenu);
-      addCheckedMenu( " 1 ",    LINEWIDTH1, g_LineWidth[g_current_grp]==1);
-      addCheckedMenu( " 2 ",    LINEWIDTH2, g_LineWidth[g_current_grp]==2);
-      addCheckedMenu( " 3 ",    LINEWIDTH3, g_LineWidth[g_current_grp]==3);
-      addCheckedMenu( " 4 ",    LINEWIDTH4, g_LineWidth[g_current_grp]==4);
-      addCheckedMenu( " 5 ",    LINEWIDTH5, g_LineWidth[g_current_grp]==5);
-
-
-    glutSetMenu(optionmenu);  //  Option   ->
- 
-	  addCheckedMenu ("Smooth Shading  \t (d)", SMOOTHSHD, isEnabled(g_current_grp, SMOOTH));
-
-												//  Flip Normal
-      glutAddMenuEntry( "     Flip Normals !  \t (f)",  FLIPNORMAL);
-
-
-      glutAddMenuEntry(dummy_string1, DUMMY);   // -----------
-
-	  addCheckedMenu("Use display lists", USELISTS, use_display_list);
-												//  Background
-	  addCheckedMenu ("Light 0 ", MENU_LIGHT0, light_switch[0]);
-	  addCheckedMenu ("Light 1 ", MENU_LIGHT1, light_switch[1]);
-	  addCheckedMenu ("Light 2 ", MENU_LIGHT2, light_switch[2]);
-
-      glutAddMenuEntry(dummy_string1, DUMMY);   // -----------
-	  addCheckedMenu ("Hidden Line Removal ", HDNLINERMV, isEnabled(g_current_grp, HIDDENLINE));
-	  addCheckedMenu ("Anti Aliasing ", ANTIALIAS, g_AntiAlias);
-	  
-      glutAddSubMenu( "     Line Width", linewidthmenu);
-
-      glutAddMenuEntry(dummy_string1, DUMMY);   // -----------
-												//  Highlight Line Density ->
-      glutAddSubMenu( "     Highlight Line Density", hldensemenu);
-												//  Curvature Style        ->
-      glutAddSubMenu( "     Curvature style",  crvstylemenu);
-
-
-    glutSetMenu(savemenu);   //  Save Position   ->
-      glutAddMenuEntry("0", SAVE0);             //  0
-      glutAddMenuEntry("1", SAVE1);             //  1
-      glutAddMenuEntry("2", SAVE2);             //  2
-      glutAddMenuEntry("3", SAVE3);             //  3
-      glutAddMenuEntry("4", SAVE4);             //  4
-
-    glutSetMenu(loadmenu);   //  Load Position   ->
-      glutAddMenuEntry("0", LOAD0);             //  0
-      glutAddMenuEntry("1", LOAD1);             //  1
-      glutAddMenuEntry("2", LOAD2);             //  2
-      glutAddMenuEntry("3", LOAD3);             //  3
-      glutAddMenuEntry("4", LOAD4);             //  4
-
-    glutSetMenu(clipmenu);  //   Clip           -> 
-	  addCheckedMenu( "Clip Near", CLIPNEAR, clip_item == CLIPNEAR);  // Clip Near
-      addCheckedMenu( "Clip Far", CLIPFAR, clip_item == CLIPFAR);  // Clip Near
-      addCheckedMenu("Clear Clipping", CLIPSTOP, false); // Stop
-
-	glutSetMenu(evalmenu);
-      addCheckedMenu( "2x2 ",      SUBST1, g_substs[g_current_grp]==1);
-      addCheckedMenu( "4x4 ",      SUBST2, g_substs[g_current_grp]==2);
-      addCheckedMenu( "8x8 ",      SUBST3, g_substs[g_current_grp]==3);
-      addCheckedMenu( "16x16 ",    SUBST4, g_substs[g_current_grp]==4);
-      addCheckedMenu( "32x32 ",    SUBST5, g_substs[g_current_grp]==5);
-      addCheckedMenu( "64x64 ",    SUBST6, g_substs[g_current_grp]==6);
-
-
-    glutSetMenu(mainmenu);
-//    glutAddMenuEntry( "Zoom In  \t(z)", ZOOMIN);
-//    glutAddMenuEntry( "Zoom Out \t(Z)", ZOOMOUT);
-    addCheckedMenu( "Zoom", ZOOM,   g_mouseMode == ZOOM && clip_item ==0);
-    addCheckedMenu( "Rotate", ROTATE, g_mouseMode == ROTATE&& clip_item ==0);
-    addCheckedMenu( "Move", MOVE,   g_mouseMode == MOVE&& clip_item ==0);
-    glutAddSubMenu( "     Clipping",  clipmenu);
-    glutAddMenuEntry(dummy_string0, DUMMY);
-	if(group_num >0)  glutAddSubMenu( "Group",  grpmenu);
-    glutAddSubMenu( "Display",  displaymenu);
-	if(has_patch) glutAddSubMenu( "Patch Detail", evalmenu);
-    glutAddSubMenu( "Meterial   ", colormenu);
-    glutAddSubMenu( "Line Color",  pencolormenu);
-    glutAddSubMenu( "Background",  bckgndmenu);
-    glutAddSubMenu( "Advanced Options       ", optionmenu);
-    glutAddSubMenu( "Curvature type",  crvmenu);
-    glutAddMenuEntry(dummy_string0, DUMMY);
-    glutAddSubMenu( "Save position",  savemenu);
-    glutAddSubMenu( "Load position",  loadmenu);
-    glutAddMenuEntry( "Reset position", RESETP);
-    glutAddMenuEntry(dummy_string0, DUMMY);
-//    glutAddSubMenu( "Clipping",  clipmenu);
-    //glutAddMenuEntry( string,  BACKGND);
-    glutAddMenuEntry( "Quit     \t(q)", QUIT);
-    glutAttachMenu(GLUT_RIGHT_BUTTON);
-
-}
 
 
 /* 
@@ -277,15 +47,11 @@ void color_proc(int entry)
 	else
 		g_Material[g_current_grp] = color;
 
-	menu_init();
-	g_redisplay =1;
-    glutPostRedisplay();
 }
 
 void group_proc(int entry)
 {
 	g_current_grp = entry;
-	menu_init();
 }
 
 //  each of the individual menu/keyboard handlers
@@ -559,9 +325,7 @@ void menu_proc(int entry)
         return;
     }
 
-	menu_init();   // re-create the menu
 //	logMessage(" ... Command processed\n");
-    glutPostRedisplay();
 }
 
 
@@ -696,9 +460,7 @@ void keyboard(unsigned char key, int x, int y)
         return;
     }
     //m_redisplay = 1;
-    menu_init();   // re-create the menu
 //	logMessage(" ... Command processed\n");
-    glutPostRedisplay();
 }
 
 
@@ -721,5 +483,4 @@ void advkeyboard(int key, int x, int y)
         return;
     }
     project_init();
-    glutPostRedisplay();
 }

@@ -12,7 +12,7 @@
 #include <stdheaders.h>
 #include "glob.h"
 #include "menu.h"
-#include "util.h"
+#include "SGOL/util.h"
 #include "draw.h"
 
 void    draw();
@@ -141,26 +141,22 @@ void mouseMotion(int x, int y)
 
 	if(status &GLUT_ACTIVE_SHIFT) {
 		motionZoom(x,y);
-	    glutPostRedisplay();
 		return;
 	}
 
 	if(status &GLUT_ACTIVE_ALT) {
 		motionMove(x,y);
-	    glutPostRedisplay();
 		return;
 	}
 
 	if(! (status &GLUT_ACTIVE_CTRL) ) {
 		if(g_mouseMode == ZOOM ) {
 			motionZoom(x,y);
-			glutPostRedisplay();
 			return;
 		}
 
 		if(g_mouseMode == MOVE ) {
 			motionMove(x,y);
-			glutPostRedisplay();
 			return;
 		}
 	}
@@ -248,7 +244,6 @@ void mouseMotion(int x, int y)
         project_init();
     }
     
-    glutPostRedisplay();
 }
 
 void startMotion(int x, int y)
@@ -403,7 +398,6 @@ void mouseButton(int button, int state, int x, int y)
                      selItem = picked;
                      //printf("patch %d selected\n", selItem);
                   }
-                  glutPostRedisplay();
                }
 			}
 		}
@@ -439,7 +433,6 @@ void mouseButton(int button, int state, int x, int y)
         {
             define_crv();   // re draw the curvature
             scale_moving = -1;
-            glutPostRedisplay();
         }
         else {                  // track ball rotation control stops
 			stopMotion( x,y);

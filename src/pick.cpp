@@ -11,7 +11,7 @@
 
 #include <stdio.h>
 #include <stdheaders.h>
-#include "type.h" // GAUSS
+#include "SGOL/type.h" // GAUSS
 #include "glob.h"
 
 #define BUFSIZE 512

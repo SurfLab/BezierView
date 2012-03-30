@@ -11,3 +11,4 @@ Release
 *.opensdf
 ui_mainwindow.h
 build/
+release/

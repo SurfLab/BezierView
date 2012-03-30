@@ -11,13 +11,13 @@
 #include <stdlib.h>
 #include <stdheaders.h>
 #include "glob.h"
-#include "util.h"
-#include "Bezier.h"
+#include "SGOL/util.h"
+#include "SGOL/Bezier.h"
 #include "texture.h"
-#include "Polygon.h"
-#include "QuadBezier.h"
-#include "TriBezier.h"
-#include "curvature.h"
+#include "SGOL/Polygon.h"
+#include "SGOL/QuadBezier.h"
+#include "SGOL/TriBezier.h"
+#include "SGOL/curvature.h"
 #include "draw.h"
 #include "menu.h"
 

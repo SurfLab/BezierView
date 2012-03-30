@@ -2,7 +2,7 @@
 #define PATCH_H_2002_10_20
 
 #include <stdio.h>
-#include "Object.h"   // in SGOL
+#include "SGOL/Object.h"
 
 #define MAXFACET 6500
 #define MAXGROUP 6500

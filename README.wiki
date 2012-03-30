@@ -1,0 +1,40 @@
+= BezierView =
+A simple openGL viewer for the Bezier patches.
+ //Source Distribution//
+
+ Author(s):
+* Xiaobin Wu, xwu@cise.ufl.edu
+* Saleh Dindar, saleh@cise.ufl.edu
+SurfLab, University of Florida
+   
+
+ This file explains the usage of the program.
+
+ (see FORMAT.txt for specification of data format)
+
+=== I. Compilation ===
+
+* Windows:
+	** Download the dependencies package for your VisualStudio
+	** Extract the dependencies package in your source folder
+	** Open bezierview.pro in QtCreator and hit build
+* Linux:
+	** Open bezierview.pro in QtCreator and hit build
+
+
+
+=== II. supports ===
+* Tensor product Bezier patches 
+* Tensor product rational patches
+* Triangle Bezier patches
+* Polyhedron
+* PN triangles, PN quadrilateral patches
+
+=== III. features ===
+* Gaussian/Mean/Max/Min curvature plot
+* Plane clipping
+* Position save/load
+* Object groups
+   different colors can be assigned to different groups
+* Environment mapping
+  (Image file: room.bmp)

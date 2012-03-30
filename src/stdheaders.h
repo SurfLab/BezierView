@@ -6,7 +6,7 @@
 //#include <QtOpenGL>
 #include <stdio.h>
 #include <GL/GLU.h>
-#define FREEGLUT_STATIC 1
+#define GLUTLITE_STATIC 1
 #include <GL/glut.h>
 
 
