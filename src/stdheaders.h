@@ -1,11 +1,14 @@
 #ifndef STDHEADERS_H
 #define STDHEADERS_H
 
+#ifdef WIN32
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
-//#include <QtOpenGL>
+#endif
+
+
 #include <stdio.h>
-#include <GL/GLU.h>
+#include <GL/glu.h>
 #define GLUTLITE_STATIC 1
 #include <GL/glut.h>
 

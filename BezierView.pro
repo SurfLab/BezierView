@@ -9,6 +9,8 @@ QT       += core gui opengl
 TARGET = BezierView
 TEMPLATE = app
 
+CONFIG += link_pkgconfig
+PKGCONFIG = glutlite
 
 SOURCES += \
     src/texture.cpp \
