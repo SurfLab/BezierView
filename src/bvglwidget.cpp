@@ -4,6 +4,7 @@
 BVGLWidget::BVGLWidget(QWidget *parent) :
     QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
 {
+
 }
 
 void BVGLWidget::initializeGL(){
