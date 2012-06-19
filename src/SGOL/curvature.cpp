@@ -42,8 +42,8 @@ GLdouble crv_scale[5] = {0, 0.25, 0.5, 0.75, 1.0};
 int freshObject = 1;  // if first patch, min and max value of curvatures are assigned
 GLfloat RGBValue[3]; // used to store a set of RGB colors 
 // the top and bottom of the curvature bar
-GLdouble left=0.7, width  = 0.02; 
-GLdouble top =0.5, bottom = 0.9;  
+GLdouble leftC=0.7, widthC  = 0.02;
+GLdouble topC =0.5, bottomC = 0.9;
 
 // ........................................................................
 
@@ -460,10 +460,10 @@ int crvListDefined(int crv_choice)
 void draw_crv_bar(GLfloat* color)
 {
 
-    GLdouble left_crd  = left         ; //  coordinates
-    GLdouble right_crd = (left+width) ;
-    GLdouble top_crd   = -top          ; 
-    GLdouble bottom_crd = -bottom      ;
+    GLdouble left_crd  = leftC         ; //  coordinates
+    GLdouble right_crd = (leftC + widthC) ;
+    GLdouble top_crd   = -topC         ;
+    GLdouble bottom_crd = -bottomC      ;
     int i;
 
     int segments = 20;  // number of segments in the color bar
@@ -506,15 +506,15 @@ void draw_crv_bar(GLfloat* color)
     {
         double u = crv_scale[i];
         double y = (1-u)*bottom_crd + u*top_crd; 
-        glVertex2d( left-width/2, y);
-        glVertex2d( left+width*3/2, y);
+        glVertex2d( leftC-widthC/2, y);
+        glVertex2d( leftC+widthC*3/2, y);
     }
     glEnd();
 
     for(i=0;i<5;i++)   // curvature scale numbers
     {
         double u = (double)i/4;
-        print_number ( left+width*2,  
+        print_number ( leftC+widthC*2,
             (1-u)*top_crd + u* bottom_crd, (1-u)*hi+u*low , 0.02, color);
     }
 	glPopAttrib();
@@ -569,17 +569,17 @@ int clickon_crv_bar(int x, int y, int winWidth, int winHeight)
     // printf("checking: %d, %d : %f, %f\n", x, y, dx, dy);
 
     // check if the (x,y) is in the region of the curvature bar */
-    if ( (dx < left - width/2 - pick_size)  ||
-         (dx > left + width*3/2 + pick_size)  ||
-         (dy < (top-bottom)*crv_scale[4]+bottom - pick_size)  ||
-         (dy > (top-bottom)*crv_scale[0]+bottom + pick_size) )
+    if ( (dx < leftC - widthC/2 - pick_size)  ||
+         (dx > leftC + widthC*3/2 + pick_size)  ||
+         (dy < (topC-bottomC)*crv_scale[4]+bottomC - pick_size)  ||
+         (dy > (topC-bottomC)*crv_scale[0]+bottomC + pick_size) )
 
          return -1;
 
     // check y direction
     for(i=0;i<5;i++)
     {
-        double scale_y = (1-crv_scale[i]) * bottom + crv_scale[i]* top;
+        double scale_y = (1-crv_scale[i]) * bottomC + crv_scale[i]* topC;
         if( (dy<(scale_y+pick_size)) && (dy>(scale_y-pick_size )) )
         {
             // printf("click on scale %d \n", i);
@@ -615,7 +615,7 @@ void adjust_scale(int i, int winy, int winHeight)
 {
     int centerY = winHeight/2;
     double dy = (double)(winy - centerY)/ centerY;
-    double scale =  (dy-bottom)/(top-bottom);
+    double scale =  (dy-bottomC)/(topC-bottomC);
 
     // printf("adjusting scale no. %d to %f\n", i, scale);
     if(i>0 && i<4)  // intermediate scales, forbidden to exceed the boundary

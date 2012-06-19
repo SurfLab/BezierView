@@ -129,27 +129,26 @@ void motionMove(int x, int y){
 	project_init();
 }
 
-void mouseMotion(int x, int y)
+void mouseMotion(int x, int y, Qt::KeyboardModifiers modifiers )
 {
     REAL curPos[3], dx, dy, dz;
 	REAL plane_angle;
 	REAL plane_axis[3];
-
     lastmotion =clock();  // record the last motion time
    
     trackball_ptov(x, y, winWidth, winHeight, curPos);
 
-	if(status &GLUT_ACTIVE_SHIFT) {
+    if(modifiers==Qt::ShiftModifier) {
 		motionZoom(x,y);
 		return;
 	}
 
-	if(status &GLUT_ACTIVE_ALT) {
+    if(modifiers==Qt::AltModifier) {
 		motionMove(x,y);
 		return;
 	}
 
-	if(! (status &GLUT_ACTIVE_CTRL) ) {
+    if(! (modifiers==Qt::ControlModifier) ) {
 		if(g_mouseMode == ZOOM ) {
 			motionZoom(x,y);
 			return;
@@ -162,7 +161,7 @@ void mouseMotion(int x, int y)
 	}
 
 	if(rotate_plane)
-	{
+    {
 		dx = curPos[0] - lastPos[0];
 		dy = curPos[1] - lastPos[1];
 		dz = curPos[2] - lastPos[2];
@@ -243,6 +242,7 @@ void mouseMotion(int x, int y)
         }
         project_init();
     }
+    draw();
     
 }
 
@@ -316,6 +316,7 @@ void display(void)
         glMatrixMode(GL_MODELVIEW);
         glGetDoublev( GL_MODELVIEW_MATRIX, modelview);
         glLoadIdentity();
+
         glRotatef(angle*1.5, axis[0], axis[1], axis[2]);
         glMultMatrixd(modelview);
     }
@@ -324,19 +325,22 @@ void display(void)
 
 /*----------------------------------------------------------------------*/
 
-void mouseButton(int button, int state, int x, int y)
+void mouseButton(int button, int state, int x, int y, Qt::KeyboardModifiers modifiers)
 {
     //int picked;
 	clock_t cur = 0;
     // two clicks within this time interval considered as double click
     double  dcTime = 0.3; // microsecond
 
-	status = glutGetModifiers();
-    
+    status = glutGetModifiers();
+
+
     /*   button to popup menu */
-    if(button==GLUT_LEFT_BUTTON) {
-       if(state == GLUT_DOWN)
+    if(button==1)  {  //left button
+
+       if(state == 1)
        {
+
 		   if(clip_item) {
              clipping = 1;
 			 return;
@@ -347,24 +351,24 @@ void mouseButton(int button, int state, int x, int y)
     }
     
     /* left button to pick */
-    if(button==GLUT_LEFT_BUTTON) 
+    if(button==1)
     switch(state) 
     {
-    case GLUT_DOWN:
+    case 1:
 
-		if((status & GLUT_ACTIVE_CTRL) && (cur_clipping_plane <0) )
-		{
+        if((modifiers==Qt::ControlModifier) && (cur_clipping_plane <0) )
+        {
 			startMotion(x,y);
 //			printf("rotating\n");
 			return;
-		}
-		if((status & GLUT_ACTIVE_SHIFT) && (cur_clipping_plane <0) )
+        }
+        if(Qt::ShiftModifier==modifiers && (cur_clipping_plane <0) )
 		{
 			startZoom(x,y);
 //			printf("zooming\n");
 			return;
 		}
-		if((status & GLUT_ACTIVE_ALT) && (cur_clipping_plane <0) )
+        if((modifiers==Qt::AltModifier) && (cur_clipping_plane <0) )
 		{
 			startMove(x,y);
 //			printf("moving\n");
@@ -379,7 +383,7 @@ void mouseButton(int button, int state, int x, int y)
         }
 
         // double click check
-		if(!redrawContinue) {
+        if(!redrawContinue) {
 		   cur = clock();
 		   if( ((double) (cur-last_click))/CLOCKS_PER_SEC <= dcTime) 
 		   { 
@@ -402,15 +406,15 @@ void mouseButton(int button, int state, int x, int y)
 			}
 		}
 
-		status = glutGetModifiers();
+        status = glutGetModifiers();
 
-		if((status & GLUT_ACTIVE_CTRL) && (cur_clipping_plane >=0) )
+        if((modifiers==Qt::ControlModifier) && (cur_clipping_plane >=0) )
 		{
 			rotate_plane = 1;
 		}
 		else 
 			rotate_plane = 0;
-		if( (status & GLUT_ACTIVE_SHIFT) && (cur_clipping_plane >=0) )
+        if( (modifiers==Qt::ShiftModifier) && (cur_clipping_plane >=0) )
 		{
 			shift_plane = 1;
 		}
@@ -425,7 +429,7 @@ void mouseButton(int button, int state, int x, int y)
 			startZoom( x,y);
 
 		break;
-    case GLUT_UP:
+ /**   case 2:
 //		if(g_mouseMode ==	ROTATE || g_mouseMode ==	MOVE)
 //			return;
 
@@ -439,8 +443,8 @@ void mouseButton(int button, int state, int x, int y)
 		}
 		cur = clock();
 		last_click = cur;
-		break;
-    } 
+        break;**/
+    }
 }
 
 void myReshape(int w, int h)
@@ -452,7 +456,7 @@ void myReshape(int w, int h)
 
 void spin()
 {
-    //if (redrawContinue) glutPostRedisplay();
+ //  if (redrawContinue) updateGL();
 }
 
 

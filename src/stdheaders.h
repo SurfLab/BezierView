@@ -11,6 +11,7 @@
 #include <GL/glu.h>
 #define GLUTLITE_STATIC 1
 #include <GL/glut.h>
+#include <QDebug>
 
 
 #endif // STDHEADERS_H

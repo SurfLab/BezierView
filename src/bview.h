@@ -22,8 +22,8 @@ void printkeys();
 
 // glut callbacks                 -- in rotate.cpp
 void display();
-void mouseButton(int button, int state, int x, int y);
-void mouseMotion(int x, int y);
+void mouseButton(int button, int state, int x, int y, Qt::KeyboardModifiers modifier );
+void mouseMotion(int x, int y, Qt::KeyboardModifiers modifier);
 void keyboard(unsigned char key, int x, int y);
 void spin();
 void advkeyboard(int key, int x, int y);

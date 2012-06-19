@@ -13,7 +13,11 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="BVGLWidget" name="centralWidget"/>
+  <widget class="BVGLWidget" name="centralWidget">
+   <property name="mouseTracking">
+    <bool>false</bool>
+   </property>
+  </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
@@ -28,11 +32,18 @@
      <string>Mesh</string>
     </property>
     <addaction name="actionOpen"/>
+    <addaction name="actionTest"/>
     <addaction name="actionSave"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
+   <widget class="QMenu" name="menuTest">
+    <property name="title">
+     <string>Test2</string>
+    </property>
+   </widget>
    <addaction name="menuMesh"/>
+   <addaction name="menuTest"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionOpen">
@@ -46,8 +57,16 @@
    </property>
   </action>
   <action name="actionSave">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Save</string>
+   </property>
+  </action>
+  <action name="actionTest">
+   <property name="text">
+    <string>Test</string>
    </property>
   </action>
  </widget>
@@ -58,6 +77,9 @@
    <extends>QWidget</extends>
    <header>bvglwidget.h</header>
    <container>1</container>
+   <slots>
+    <slot>testSlot()</slot>
+   </slots>
   </customwidget>
  </customwidgets>
  <resources/>
@@ -114,5 +136,7 @@
  <slots>
   <slot>openFile()</slot>
   <slot>saveFile()</slot>
+  <slot>navi()</slot>
+  <slot>testSlot()</slot>
  </slots>
 </ui>

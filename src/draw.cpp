@@ -86,6 +86,7 @@ bool isEnabled(int grp_id, int flag) {
 // toggle the mode
 void ToggleMode(int grp_id, int flag)
 {
+    qDebug()<<"togglemode";
 	if(grp_id ==0 && group_num >0) {
 		for(int i=0; i<= group_num; i++) {
 			g_Mode[i] ^= flag;
@@ -173,7 +174,7 @@ void draw(void)
 		glPushMatrix();
 		glScaled((ViewRight - ViewLeft),  ViewTop - ViewBottom, ViewNear - ViewFar);
 		glColor3f(1.0, .5, 0.0);
-		glutWireCube(1.0);
+//		glutWireCube(1.0);
 		glPopMatrix();
 		glPopAttrib();
 	}

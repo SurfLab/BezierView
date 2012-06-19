@@ -24,5 +24,18 @@ QSize  BVGLWidget::sizeHint() const{
 }
 
 void BVGLWidget::resizeGL(int width, int height){}
-void BVGLWidget::mousePressEvent(QMouseEvent *event){}
-void BVGLWidget::mouseMoveEvent(QMouseEvent *event){}
+void BVGLWidget::mousePressEvent(QMouseEvent *event){
+    mouseButton(event->button(), event->buttons(), event->x(), event->y(), event->modifiers());
+    //draw();
+    }
+
+
+void BVGLWidget::mouseMoveEvent(QMouseEvent *event){
+    mouseMotion(event->x(), event->y(), event->modifiers());
+    updateGL();
+}
+
+
+void BVGLWidget::keyPressEvent(QKeyEvent *event){
+
+}
