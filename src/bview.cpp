@@ -122,7 +122,6 @@ void project_init()
     /* set up viewing */
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-
 	//printf("%f %f %f %f %f %f \n", ViewCenter[0]-ViewSize,ViewCenter[0]+ViewSize, (ViewCenter[1]-ViewSize),(ViewCenter[1]+ViewSize), -3*ViewDepth*ViewSize, 3*ViewDepth*ViewSize); 
 	
     glOrtho(ViewCenter[0]-ViewSize,ViewCenter[0]+ViewSize, 
@@ -135,6 +134,7 @@ void modelview_init()
 {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+
 }
 
 

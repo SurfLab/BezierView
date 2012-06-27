@@ -20,6 +20,8 @@
 #include "SGOL/curvature.h"
 #include "draw.h"
 #include "menu.h"
+#include <QtOpenGL>
+
 
 /* curvature utility functions */
 void set_crv_scale(double lowc, double highc);
@@ -30,6 +32,7 @@ void set_color(int i);            // in light.cpp
 void Solve4(double * A, double* x); // in util.cpp
 void init_texture(GLubyte *forecolor, GLubyte *backcolor);
 
+void draw(void);
 
 //////////////////////////////////////////////////
 // Display models
@@ -40,7 +43,7 @@ void init_flags()
 	for(int i=0;i < MAXGROUP ; i++)
 	{
 		g_Material[i] = i;
-		g_Mode[i]     = DRAWPATCH | DRAWPOLYPATCH | SMOOTH ;
+        g_Mode[i]     = DRAWPATCH | DRAWPOLYPATCH | SMOOTH ;
 
 		g_PenColor[i]  = 1;  // light blue
 		g_LineWidth[i] = 3;
@@ -86,7 +89,6 @@ bool isEnabled(int grp_id, int flag) {
 // toggle the mode
 void ToggleMode(int grp_id, int flag)
 {
-    qDebug()<<"togglemode";
 	if(grp_id ==0 && group_num >0) {
 		for(int i=0; i<= group_num; i++) {
 			g_Mode[i] ^= flag;
@@ -96,6 +98,8 @@ void ToggleMode(int grp_id, int flag)
 		g_Mode[grp_id] ^= flag;
 
 	g_redisplay =1;
+    //update();
+
 }
 
 // disable the mode

@@ -1,4 +1,4 @@
-#ifndef MAINWINDOW_H
+ #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include <QMainWindow>
@@ -18,6 +18,7 @@ public:
 
 public slots:
     void openFile();
+  //  void testSlot();
 
 private:
     Ui::MainWindow *ui;

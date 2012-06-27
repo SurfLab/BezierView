@@ -14,6 +14,7 @@
 #include "menu.h"
 #include "draw.h"
 
+void draw();
 void    load_position(int n);
 void    save_position(int n);
 void    project_init();
@@ -152,6 +153,9 @@ void menu_proc(int entry)
 		DisableMode(g_current_grp, DRAWCRV); // disable the highlight display
 		DisableMode(g_current_grp, DRAWREFLLINE); // disable the highlight display
 		DisableMode(g_current_grp, ENVMAPPING);
+
+        draw();
+
         break;
     case REFLINE:
 		ToggleMode(g_current_grp, DRAWREFLLINE);
@@ -322,6 +326,7 @@ void menu_proc(int entry)
     case QUIT:
         exit(0);
     default:
+        qDebug()<<"return; nothing done here in menu_proc";
         return;
     }
 

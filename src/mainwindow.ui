@@ -29,7 +29,7 @@
    </property>
    <widget class="QMenu" name="menuMesh">
     <property name="title">
-     <string>Mesh</string>
+     <string>File</string>
     </property>
     <addaction name="actionOpen"/>
     <addaction name="actionTest"/>
@@ -39,14 +39,27 @@
    </widget>
    <widget class="QMenu" name="menuTest">
     <property name="title">
-     <string>Test2</string>
+     <string>View</string>
     </property>
+    <addaction name="actionCurva"/>
+    <addaction name="actionRefline"/>
+    <addaction name="actionHighlight"/>
+    <addaction name="separator"/>
+    <addaction name="actionPatch"/>
+    <addaction name="actionMesh"/>
+    <addaction name="actionPolyPatch"/>
+    <addaction name="actionPolyMesh"/>
+    <addaction name="separator"/>
+    <addaction name="actionCurvaNeedle"/>
    </widget>
    <addaction name="menuMesh"/>
    <addaction name="menuTest"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionOpen">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Open</string>
    </property>
@@ -65,8 +78,111 @@
    </property>
   </action>
   <action name="actionTest">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Test</string>
+   </property>
+  </action>
+  <action name="actionHighlight">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Highlight</string>
+   </property>
+  </action>
+  <action name="actionCurva">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Curvature</string>
+   </property>
+  </action>
+  <action name="actionCurvaNeedle">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Curvature Needles</string>
+   </property>
+  </action>
+  <action name="actionRefline">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Reflection</string>
+   </property>
+  </action>
+  <action name="actionPatch">
+   <property name="text">
+    <string>Patch</string>
+   </property>
+  </action>
+  <action name="actionMesh">
+   <property name="text">
+    <string>Mesh</string>
+   </property>
+  </action>
+  <action name="actionPolyPatch">
+   <property name="text">
+    <string>PolyPatch</string>
+   </property>
+  </action>
+  <action name="actionPolyMesh">
+   <property name="text">
+    <string>PolyMesh</string>
+   </property>
+  </action>
+  <action name="menuPoop">
+   <property name="text">
+    <string>poop</string>
+   </property>
+  </action>
+  <action name="actionHighlight_2">
+   <property name="text">
+    <string>Highlight</string>
+   </property>
+  </action>
+  <action name="actionCurvature">
+   <property name="text">
+    <string>Curvature</string>
+   </property>
+  </action>
+  <action name="actionRefline_2">
+   <property name="text">
+    <string>Refline</string>
+   </property>
+  </action>
+  <action name="actionPatch_2">
+   <property name="text">
+    <string>Patch</string>
+   </property>
+  </action>
+  <action name="actionMesh_2">
+   <property name="text">
+    <string>Mesh</string>
+   </property>
+  </action>
+  <action name="actionPoly_Patch">
+   <property name="text">
+    <string>Poly Patch</string>
+   </property>
+  </action>
+  <action name="actionPoly_Mesh">
+   <property name="text">
+    <string>Poly Mesh</string>
+   </property>
+  </action>
+  <action name="actionCurvature_Needles">
+   <property name="text">
+    <string>Curvature Needles</string>
    </property>
   </action>
  </widget>
@@ -78,7 +194,14 @@
    <header>bvglwidget.h</header>
    <container>1</container>
    <slots>
-    <slot>testSlot()</slot>
+    <slot>toggleHighlight()</slot>
+    <slot>toggleMesh()</slot>
+    <slot>togglePatch()</slot>
+    <slot>togglePolyMesh()</slot>
+    <slot>togglePolyPatch()</slot>
+    <slot>toggleCurva()</slot>
+    <slot>toggleCurvaNeedle()</slot>
+    <slot>toggleRefline()</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -129,6 +252,102 @@
     <hint type="destinationlabel">
      <x>199</x>
      <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionHighlight</sender>
+   <signal>activated()</signal>
+   <receiver>centralWidget</receiver>
+   <slot>toggleHighlight()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>150</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionCurva</sender>
+   <signal>activated()</signal>
+   <receiver>centralWidget</receiver>
+   <slot>toggleCurva()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>150</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionCurvaNeedle</sender>
+   <signal>activated()</signal>
+   <receiver>centralWidget</receiver>
+   <slot>toggleCurvaNeedle()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>150</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionRefline</sender>
+   <signal>activated()</signal>
+   <receiver>centralWidget</receiver>
+   <slot>toggleRefline()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>150</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionPatch</sender>
+   <signal>activated()</signal>
+   <receiver>centralWidget</receiver>
+   <slot>togglePatch()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>150</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionMesh</sender>
+   <signal>activated()</signal>
+   <receiver>centralWidget</receiver>
+   <slot>toggleMesh()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>150</y>
     </hint>
    </hints>
   </connection>

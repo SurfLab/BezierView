@@ -14,4 +14,7 @@
 #include <QDebug>
 
 
+
+#include <QDir>
+#include <QFileDialog>
 #endif // STDHEADERS_H

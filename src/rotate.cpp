@@ -242,7 +242,7 @@ void mouseMotion(int x, int y, Qt::KeyboardModifiers modifiers )
         }
         project_init();
     }
-    draw();
+  //  draw();
     
 }
 
@@ -275,14 +275,14 @@ void stopMotion(int x, int y)
     
     trackingMouse = false;
 
-  /*  if ( startX != x || startY !=y) {
-		//redrawContinue = true;
+    if ( startX != x || startY !=y) {
+        redrawContinue = true;
     } else {
 		angle = 0.0;
 		redrawContinue = false;
 		trackballMove = false;
     }
-	*/
+
 	angle = 0.0;
 	redrawContinue = false;
 	trackballMove = false;
@@ -334,8 +334,10 @@ void mouseButton(int button, int state, int x, int y, Qt::KeyboardModifiers modi
 
     status = glutGetModifiers();
 
-
     /*   button to popup menu */
+    if(button==2){
+
+    }
     if(button==1)  {  //left button
 
        if(state == 1)
@@ -349,7 +351,7 @@ void mouseButton(int button, int state, int x, int y, Qt::KeyboardModifiers modi
        else
           clipping = 0;
     }
-    
+
     /* left button to pick */
     if(button==1)
     switch(state) 
@@ -428,8 +430,8 @@ void mouseButton(int button, int state, int x, int y, Qt::KeyboardModifiers modi
 		else
 			startZoom( x,y);
 
-		break;
- /**   case 2:
+        break;
+    case 2:  //mouse release
 //		if(g_mouseMode ==	ROTATE || g_mouseMode ==	MOVE)
 //			return;
 
@@ -439,11 +441,11 @@ void mouseButton(int button, int state, int x, int y, Qt::KeyboardModifiers modi
             scale_moving = -1;
         }
         else {                  // track ball rotation control stops
-			stopMotion( x,y);
+            stopMotion( x,y);
 		}
 		cur = clock();
 		last_click = cur;
-        break;**/
+        break;
     }
 }
 
