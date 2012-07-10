@@ -31,6 +31,7 @@ int   g_current_grp;
 int   g_redisplay=1;
 int   g_mouseMode;
 int   g_substs[MAXGROUP];
+float g_patchColor[MAXGROUP][3];
 
 int    environmapping=0;
 int    drawbox=0;

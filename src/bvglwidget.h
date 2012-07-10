@@ -21,6 +21,7 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
     void keyPressEvent(QKeyEvent *event);
     void changeView(int change);
+    void changeColor(float change[]);
 
 signals:
     
@@ -34,6 +35,11 @@ public slots:
     void toggleCurva();
     void toggleCurvaNeedle();
     void toggleRefline();
+    void colorDialog();
+    void openFile();
+    void saveFile();
+
+
 };
 
 

@@ -14,6 +14,4 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::openFile(){
-    QMessageBox::information(this,"Hello","Hey");
-}
+

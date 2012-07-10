@@ -17,8 +17,6 @@ public:
 
 
 public slots:
-    void openFile();
-  //  void testSlot();
 
 private:
     Ui::MainWindow *ui;

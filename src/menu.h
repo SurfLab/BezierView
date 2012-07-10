@@ -90,6 +90,7 @@
 
 void    menu_proc(int entry);
 void    color_proc(int entry);
+void color_proc_rgb(float rgb[]);
 void    group_proc(int entry);
 
 #endif

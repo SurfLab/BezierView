@@ -4,7 +4,7 @@
 void DisableMode(int grp_id, int flag);
 bool isEnabled(int grp_id, int flag);
 void ToggleMode(int grp_id, int flag);
-
+void set_g_redisplay();
 void init_flags();
 
 

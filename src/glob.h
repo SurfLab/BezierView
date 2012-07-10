@@ -41,6 +41,7 @@ extern int   has_polygon;
 extern int   g_Mode[MAXGROUP];
 extern int   g_PenColor[MAXGROUP];
 extern int   g_Material[MAXGROUP];
+extern float g_patchColor[MAXGROUP][3];
 extern int   g_LineWidth[MAXGROUP];
 extern int   g_AntiAlias;
 

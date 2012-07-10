@@ -29,6 +29,7 @@ void draw_crv_bar(GLfloat* color);  // the curvature bar
 void draw_clipping_plane(int index, int mode, REAL  size);
 
 void set_color(int i);            // in light.cpp
+void set_colorf(float r, float g, float b); //in light.cpp
 void Solve4(double * A, double* x); // in util.cpp
 void init_texture(GLubyte *forecolor, GLubyte *backcolor);
 
@@ -91,13 +92,15 @@ void ToggleMode(int grp_id, int flag)
 {
 	if(grp_id ==0 && group_num >0) {
 		for(int i=0; i<= group_num; i++) {
-			g_Mode[i] ^= flag;
+            g_Mode[i] ^= flag;
+
 		}
 	}
-	else
-		g_Mode[grp_id] ^= flag;
+    else{
+        g_Mode[grp_id] ^= flag;
+    }
 
-	g_redisplay =1;
+    g_redisplay =1;
     //update();
 
 }
@@ -155,7 +158,9 @@ void flip_normal()
 	//define_patch();
 	define_crv();
 }
-
+void set_g_redisplay(){
+    g_redisplay=1;
+}
 
 //////////////////////////////////////
 // draw all the objects
@@ -201,9 +206,12 @@ void draw(void)
 		{
 			Patch* fp      = &(face[i]);
 			int patch_kind = fp->type;
+           // qDebug()<<"patch type="<<patch_kind;
 			int grp_id     = fp->group_id;
-			int color      = g_Material[grp_id];
-
+            int color      = g_Material[grp_id];
+            float r = g_patchColor[grp_id][0];
+            float g = g_patchColor[grp_id][1];
+            float b = g_patchColor[grp_id][2];
 	//		// color of the group that this face belongs to
 			int patch_on = (isEnabled(grp_id, DRAWPOLYPATCH) && (patch_kind == POLY) )  ||
 						   (isEnabled(grp_id, DRAWPATCH)     && (patch_kind != POLY) );
@@ -278,10 +286,11 @@ void draw(void)
 				{
 					glDisable(GL_BLEND);            // Turn Blending Off
 					glEnable(GL_DEPTH_TEST);        // Turn Depth Testing On
-					if(color == COLORNUM-2)
+                    if(color == COLORNUM-2)
 						set_color(rand()%(COLORNUM-2)); 
-					else
-						set_color(color);
+                    else
+                       set_colorf(r,g,b);
+                       //set_color(0);
 				}
 
 				(fp->object)->plot_patch(isEnabled(grp_id, SMOOTH)==1);
@@ -327,7 +336,7 @@ void draw(void)
 				Solve4(mv_matrix, A);
 				Solve4(mv_matrix, H);
 
-				set_color(0);
+                set_colorf(r,g,b);
 				(fp->object)->plot_highlights(A, H, hl_step, hl_type);
 			}
 		}

@@ -40,14 +40,32 @@ extern  int    clip_item;
  */
 void color_proc(int entry)
 {
-	int color = entry ;
+    int color = entry ;
 	if(g_current_grp==0 && (group_num>0) ) {
-		for(int i=0; i<=group_num; i++)
-			g_Material[i] = color;
+        for(int i=0; i<=group_num; i++)
+            g_Material[i] = color;
 	}
-	else
-		g_Material[g_current_grp] = color;
+    else
+        g_Material[g_current_grp] = color;
+    set_g_redisplay();
+    draw();
 
+}
+void color_proc_rgb(float rgb[]){
+    if(g_current_grp==0 && (group_num>0) ) {
+        for(int i=0; i<=group_num; i++){
+
+            g_patchColor[i][0] = rgb[0];
+            g_patchColor[i][1]=rgb[1];
+            g_patchColor[i][2]=rgb[2];
+        }
+    }
+    else
+        g_patchColor[g_current_grp][0] = rgb[0];
+        g_patchColor[g_current_grp][1]=rgb[1];
+        g_patchColor[g_current_grp][2]=rgb[2];
+    set_g_redisplay();
+    draw();
 }
 
 void group_proc(int entry)
@@ -116,15 +134,20 @@ void menu_proc(int entry)
 		ToggleMode(g_current_grp, SMOOTH);
 		break;
     case MESH:
-		ToggleMode(g_current_grp, DRAWMESH);
+       // qDebug()<<"mesh";
+        ToggleMode(g_current_grp, DRAWMESH);
         break;
     case PATCH:
+       // qDebug()<<"patch";
 		ToggleMode(g_current_grp, DRAWPATCH);
         break;
     case POLYMESH:
+       // qDebug()<<"polymesh";
+
 		ToggleMode(g_current_grp, DRAWPOLYMESH);
         break;
     case POLYPATCH:
+       // qDebug()<<"polypatch";
 		ToggleMode(g_current_grp, DRAWPOLYPATCH);
         break;
 //    case SELMESH:
@@ -326,7 +349,6 @@ void menu_proc(int entry)
     case QUIT:
         exit(0);
     default:
-        qDebug()<<"return; nothing done here in menu_proc";
         return;
     }
 

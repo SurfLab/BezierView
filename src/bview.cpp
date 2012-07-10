@@ -28,7 +28,6 @@
 #include "draw.h"
 #include "bview.h"
 
-
 // groups           
 int  c_grp; // current group
 void set_grp(int gid, char* string);  // set a group name
@@ -75,8 +74,9 @@ void parse_arg(int argc, char* argv[])
 		}
 	
 	programDir[i+1] = 0;
-	for(j=0;j<=i;j++)
+    for(j=0;j<=i;j++){
 		programDir[j] = argv[0][j];
+    }
 	printf("Executable Dir: %s \n", programDir);
 	// the Dir -- Done
 
@@ -86,6 +86,7 @@ void parse_arg(int argc, char* argv[])
 	{
 		strcpy(dataFileName, argv[1]);  
 		manualSubDepth = 0;
+
 	}
 	else 
 	{
@@ -167,6 +168,7 @@ void define_scene(FILE* fp)
          patch_kind */
 
 		// assign the patch type and group
+
         face[pat].type = patch_kind;
         face[pat].group_id = c_grp;
 
@@ -180,6 +182,7 @@ void define_scene(FILE* fp)
 
 		// get the type of next patch
         done = ! get_kind(fp, & patch_kind);
+
 	}
 
     if(pat == MAXFACET) 
@@ -252,7 +255,9 @@ void define_scene(FILE* fp)
 /* set the group's initial color */
 void set_grp_color(int gid, int color)
 {
-	g_Material[gid] = color ;
+    g_Material[gid] = color ;
+
+
 }
 
 /* search for the group named gname */
@@ -465,7 +470,6 @@ void readin_curv_bounds()
 
 FILE* read_input_file(char * dataFileName){
     FILE* fp;
-
     /* -- Open the input file  -- */
     if ((fp = fopen(dataFileName,"r")) == NULL) {
         char systemDataFile[1024];
@@ -477,6 +481,7 @@ FILE* read_input_file(char * dataFileName){
         }
         strcpy(dataFileName, systemDataFile);
     }
+
     return fp;
 }
 
@@ -501,10 +506,22 @@ void initGL(){
     modelview_init();
     glViewport(0,0,winWidth,winHeight);
 
+    //set the initial color
+    for(int i = 0; i<MAXGROUP; i++){
+        g_patchColor[i][0]=0.65f;
+        g_patchColor[i][1]=0.5f;
+        g_patchColor[i][2]=0.1f;
+
+
+        //qDebug()<<mat_diffuse[1][1];
+    }
+
+
 }
 
 void init_bezierview(int argc, char* argv[]){
     /* parse arguments */
+
     parse_arg(argc, argv);
     readin_curv_bounds();
 

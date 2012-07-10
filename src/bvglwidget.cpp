@@ -12,6 +12,7 @@ BVGLWidget::BVGLWidget(QWidget *parent) :
 void BVGLWidget::initializeGL(){
     initGL();
 
+
 }
 void BVGLWidget::paintGL(){
     display();
@@ -49,8 +50,28 @@ void BVGLWidget::keyPressEvent(QKeyEvent *event){
 
 void BVGLWidget::changeView(int change){
     menu_proc(change);
-    updateGL();
+   updateGL();
 
+}
+
+void BVGLWidget::colorDialog()
+{
+    QColor color;
+    if (true)
+        color = QColorDialog::getColor(Qt::green, this);
+    else
+        color = QColorDialog::getColor(Qt::green, this, "Select Color", QColorDialog::DontUseNativeDialog);
+
+    if (color.isValid()) {
+        float colorArr[] = {color.red()/255.0f,color.green()/255.0f,color.blue()/255.0f};
+
+        changeColor(colorArr);
+    }
+}
+
+void BVGLWidget::changeColor(float rgb[]){
+    color_proc_rgb(rgb);
+    updateGL();
 }
 
 void BVGLWidget::toggleHighlight(){
@@ -60,16 +81,16 @@ void BVGLWidget::toggleSmooth(){
     changeView(SMOOTH);
 }
 void BVGLWidget::toggleMesh(){
-    changeView(DRAWMESH);
+    changeView(MESH);
 }
 void BVGLWidget::togglePatch(){
-    changeView(DRAWPATCH);
+    changeView(PATCH);
 }
 void BVGLWidget::togglePolyMesh(){
-    changeView(DRAWPOLYMESH);
+    changeView(POLYMESH);
 }
 void BVGLWidget::togglePolyPatch(){
-    changeView(DRAWPOLYPATCH);
+    changeView(POLYPATCH);
 }
 void BVGLWidget::toggleCurva(){
     changeView(CURVA);
@@ -81,9 +102,50 @@ void BVGLWidget::toggleRefline(){
     changeView(REFLINE);
 }
 
+void BVGLWidget::saveFile()
+{
+    QFileDialog::Options options;
+    //if (!native->isChecked())
+      //  options |= QFileDialog::DontUseNativeDialog;
+    QString selectedFilter;
+    QString fileName = QFileDialog::getSaveFileName();/*this,
+                                tr("QFileDialog::getSaveFileName()"),
+                                saveFileNameLabel->text(),
+                                tr("All Files (*);;Text Files (*.txt)"),
+                                &selectedFilter,
+                                options);*/
+    if (!fileName.isEmpty())
+        qDebug()<<fileName;
+}
 
 
+void BVGLWidget::openFile()
+{
+    QFileDialog::Options options;
+  //  if (!native->isChecked())
+    //    options |= QFileDialog::DontUseNativeDialog;
+    QString selectedFilter;
+    QString fileName = QFileDialog::getOpenFileName();/*this,
+                                tr("QFileDialog::getOpenFileName()"),
+                                openFileNameLabel->text(),
+                                tr("All Files (*);;Text Files (*.txt)"),
+                                &selectedFilter,
+                                options);*/
+    if (!fileName.isEmpty()){
+        qDebug()<<"save file name:"<<fileName;
 
+        //convert fileName from qString to char*
+
+        QByteArray ba = fileName.toLatin1();
+         char *c = ba.data();
+        char* argv[] = {programDir, c};
+        init_bezierview(2, argv);
+        initGL();
+        updateGL();
+    }
+
+
+}
 
 
 

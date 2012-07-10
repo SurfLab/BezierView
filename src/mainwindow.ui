@@ -32,7 +32,6 @@
      <string>File</string>
     </property>
     <addaction name="actionOpen"/>
-    <addaction name="actionTest"/>
     <addaction name="actionSave"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
@@ -51,6 +50,8 @@
     <addaction name="actionPolyMesh"/>
     <addaction name="separator"/>
     <addaction name="actionCurvaNeedle"/>
+    <addaction name="separator"/>
+    <addaction name="actionChange_Color"/>
    </widget>
    <addaction name="menuMesh"/>
    <addaction name="menuTest"/>
@@ -140,49 +141,9 @@
     <string>PolyMesh</string>
    </property>
   </action>
-  <action name="menuPoop">
+  <action name="actionChange_Color">
    <property name="text">
-    <string>poop</string>
-   </property>
-  </action>
-  <action name="actionHighlight_2">
-   <property name="text">
-    <string>Highlight</string>
-   </property>
-  </action>
-  <action name="actionCurvature">
-   <property name="text">
-    <string>Curvature</string>
-   </property>
-  </action>
-  <action name="actionRefline_2">
-   <property name="text">
-    <string>Refline</string>
-   </property>
-  </action>
-  <action name="actionPatch_2">
-   <property name="text">
-    <string>Patch</string>
-   </property>
-  </action>
-  <action name="actionMesh_2">
-   <property name="text">
-    <string>Mesh</string>
-   </property>
-  </action>
-  <action name="actionPoly_Patch">
-   <property name="text">
-    <string>Poly Patch</string>
-   </property>
-  </action>
-  <action name="actionPoly_Mesh">
-   <property name="text">
-    <string>Poly Mesh</string>
-   </property>
-  </action>
-  <action name="actionCurvature_Needles">
-   <property name="text">
-    <string>Curvature Needles</string>
+    <string>Set Object Color</string>
    </property>
   </action>
  </widget>
@@ -202,6 +163,10 @@
     <slot>toggleCurva()</slot>
     <slot>toggleCurvaNeedle()</slot>
     <slot>toggleRefline()</slot>
+    <slot>testColor()</slot>
+    <slot>colorDialog()</slot>
+    <slot>saveFile()</slot>
+    <slot>openFile()</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -226,7 +191,7 @@
   <connection>
    <sender>actionOpen</sender>
    <signal>activated()</signal>
-   <receiver>MainWindow</receiver>
+   <receiver>centralWidget</receiver>
    <slot>openFile()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -235,14 +200,14 @@
     </hint>
     <hint type="destinationlabel">
      <x>199</x>
-     <y>149</y>
+     <y>150</y>
     </hint>
    </hints>
   </connection>
   <connection>
    <sender>actionSave</sender>
    <signal>activated()</signal>
-   <receiver>MainWindow</receiver>
+   <receiver>centralWidget</receiver>
    <slot>saveFile()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -251,7 +216,7 @@
     </hint>
     <hint type="destinationlabel">
      <x>199</x>
-     <y>149</y>
+     <y>150</y>
     </hint>
    </hints>
   </connection>
@@ -289,7 +254,7 @@
   </connection>
   <connection>
    <sender>actionCurvaNeedle</sender>
-   <signal>activated()</signal>
+   <signal>toggled(bool)</signal>
    <receiver>centralWidget</receiver>
    <slot>toggleCurvaNeedle()</slot>
    <hints>
@@ -351,11 +316,57 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionChange_Color</sender>
+   <signal>activated()</signal>
+   <receiver>centralWidget</receiver>
+   <slot>colorDialog()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>150</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionPolyMesh</sender>
+   <signal>activated()</signal>
+   <receiver>centralWidget</receiver>
+   <slot>togglePolyMesh()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>150</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionPolyPatch</sender>
+   <signal>activated()</signal>
+   <receiver>centralWidget</receiver>
+   <slot>togglePolyPatch()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>150</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>openFile()</slot>
   <slot>saveFile()</slot>
-  <slot>navi()</slot>
-  <slot>testSlot()</slot>
  </slots>
 </ui>
