@@ -7,14 +7,20 @@
 #endif
 
 
+// Standard C++ libraries
 #include <stdio.h>
+
+// Graphics Libraries
 #include <GL/glu.h>
 #define GLUTLITE_STATIC 1
-#include <GL/glut.h>
+#include <GL/glutlite.h>
+
+
+// Qt Libraries
+#include <QtCore>
 #include <QDebug>
-
-
-
 #include <QDir>
 #include <QFileDialog>
+
 #endif // STDHEADERS_H
+
