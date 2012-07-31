@@ -26,7 +26,11 @@ QSize  BVGLWidget::sizeHint() const{
     return QSize(winWidth,winHeight);
 }
 
-void BVGLWidget::resizeGL(int width, int height){}
+void BVGLWidget::resizeGL(int width, int height){
+    winWidth = width, winHeight = height;
+    glViewport(0,0,winWidth,winHeight);
+    updateProjection();
+}
 void BVGLWidget::mousePressEvent(QMouseEvent *event){
     mouseButton(event->button(), event->buttons(), event->x(), event->y(), event->modifiers());
     update();
@@ -102,50 +106,6 @@ void BVGLWidget::toggleRefline(){
     changeView(REFLINE);
 }
 
-void BVGLWidget::saveFile()
-{
-    QFileDialog::Options options;
-    //if (!native->isChecked())
-      //  options |= QFileDialog::DontUseNativeDialog;
-    QString selectedFilter;
-    QString fileName = QFileDialog::getSaveFileName();/*this,
-                                tr("QFileDialog::getSaveFileName()"),
-                                saveFileNameLabel->text(),
-                                tr("All Files (*);;Text Files (*.txt)"),
-                                &selectedFilter,
-                                options);*/
-    if (!fileName.isEmpty())
-        qDebug()<<fileName;
-}
-
-
-void BVGLWidget::openFile()
-{
-    QFileDialog::Options options;
-  //  if (!native->isChecked())
-    //    options |= QFileDialog::DontUseNativeDialog;
-    QString selectedFilter;
-    QString fileName = QFileDialog::getOpenFileName();/*this,
-                                tr("QFileDialog::getOpenFileName()"),
-                                openFileNameLabel->text(),
-                                tr("All Files (*);;Text Files (*.txt)"),
-                                &selectedFilter,
-                                options);*/
-    if (!fileName.isEmpty()){
-        qDebug()<<"save file name:"<<fileName;
-
-        //convert fileName from qString to char*
-
-        QByteArray ba = fileName.toLatin1();
-         char *c = ba.data();
-        char* argv[] = {programDir, c};
-        init_bezierview(2, argv);
-        initGL();
-        updateGL();
-    }
-
-
-}
 
 
 

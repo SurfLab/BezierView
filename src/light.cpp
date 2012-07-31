@@ -10,7 +10,7 @@
 #include <stdheaders.h>
 #include "glob.h"
 
-void set_lights();
+void updateLights();
 
 // each time add/remove a color, change the #define COLORNUM in glob.h
 // Note: keep the transparent be the last one and the
@@ -150,7 +150,7 @@ void light_init()
     glLightfv(GL_LIGHT2, GL_POSITION, light_position2);
     glLightfv(GL_LIGHT2, GL_DIFFUSE,  light_diffuse2);
     glLightfv(GL_LIGHT2, GL_SPECULAR, light_specular2);
-    glLightfv(GL_LIGHT2, GL_AMBIENT,  light_ambient0);
+    glLightfv(GL_LIGHT2, GL_AMBIENT,  light_ambient2);
 
 /* define material proerties for front face of all polygons */
 
@@ -160,7 +160,7 @@ void light_init()
 	light_switch[0] = 0;   /* Disable light 0 */
 	light_switch[1] = 0;   /* Disable light 1 */
 	light_switch[2] = 1;   /* Enable  light 2 */
-	set_lights();
+    updateLights();
 
 
     glEnable(GL_DEPTH_TEST); /* enable z buffer */
@@ -173,7 +173,7 @@ void light_init()
 
 
 /* turn on/off the lights */
-void set_lights()
+void updateLights()
 {
 	if(light_switch[0])    // light 0
 	    glEnable(GL_LIGHT0);  

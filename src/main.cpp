@@ -4,10 +4,12 @@
 
 int main(int argc, char *argv[])
 {
-    init_bezierview(argc,argv);
     QApplication a(argc, argv);
+    init_bezierview(argc,argv);
+
+    a.setApplicationName("SurfLab BezierView");
     MainWindow w;
     w.show();
-    
+
     return a.exec();
 }

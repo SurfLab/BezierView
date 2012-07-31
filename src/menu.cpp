@@ -17,11 +17,11 @@
 void draw();
 void    load_position(int n);
 void    save_position(int n);
-void    project_init();
-void    modelview_init();
+void    updateProjection();
+void    updateModelView();
 
 void    define_crv();
-void	set_lights();
+void	updateLights();
 void	export_eps();
 void	export_igs();
 void	flip_normal();
@@ -81,14 +81,14 @@ void zoomin() {
 //    glScalef(1.5, 1.5, 1.5);
 	scale_factor *= 1.5;
     ViewDepth *= 1.5;
-    project_init(); 
+    updateProjection(); 
 }
 void zoomout() {
     //glMatrixMode(GL_MODELVIEW);
     //glScalef(0.67, 0.67, 0.67);
 	scale_factor *= 0.67;
     ViewDepth *= 0.67;
-    project_init(); 
+    updateProjection(); 
 }
 
 
@@ -231,8 +231,8 @@ void menu_proc(int entry)
     case RESETP:
 		scale_factor = 1.0;
 		ViewCenter[0] = ViewCenter[1] = 0;
-        modelview_init();
-		project_init();
+        updateModelView();
+		updateProjection();
         break;
     case CLIPRIGHT:
     case CLIPLEFT:
@@ -245,14 +245,14 @@ void menu_proc(int entry)
     case CLIPSTOP:
 		ClipNear = - ViewSize;
 		ClipFar  = ViewSize;
-		project_init();
+		updateProjection();
         break;
 
     case MENU_LIGHT0:
     case MENU_LIGHT1:
     case MENU_LIGHT2:
 		light_switch[entry-MENU_LIGHT0] = !light_switch[entry-MENU_LIGHT0];
-        set_lights();
+        updateLights();
         break;
 
 	case BLACKBACK:
@@ -509,5 +509,5 @@ void advkeyboard(int key, int x, int y)
     default:
         return;
     }
-    project_init();
+    updateProjection();
 }

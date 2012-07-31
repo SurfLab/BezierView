@@ -50,7 +50,7 @@ clock_t  lastmotion = 0; // last motion moment
                         // no rotation after he releases it.
 clock_t last_click =0 ;
 
-void project_init();
+void updateProjection();
 
 int status;
 
@@ -126,7 +126,7 @@ void motionMove(int x, int y){
 	ViewCenter[0] += 0.005* ViewSize * (startX- x);
 	ViewCenter[1] -= 0.005* ViewSize * (startY- y);
     startX = x; startY = y;
-	project_init();
+	updateProjection();
 }
 
 void mouseMotion(int x, int y, Qt::KeyboardModifiers modifiers )
@@ -240,7 +240,7 @@ void mouseMotion(int x, int y, Qt::KeyboardModifiers modifiers )
         default:
 			return;
         }
-        project_init();
+        updateProjection();
     }
   //  draw();
     
@@ -447,13 +447,6 @@ void mouseButton(int button, int state, int x, int y, Qt::KeyboardModifiers modi
 		last_click = cur;
         break;
     }
-}
-
-void myReshape(int w, int h)
-{
-//    glViewport(0, 0, w, h);
-    winWidth = w;
-    winHeight = h;
 }
 
 void spin()

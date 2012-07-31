@@ -9,8 +9,8 @@ QT       += core gui opengl
 TARGET = BezierView
 TEMPLATE = app
 
-CONFIG += link_pkgconfig
-PKGCONFIG = glutlite glu
+unix: CONFIG += link_pkgconfig
+unix: PKGCONFIG = glutlite glu
 
 SOURCES += \
     src/texture.cpp \
@@ -30,7 +30,8 @@ SOURCES += \
     src/SGOL/QuadBezier.cpp \
     src/SGOL/Polygon.cpp \
     src/SGOL/highlight.cpp \
-    src/SGOL/curvature.cpp
+    src/SGOL/curvature.cpp \
+    src/error.cpp
 
 HEADERS  += \
     src/texture.h \
@@ -50,7 +51,8 @@ HEADERS  += \
     src/SGOL/Object.h \
     src/SGOL/highlight.h \
     src/SGOL/curvature.h \
-    src/SGOL/Bezier.h
+    src/SGOL/Bezier.h \
+    src/error.h
 
 FORMS    += \
     src/mainwindow.ui
@@ -61,3 +63,9 @@ INCLUDEPATH += $$PWD/src
 win32: LIBS += -L$$PWD/dependencies/lib/Win32/
 win32: INCLUDEPATH += $$PWD/dependencies/include
 
+RESOURCES +=
+
+win32: RC_FILE = src/bezierview.rc
+
+OTHER_FILES += \
+    src/bezierview.rc

@@ -17,7 +17,10 @@ public:
 
 
 public slots:
-
+    void saveFile();
+    void openFile();
+    void setTitle(QString fn);
+    void tryLoadFile(QString fn);
 private:
     Ui::MainWindow *ui;
 };

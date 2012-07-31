@@ -10,9 +10,6 @@
     <height>300</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>MainWindow</string>
-  </property>
   <widget class="BVGLWidget" name="centralWidget">
    <property name="mouseTracking">
     <bool>false</bool>
@@ -62,12 +59,24 @@
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>Open</string>
+    <string>Open...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+   <property name="softKeyRole">
+    <enum>QAction::NoSoftKey</enum>
    </property>
   </action>
   <action name="actionExit">
    <property name="text">
-    <string>Exit</string>
+    <string>Close</string>
+   </property>
+   <property name="toolTip">
+    <string>Close</string>
+   </property>
+   <property name="shortcut">
+    <string>Esc</string>
    </property>
   </action>
   <action name="actionSave">
@@ -76,6 +85,9 @@
    </property>
    <property name="text">
     <string>Save</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
    </property>
   </action>
   <action name="actionTest">
@@ -191,7 +203,7 @@
   <connection>
    <sender>actionOpen</sender>
    <signal>activated()</signal>
-   <receiver>centralWidget</receiver>
+   <receiver>MainWindow</receiver>
    <slot>openFile()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -200,14 +212,14 @@
     </hint>
     <hint type="destinationlabel">
      <x>199</x>
-     <y>150</y>
+     <y>149</y>
     </hint>
    </hints>
   </connection>
   <connection>
    <sender>actionSave</sender>
    <signal>activated()</signal>
-   <receiver>centralWidget</receiver>
+   <receiver>MainWindow</receiver>
    <slot>saveFile()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -216,7 +228,7 @@
     </hint>
     <hint type="destinationlabel">
      <x>199</x>
-     <y>150</y>
+     <y>149</y>
     </hint>
    </hints>
   </connection>

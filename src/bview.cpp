@@ -27,6 +27,8 @@
 #include "glob.h"
 #include "draw.h"
 #include "bview.h"
+#include "Error.h"
+#include <string>
 
 // groups           
 int  c_grp; // current group
@@ -77,11 +79,9 @@ void parse_arg(int argc, char* argv[])
     for(j=0;j<=i;j++){
 		programDir[j] = argv[0][j];
     }
-	printf("Executable Dir: %s \n", programDir);
-	// the Dir -- Done
 
 	if(argc ==1 )               // Print out the usage
-		print_usage_and_exist(argv[0]);
+        ;//print_usage_and_exist(argv[0]);
 	else if(argc == 2)          // bview datafile
 	{
 		strcpy(dataFileName, argv[1]);  
@@ -118,20 +118,21 @@ void parse_arg(int argc, char* argv[])
 /* ------------------------------------------------------------------------
  * initialize the projection and modelview matrices
  */
-void project_init()
+void updateProjection()
 {
     /* set up viewing */
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 	//printf("%f %f %f %f %f %f \n", ViewCenter[0]-ViewSize,ViewCenter[0]+ViewSize, (ViewCenter[1]-ViewSize),(ViewCenter[1]+ViewSize), -3*ViewDepth*ViewSize, 3*ViewDepth*ViewSize); 
+    float aspect = float(winWidth)/float(winHeight);
 	
-    glOrtho(ViewCenter[0]-ViewSize,ViewCenter[0]+ViewSize, 
+    glOrtho(ViewCenter[0]-ViewSize*aspect,ViewCenter[0]+ViewSize*aspect,
 		    (ViewCenter[1]-ViewSize),(ViewCenter[1]+ViewSize), 
             //-3*ViewDepth*ViewSize, 3*ViewDepth*ViewSize);
 			 3*ViewDepth*ClipNear, 3*ViewDepth*ClipFar);
 
 }
-void modelview_init()
+void updateModelView()
 {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -248,6 +249,7 @@ void define_scene(FILE* fp)
     after = clock();
     printf ("\nDone. time used: %d milliseconds \n", 
 	(int) (((double) (after-before))/CLOCKS_PER_SEC*1000));
+
 
 }
 
@@ -417,7 +419,7 @@ void load_position(int n)
 
     fscanf (posfile, "%f %f ", &ViewCenter[0], &ViewCenter[1]);
     fscanf (posfile, "%f", &scale_factor);
-	project_init();
+    updateProjection();
     fclose(posfile);
 
     glMatrixMode(GL_MODELVIEW);
@@ -468,53 +470,43 @@ void readin_curv_bounds()
 
 
 
-FILE* read_input_file(char * dataFileName){
-    FILE* fp;
-    /* -- Open the input file  -- */
-    if ((fp = fopen(dataFileName,"r")) == NULL) {
-        char systemDataFile[1024];
-        strcpy(systemDataFile, programDir);
-        strcat(systemDataFile, dataFileName);
-        if ((fp = fopen(systemDataFile,"r")) == NULL) {
-            printf("can't open file: %s\n", dataFileName);
-            exit(-1);
-        }
-        strcpy(dataFileName, systemDataFile);
-    }
-
-    return fp;
+void setObjectColor(const float color[3]){
+    for(int i = 0; i<MAXGROUP; i++)
+        for(int j=0;j<3;j++)
+            g_patchColor[i][j]=color[j];
 }
 
+void loadDataFile(const char* fn){
 
-void initGL(){
-    FILE  *fp = read_input_file(dataFileName);     /* input file handle */
-    light_init(); /* initialize the lights */
+    /* read in all objects and define objects */
+    FILE  *fp = fopen(fn,"r");
+    if(fp == 0){
+        std::string s = "Loading the BezierView file \"" + std::string(fn) + "\"";
+        error(s.c_str(), "File might be nonexistent or unreadable." );
+        return;
+    }
 
-    /* window background */
-
-    glShadeModel(GL_SMOOTH); /* enable smooth shading */
-//    glEnable(GL_AUTO_NORMAL);
-    glEnable(GL_NORMALIZE);
-
-    init_flags();
-
-    define_scene(fp);	  /* read in all objects and define objects */
+    define_scene(fp);
     fclose(fp);
 
-    /* coordinate system initialization */
-    project_init();
-    modelview_init();
-    glViewport(0,0,winWidth,winHeight);
+    //// Update view to the mesh
+    const float defaultColor[3] = { 0.65f, 0.5f, 0.1f };
 
-    //set the initial color
-    for(int i = 0; i<MAXGROUP; i++){
-        g_patchColor[i][0]=0.65f;
-        g_patchColor[i][1]=0.5f;
-        g_patchColor[i][2]=0.1f;
+    setObjectColor(defaultColor);
+    init_flags();
+    updateProjection();
+    updateModelView();
 
+}
 
-        //qDebug()<<mat_diffuse[1][1];
-    }
+void initGL(){
+    light_init(); /* initialize the lights */
+    glShadeModel(GL_SMOOTH); /* enable smooth shading */
+    glEnable(GL_NORMALIZE);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 
 
 }
@@ -523,6 +515,7 @@ void init_bezierview(int argc, char* argv[]){
     /* parse arguments */
 
     parse_arg(argc, argv);
+
     readin_curv_bounds();
 
     /* normal clipping planes */

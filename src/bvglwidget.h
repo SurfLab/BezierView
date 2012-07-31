@@ -36,8 +36,6 @@ public slots:
     void toggleCurvaNeedle();
     void toggleRefline();
     void colorDialog();
-    void openFile();
-    void saveFile();
 
 
 };

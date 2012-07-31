@@ -5,8 +5,8 @@
 extern char dataFileName[500];
 extern char programDir[500];
 
-void project_init();
-void modelview_init();
+void updateProjection();
+void updateModelView();
 void init_flags();
 
 // opengl initialize             -- later in this file
@@ -31,5 +31,6 @@ void advkeyboard(int key, int x, int y);
 
 void initGL();
 void init_bezierview(int argc, char* argv[]);
+void loadDataFile(const char* fn);
 
 #endif // BVIEW_H
