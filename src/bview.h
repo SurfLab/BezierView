@@ -28,6 +28,7 @@ void mouseMotion(int x, int y, Qt::KeyboardModifiers modifier);
 void keyboard(unsigned char key, int x, int y);
 void spin();
 void advkeyboard(int key, int x, int y);
+void zoom(float delta);
 
 void initGL();
 void init_bezierview(int argc, char* argv[]);

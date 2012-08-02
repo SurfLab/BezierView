@@ -47,6 +47,10 @@ void BVGLWidget::mouseMoveEvent(QMouseEvent *event){
     updateGL();
 }
 
+void BVGLWidget::wheelEvent(QWheelEvent *w){
+    zoom( w->delta() );
+    updateGL();
+}
 
 void BVGLWidget::keyPressEvent(QKeyEvent *event){
 

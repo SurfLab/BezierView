@@ -20,6 +20,7 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void keyPressEvent(QKeyEvent *event);
+    void wheelEvent(QWheelEvent *w);
     void changeView(int change);
     void changeColor(float change[]);
 

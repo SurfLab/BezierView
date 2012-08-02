@@ -27,7 +27,7 @@
 #include "glob.h"
 #include "draw.h"
 #include "bview.h"
-#include "Error.h"
+#include "error.h"
 #include <string>
 
 // groups           

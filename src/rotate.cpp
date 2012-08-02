@@ -105,6 +105,9 @@ void rotate_vector(REAL* v, REAL* axis, REAL angle)
 	}
 }
 
+void zoom(float delta){
+    scale_factor *= 1 + delta*0.001;
+}
 
 void motionZoom(int x, int y){
 	if(!zoomMotion) {
