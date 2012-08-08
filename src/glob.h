@@ -24,6 +24,7 @@
 #define SMOOTH         512
 #define ENVMAPPING     1024
 #define HIDDENLINE     2048
+#define NORMAL         4096
 
 extern int drawbox;
 

@@ -37,7 +37,7 @@ public slots:
     void toggleCurvaNeedle();
     void toggleRefline();
     void colorDialog();
-
+    void toggleNormal();
 
 };
 

@@ -23,6 +23,7 @@ public slots:
     void tryLoadFile(QString fn);
 private:
     Ui::MainWindow *ui;
+    void initializeViewMenu();
 };
 
 #endif // MAINWINDOW_H

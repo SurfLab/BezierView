@@ -90,9 +90,11 @@ void BVGLWidget::toggleSmooth(){
 }
 void BVGLWidget::toggleMesh(){
     changeView(MESH);
+    changeView(POLYMESH);
 }
 void BVGLWidget::togglePatch(){
     changeView(PATCH);
+    changeView(POLYPATCH);
 }
 void BVGLWidget::togglePolyMesh(){
     changeView(POLYMESH);
@@ -110,6 +112,9 @@ void BVGLWidget::toggleRefline(){
     changeView(REFLINE);
 }
 
+void BVGLWidget::toggleNormal(){
+    changeView(NORMAL);
+}
 
 
 

@@ -165,6 +165,15 @@ void menu_proc(int entry)
 		DisableMode(g_current_grp, ENVMAPPING);
 		define_crv();
         break;
+    case NORMAL:
+          DisableMode(g_current_grp, DRAWCRV);
+          ToggleMode(g_current_grp, NORMAL);
+
+          DisableMode(g_current_grp, DRAWHIGHLIGHT); // disable the highlight display
+          DisableMode(g_current_grp, DRAWREFLLINE); // disable the highlight display
+          //DisableMode(g_current_grp, ENVMAPPING);
+          break;
+
     case CURVANEEDLE:
 		ToggleMode(g_current_grp, DRAWCRVNEEDLE);
 		define_crv();

@@ -21,7 +21,7 @@
      <x>0</x>
      <y>0</y>
      <width>400</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMesh">
@@ -35,20 +35,14 @@
    </widget>
    <widget class="QMenu" name="menuTest">
     <property name="title">
-     <string>View</string>
+     <string>Options</string>
     </property>
-    <addaction name="actionCurva"/>
-    <addaction name="actionRefline"/>
-    <addaction name="actionHighlight"/>
-    <addaction name="separator"/>
     <addaction name="actionPatch"/>
     <addaction name="actionMesh"/>
-    <addaction name="actionPolyPatch"/>
-    <addaction name="actionPolyMesh"/>
-    <addaction name="separator"/>
     <addaction name="actionCurvaNeedle"/>
     <addaction name="separator"/>
     <addaction name="actionChange_Color"/>
+    <addaction name="separator"/>
    </widget>
    <addaction name="menuMesh"/>
    <addaction name="menuTest"/>
@@ -121,7 +115,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Curvature Needles</string>
+    <string>Show Curvature Needles</string>
    </property>
   </action>
   <action name="actionRefline">
@@ -133,13 +127,22 @@
    </property>
   </action>
   <action name="actionPatch">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
    <property name="text">
-    <string>Patch</string>
+    <string>Show Patch</string>
    </property>
   </action>
   <action name="actionMesh">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
-    <string>Mesh</string>
+    <string>Show Mesh</string>
    </property>
   </action>
   <action name="actionPolyPatch">

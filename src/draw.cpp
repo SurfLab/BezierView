@@ -213,6 +213,10 @@ void draw(void)
             float g = g_patchColor[grp_id][1];
             float b = g_patchColor[grp_id][2];
 	//		// color of the group that this face belongs to
+
+            if(isEnabled(grp_id, NORMAL)){
+                g_Mode[i]= DRAWPATCH | DRAWPOLYPATCH | SMOOTH ;
+            }
 			int patch_on = (isEnabled(grp_id, DRAWPOLYPATCH) && (patch_kind == POLY) )  ||
 						   (isEnabled(grp_id, DRAWPATCH)     && (patch_kind != POLY) );
 			int mesh_on  = (isEnabled(grp_id, DRAWPOLYMESH) && (patch_kind == POLY) ) ||
