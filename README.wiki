@@ -3,8 +3,10 @@ A simple openGL viewer for the Bezier patches.
  //Source Distribution//
 
  Author(s):
-* Xiaobin Wu, xwu@cise.ufl.edu
-* Saleh Dindar, saleh@cise.ufl.edu
+* Jorg Peters
+* Xiaobin Wu
+* Saleh Dindar
+
 SurfLab, University of Florida
    
 
