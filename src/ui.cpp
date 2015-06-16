@@ -432,6 +432,7 @@ int main(int argc, char *argv[])
     BViewUI viewer;
     viewer.tryLoadFile(QString(dataFileName));
 
+    viewer.mainwindow()->setWindowIcon(QIcon(":/bezierview.ico"));
     viewer.mainwindow()->show();
     return a.exec();
 }

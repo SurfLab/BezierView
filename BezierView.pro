@@ -64,7 +64,8 @@ PRECOMPILED_HEADER = src/stdheaders.h
 win32: LIBS += -L$$PWD/dependencies/lib/Win32/
 win32: INCLUDEPATH += $$PWD/dependencies/include
 
-RESOURCES +=
+RESOURCES += \
+    src/bezierview.qrc
 
 win32: RC_FILE = src/bezierview.rc
 
