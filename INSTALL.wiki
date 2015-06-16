@@ -1,26 +1,20 @@
-== Install on Linux
-
 Prerequisites:
  * Qt 4.8 development package
- * [[glutLite|https://bitbucket.org/salehqt/glutlite]]
- * QtCreator
+ * QtCreator (optional)
  
-==== Step 1: Install glutlite
-{{{
-hg clone https://bitbucket.org/salehqt/glutlite
-cd glutlite
-cmake .
-make
-sudo make install
-}}}
+==== Option 1: QtCreator
+* Open QtCreator ({{{/usr/bin/qtcreator}}})
+* Open BezierView.pro by using "File -> Open File or Project..."
+* Accept the default configuration and hit "Configure Project"
+* Run Qmake from "Build -> Run QMake"
+* Build the project "Build -> Build All"
+* Run BezierView from "Build -> Run"
 
-==== Step 2: Build BezierView
-Option 1: Open BezierView.pro in QtCreator and hit build
-
-Option 2: Command line:
-
+==== Option 2: QMake
 {{{
 qmake BezierView.pro
 make
+./bview
 }}}
- 
+
+

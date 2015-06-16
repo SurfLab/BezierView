@@ -87,7 +87,7 @@ void BVGLWidget::createContextMenu()
     addMenuAction(menuDisplay, "Environment Mapping", ENVMAP, "E", true, isDisplayFlagEnabled(g_current_grp, ENVMAPPING));
     addMenuAction(menuDisplay, "Bounding Box", DRAWBOX, "B");
 
-    QMenu   *menuPatchDetail= menuContext->addMenu("PatchDetail");
+    QMenu   *menuPatchDetail= menuContext->addMenu("Patch Detail");
     for(int i = 1; i <= 6; i++)
         addMenuAction(menuPatchDetail,QString::number(1<<i) + QString(QChar(10799)) + QString::number(1<<i),
                       SUBST1-1+i, NULL, true, g_substs[g_current_grp]==i);
