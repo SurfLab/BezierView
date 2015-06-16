@@ -52,7 +52,6 @@ clock_t last_click =0 ;
 
 void updateProjection();
 
-int status;
 
 /*----------------------------------------------------------------------*/
 /* 
@@ -335,7 +334,6 @@ void mouseButton(int button, int state, int x, int y, Qt::KeyboardModifiers modi
     // two clicks within this time interval considered as double click
     double  dcTime = 0.3; // microsecond
 
-    status = glutGetModifiers();
 
     /*   button to popup menu */
     if(button==2){
@@ -411,7 +409,6 @@ void mouseButton(int button, int state, int x, int y, Qt::KeyboardModifiers modi
 			}
 		}
 
-        status = glutGetModifiers();
 
         if((modifiers==Qt::ControlModifier) && (cur_clipping_plane >=0) )
 		{

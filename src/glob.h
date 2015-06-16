@@ -98,5 +98,6 @@ extern int   cur_clipping_plane;
 extern float needle_length;
 
 extern int   use_display_list; // whether to use display list to draw the object
+void glDrawText(float x, float y, float z, const char * str);
 
 #endif

@@ -9,7 +9,6 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
-#define FREEGLUT_STATIC 1
 #include <stdheaders.h>
 #include <math.h>
 #include "QuadBezier.h"

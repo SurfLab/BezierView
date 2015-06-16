@@ -11,7 +11,7 @@ TARGET = BezierView
 TEMPLATE = app
 
 unix: CONFIG += link_pkgconfig
-unix: PKGCONFIG = glutlite glu
+unix: PKGCONFIG = glu
 
 SOURCES += \
     src/texture.cpp \

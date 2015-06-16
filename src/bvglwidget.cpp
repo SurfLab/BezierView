@@ -246,8 +246,17 @@ void BVGLWidget::contextMenuEvent(QContextMenuEvent *event)
     _contextMenu->exec(mapToGlobal(event->pos()));
 }
 
+static QGLWidget* currentGL = NULL;
+void glDrawText(float x, float y, float z, const char * str)
+{
+    if(currentGL)
+        currentGL->renderText(x, y, z, str);
+}
+
 void BVGLWidget::paintGL(){
+    currentGL = this;
     display();
+    currentGL = NULL;
 }
 
 QSize BVGLWidget::minimumSizeHint() const{

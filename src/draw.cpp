@@ -162,6 +162,42 @@ void set_g_redisplay(){
     g_redisplay=1;
 }
 
+void drawWireCube()
+{
+    glBegin(GL_LINES);
+    // Along Z
+    glVertex3f(-0.5f, -0.5f, -0.5f);
+    glVertex3f(-0.5f, -0.5f, +0.5f);
+    glVertex3f(-0.5f, +0.5f, -0.5f);
+    glVertex3f(-0.5f, +0.5f, +0.5f);
+    glVertex3f(+0.5f, +0.5f, -0.5f);
+    glVertex3f(+0.5f, +0.5f, +0.5f);
+    glVertex3f(-0.5f, +0.5f, -0.5f);
+    glVertex3f(-0.5f, +0.5f, +0.5f);
+
+    // Along X
+    glVertex3f(-0.5f, +0.5f, +0.5f);
+    glVertex3f(+0.5f, +0.5f, +0.5f);
+    glVertex3f(-0.5f, +0.5f, -0.5f);
+    glVertex3f(+0.5f, +0.5f, -0.5f);
+    glVertex3f(-0.5f, -0.5f, +0.5f);
+    glVertex3f(+0.5f, -0.5f, +0.5f);
+    glVertex3f(-0.5f, -0.5f, -0.5f);
+    glVertex3f(+0.5f, -0.5f, -0.5f);
+
+    // Along Y
+    glVertex3f(+0.5f, -0.5f, +0.5f);
+    glVertex3f(+0.5f, +0.5f, +0.5f);
+    glVertex3f(-0.5f, -0.5f, +0.5f);
+    glVertex3f(-0.5f, +0.5f, +0.5f);
+    glVertex3f(+0.5f, -0.5f, -0.5f);
+    glVertex3f(+0.5f, +0.5f, -0.5f);
+    glVertex3f(-0.5f, -0.5f, -0.5f);
+    glVertex3f(-0.5f, +0.5f, -0.5f);
+
+    glEnd();
+}
+
 //////////////////////////////////////
 // draw all the objects
 void draw(void)
@@ -183,7 +219,8 @@ void draw(void)
 		glPushMatrix();
 		glScaled((ViewRight - ViewLeft),  ViewTop - ViewBottom, ViewNear - ViewFar);
 		glColor3f(1.0, .5, 0.0);
-//		glutWireCube(1.0);
+        // Draw a cube bounding box
+        drawWireCube();
 		glPopMatrix();
 		glPopAttrib();
 	}

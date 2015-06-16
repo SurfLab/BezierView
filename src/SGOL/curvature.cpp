@@ -15,6 +15,7 @@
 #include <stdheaders.h>
 #include "type.h"
 #include "util.h"
+#include "glob.h"
 
 void print_number(GLdouble x, GLdouble y, REAL v, REAL dist, GLfloat *color);
 
@@ -526,6 +527,7 @@ void draw_crv_bar(GLfloat* color)
     glPopMatrix();
 }
 
+
 /* print a floating number on the screen */
 void print_number(GLdouble x, GLdouble y, REAL v, REAL dist, GLfloat *color)
 {
@@ -536,13 +538,7 @@ void print_number(GLdouble x, GLdouble y, REAL v, REAL dist, GLfloat *color)
     glColor3fv(color);
 
     sprintf(string, "%.4f", v);
-    for(i =0;i<strlen(string);i++)
-    {
-        //printf("%f\n", curx);
-        glRasterPos2f(curx,cury);
-        glutBitmapCharacter(GLUT_BITMAP_8_BY_13, string[i]);
-        curx += dist;
-    }
+    glDrawText(x, y, 1.0, string);
 }
 
 
