@@ -67,61 +67,49 @@ v(n-1)x v(n-1)y v(n-1)z
 ...
 3 fmv1 fmv2 fmv3    ( vertices are indices from [0, n-1], not [1,n])
 }}}
-
    ** For tensor product patches,  it should contain:
-   {{{
-      degu degv (or type 3 and 4, only degu)
-   }}}
-   
+{{{
+degu degv (or type 3 and 4, only degu)
+}}}
       Then the x y z value of the control points.
       The control points are sorted using row-major order of following matrix
          with size ( rows= degu+1) x (columns= degv+1) :
 {{{
-         p11       p12    .... p1(degv+1)
-         p21       p22    .... p2(degv+1)
-          ..       ..     ....    ..
-      p(degu+1)1 p(degu+1)1 .. p(degu+1)(degv+1)
+p11       p12    .... p1(degv+1)
+p21       p22    .... p2(degv+1)
+..       ..     ....    ..
+p(degu+1)1 p(degu+1)1 .. p(degu+1)(degv+1)
 }}}
-   
    i.e. 
-   {{{ 
-       p11 p12 ... p1(degv+1) p21 ... p2(degv+1) ....
-       p(degu+1)1 ... p(degu+1)(degv+1)
-   }}}
-              
-
+{{{ 
+p11 p12 ... p1(degv+1) p21 ... p2(degv+1) ....
+p(degu+1)1 ... p(degu+1)(degv+1)
+}}}
    ** For  triangle Bezier patches, it should contain:
-   
-   {{{
-       deg
-  }}}
-  
+{{{
+deg
+}}}
   then the the x y z value of the (deg+2)*(deg+1)/2 control points.
        the order of a cubic patch is , for instance, the following:
-       {{{
-               9
-              7 8
-             4 5 6
-            0 1 2 3
-            }}}
-
-       the patch data then is
-       {{{
-           p0 p1 p2p p3 ... p9
-      }}}
-
+{{{
+   9
+  7 8
+ 4 5 6
+0 1 2 3
+}}}
+    the patch data then is
+{{{
+p0 p1 p2p p3 ... p9
+}}}
    ** For PN triangle patches, it should contain:
-   {{{
-       deg Ndeg
-   }}}
-       then the control points; then the normals arranged at the same order as the control points.
-
+{{{
+deg Ndeg
+}}}
+then the control points; then the normals arranged at the same order as the control points.
    ** For PN quads, it should contain:
-   
-   {{{
-       degu degv Ndegu Ndegv
-   }}}
-   
+{{{
+degu degv Ndegu Ndegv
+}}}
        then the control points; then the normals arranged at the same order
 
 
