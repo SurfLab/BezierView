@@ -466,12 +466,6 @@ void readin_curv_bounds()
 
 
 
-void setObjectColor(const float color[3]){
-    for(int i = 0; i<MAXGROUP; i++)
-        for(int j=0;j<3;j++)
-            g_patchColor[i][j]=color[j];
-}
-
 void loadDataFile(const char* fn){
     char buffer[2048];
     /* read in all objects and define objects */
@@ -485,10 +479,7 @@ void loadDataFile(const char* fn){
     define_scene(fp);
     fclose(fp);
 
-    //// Update view to the mesh
-    const float defaultColor[3] = { 0.65f, 0.5f, 0.1f };
-
-    setObjectColor(defaultColor);
+    read_clipping("IN.Clipping");
     init_flags();
     updateProjection();
     updateModelView();
@@ -512,9 +503,6 @@ void init_bezierview(int argc, char* argv[]){
 
     parse_arg(argc, argv);
 
-    readin_curv_bounds();
-
-    read_clipping("IN.Clipping");
 
 
 }

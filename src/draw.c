@@ -43,9 +43,9 @@ void init_flags()
 
 	g_redisplay = true; 
 	crv_choice = GAUSS_CRV;
-	manual_curvature_low = manual_curvature_high =0;
-//	readin_curv_bounds();
-	needle_length=1.0;
+    manual_curvature_low = manual_curvature_high =0;
+    readin_curv_bounds();
+    needle_length=1.0;
 	hl_step = 1.0; //0.5*((CBezierViewDoc *)GetDocument())->size;     // distance of the parallel lights
 	g_AntiAlias = false;
 	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST );
