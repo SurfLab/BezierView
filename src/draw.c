@@ -291,15 +291,14 @@ void draw(void)
 				glDisable(GL_TEXTURE_2D); 
 			}
 
-			if(patch_on )
-				//&& color != COLORNUM-1)  // COLORNUM -1 is transparent
+            if(patch_on)
 			{
 				if(mesh_on) {
 					glEnable(GL_POLYGON_OFFSET_FILL);
 					glPolygonOffset(1.0, 1.0);
 				}
 
-				if(color == COLORNUM-1)
+                if(color == COLORNUM-1)
 				{
 					glEnable(GL_BLEND);             // Turn Blending On
 					glDisable(GL_DEPTH_TEST);       // Turn Depth Testing Off
@@ -309,11 +308,12 @@ void draw(void)
 				{
 					glDisable(GL_BLEND);            // Turn Blending Off
 					glEnable(GL_DEPTH_TEST);        // Turn Depth Testing On
-                    if(color == COLORNUM-2)
-						set_color(rand()%(COLORNUM-2)); 
+                    if(color == -1)
+                        set_colorf(r,g,b);
+                    else if(color == COLORNUM-2)
+                        set_color(rand()%(COLORNUM-2));
                     else
-                       set_colorf(r,g,b);
-                       //set_color(0);
+                       set_color(color);
 				}
 
                 Patch_plotpatch(fp,isDisplayFlagEnabled(grp_id, SMOOTH)==1);
@@ -359,7 +359,6 @@ void draw(void)
 				Solve4(mv_matrix, A);
 				Solve4(mv_matrix, H);
 
-                set_colorf(r,g,b);
                 Patch_plothighlights(fp, A, H, hl_step, hl_type);
 			}
 		}

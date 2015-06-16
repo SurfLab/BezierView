@@ -17,8 +17,20 @@
 #include "export.h"
 #include "rotate.h"
 
+void color_proc(int color)
+{
+    if(g_current_grp==0 && (group_num>0) ) {
+        for(int i=0; i<=group_num; i++)
+            g_Material[i] = color;
+    }
+    else
+        g_Material[g_current_grp] = color;
+    g_redisplay = 1;
+}
+
 
 void color_proc_rgb(float rgb[]){
+    color_proc(-1);
     if(g_current_grp==0 && (group_num>0) ) {
         for(int i=0; i<=group_num; i++){
 
@@ -31,8 +43,6 @@ void color_proc_rgb(float rgb[]){
         g_patchColor[g_current_grp][0] = rgb[0];
         g_patchColor[g_current_grp][1]=rgb[1];
         g_patchColor[g_current_grp][2]=rgb[2];
-    set_g_redisplay();
-    draw();
 }
 
 
@@ -293,7 +303,7 @@ void menu_proc(int entry)
 	case LINEWIDTH2:
 	case LINEWIDTH3:
 	case LINEWIDTH4:
-	case LINEWIDTH5:
+    case LINEWIDTH5:
 		for(i=0;i<=group_num;i++)
 			g_LineWidth[i] = entry - LINEWIDTH1 +1;
 		g_redisplay = 1;
@@ -314,17 +324,7 @@ void menu_proc(int entry)
     case COLOR9:
     case COLOR10:
     case COLOR11:
-    {
-        int color = entry - COLOR0;
-        if(g_current_grp==0 && (group_num>0) ) {
-            for(int i=0; i<=group_num; i++)
-                g_Material[i] = color;
-        }
-        else
-            g_Material[g_current_grp] = color;
-        set_g_redisplay();
-        draw();
-    }
+        color_proc(entry - COLOR0);
        break;
     case QUIT:
         exit(0);

@@ -121,6 +121,6 @@ float* getMeshColor () {
 
 float needle_length =1.0;
 int   cur_clipping_plane = -1;
-int   use_display_list = 1; // whether to use display list to draw the object
+int   use_display_list = 0; // whether to use display list to draw the object
 
 /* end of glob.cpp */

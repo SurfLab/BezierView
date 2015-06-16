@@ -6,9 +6,6 @@
 
 // all important global variables
 
-#ifndef COLORNUM
-#define COLORNUM 12
-#endif
 
 //  plot flags
 #define DRAWMESH       1
@@ -26,6 +23,9 @@
 #define NORMAL         4096
 
 extern int drawbox;
+
+
+#define COLORNUM 12
 
 
 /////////////////////////////

@@ -75,13 +75,8 @@ GLfloat mat_shininess[] = {
 void set_colorf(float r, float g, float b){
 
     float MatAmbientBack[]  = {0.0f, 0.2f, 0.0f, 1.0f};
-glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
-float color[] = {r, g, b, ALPHA};
-float white[] = {1.0f,1.0f,1.0f,ALPHA};
-    //glMaterialfv(GL_BACK, GL_AMBIENT, mat_ambient[6]);
-    //glMaterialfv(GL_BACK, GL_SPECULAR, mat_specular[6]);
-    //glMaterialfv(GL_BACK, GL_DIFFUSE, mat_diffuse[6]);
-    //glMaterialf(GL_BACK, GL_SHININESS, mat_shininess[6]*128);
+    glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+    float color[] = {r, g, b, ALPHA};
 
     glMaterialfv(GL_FRONT, GL_AMBIENT, color);
     glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular[0]);
@@ -89,7 +84,7 @@ float white[] = {1.0f,1.0f,1.0f,ALPHA};
     glMaterialf(GL_FRONT, GL_SHININESS, mat_shininess[0]*128);
 
 
-  glMaterialfv(GL_BACK, GL_AMBIENT, MatAmbientBack);
+    glMaterialfv(GL_BACK, GL_AMBIENT, MatAmbientBack);
 }
 
 
@@ -98,12 +93,8 @@ void set_color(int c)
 {
     int color =c;
     float MatAmbientBack[]  = {0.0f, 0.2f, 0.0f, 1.0f};
-glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+    glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
 
-    //glMaterialfv(GL_BACK, GL_AMBIENT, mat_ambient[6]);
-    //glMaterialfv(GL_BACK, GL_SPECULAR, mat_specular[6]);
-    //glMaterialfv(GL_BACK, GL_DIFFUSE, mat_diffuse[6]);
-    //glMaterialf(GL_BACK, GL_SHININESS, mat_shininess[6]*128);
 
     glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient[color]);
     glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular[color]);
