@@ -11,6 +11,7 @@ extern "C" {
 #include "draw.h"
 #include "rotate.h"
 }
+#include "version.h"
 
 
 
@@ -425,10 +426,11 @@ void BViewUI::openFile()
 
 int main(int argc, char *argv[])
 {
+    printf("BezierView version %d.%d.%d.%d\n", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH, VERSION_BUILD);
     QApplication a(argc, argv);
     init_bezierview(argc,argv);
 
-    a.setApplicationName("SurfLab BezierView");
+    a.setApplicationName(QString("SurfLab BezierView %1.%2.%3.%4").arg(VERSION_MAJOR).arg(VERSION_MINOR).arg(VERSION_PATCH).arg(VERSION_BUILD));
     BViewUI viewer;
     viewer.tryLoadFile(QString(dataFileName));
 
