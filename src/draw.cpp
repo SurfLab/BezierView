@@ -9,26 +9,22 @@
  */
 #include "stdheaders.h"
 #include "glob.h"
+extern "C"{
 #include "util.h"
-#include "Bezier.h"
+#include "curvature.h"
+#include "highlight.h"
+#include "light.h"
+#include "draw.h"
+#include "menu.h"
 #include "texture.h"
+}
+#include "Bezier.h"
 #include "Polygon.h"
 #include "QuadBezier.h"
 #include "TriBezier.h"
-#include "curvature.h"
-#include "draw.h"
-#include "menu.h"
 
 
-/* curvature utility functions */
-void set_crv_scale(double lowc, double highc);
-void draw_crv_bar(GLfloat* color);  // the curvature bar
-void draw_clipping_plane(int index, int mode, REAL  size);
 
-void set_color(int i);            // in light.cpp
-void set_colorf(float r, float g, float b); //in light.cpp
-void Solve4(double * A, double* x); // in util.cpp
-void init_texture(GLubyte *forecolor, GLubyte *backcolor);
 
 void draw(void);
 

@@ -3,8 +3,6 @@
 
 #include "Object.h"
 
-#define MAXFACET 6500
-#define MAXGROUP 6500
 
 class Patch{
 

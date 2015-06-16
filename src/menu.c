@@ -8,27 +8,13 @@
  * -------------------------------------------------------------
  */
 #include "stdheaders.h"
+#include "type.h"
 #include "glob.h"
 #include "menu.h"
+#include "light.h"
 #include "draw.h"
 
-void draw();
-void    load_position(int n);
-void    save_position(int n);
-void    updateProjection();
-void    updateModelView();
 
-void    define_crv();
-void	updateLights();
-void	export_eps();
-void	export_igs();
-void	flip_normal();
-void    re_evaluate(int substeps);
-
-// in SGOL library
-//extern  int  highlight_type;
-
-extern  char   mat_name[][20];
 extern  int    clip_item;
 
 
@@ -254,22 +240,6 @@ void menu_proc(int entry)
 	case BLACKBACK+9:
 	case BLACKBACK+10:
 		back_choice = (entry-BLACKBACK);
-		// check if need to redine the display list
-		for (i=1; i<=patch_num ; i++)
-		{
-			Patch* p = &(face[i]);
-			int patch_kind = p->type;
-			int grp_id = p->group_id;
-            int patch_on = (isDisplayFlagEnabled(grp_id, DRAWPOLYPATCH) && (patch_kind == POLY) )  ||
-                           (isDisplayFlagEnabled(grp_id, DRAWPATCH)     && (patch_kind != POLY) );
-            int mesh_on  = (isDisplayFlagEnabled(grp_id, DRAWPOLYMESH) && (patch_kind == POLY) ) ||
-                           (isDisplayFlagEnabled(grp_id, DRAWMESH)     && (patch_kind != POLY) );
-
-            if(isDisplayFlagEnabled(grp_id, HIDDENLINE) && mesh_on && (!patch_on) )
-				g_redisplay = 1;
-
-		}
-
 		break;
 	case BLACKPEN:
 	case BLACKPEN+1:

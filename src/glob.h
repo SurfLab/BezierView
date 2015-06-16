@@ -1,6 +1,5 @@
 #ifndef GLOB_H_2002_10_20
 #define GLOB_H_2002_10_20
-#include "Patch.h"
 
 // this is a copy of glob.c , with extern decalaration
 // more detail explanation, refer to glob.c
@@ -30,9 +29,14 @@ extern int drawbox;
 
 /////////////////////////////
 // Data structure
+static const int MAXFACET = 6500;
+static const int MAXGROUP  = 6500;
+#ifdef __cplusplus
+#include "Patch.h"
 extern Patch face[MAXFACET];
-extern int   patch_num;
 extern Group group [MAXGROUP];
+#endif
+extern int   patch_num;
 extern int   group_num;
 extern int   has_patch;
 extern int   has_polygon;
@@ -55,8 +59,8 @@ extern int   F_Background;
 extern float scale_factor;
 
 // curvature bounds and curvature values
-extern double max_crv[4];
-extern double min_crv[4];
+extern double max_crv[5];
+extern double min_crv[5];
 
 // current type of curvature
 extern int   crv_choice;
@@ -84,7 +88,6 @@ extern double curvature_ratio_a, curvature_ratio_b;
 extern int    special_curv;
 
 
-extern int   light_switch[3];
 
 extern float g_BackColor[10][3];
 extern char  g_BackColorNames[10][20];
@@ -98,6 +101,5 @@ extern int   cur_clipping_plane;
 extern float needle_length;
 
 extern int   use_display_list; // whether to use display list to draw the object
-void glDrawText(float x, float y, float z, const char * str);
 
 #endif

@@ -8,12 +8,16 @@
  */
 /* Modified from a rotating cube demo with trackball in openGL book */
 #include "stdheaders.h"
+#include "type.h"
 #include "glob.h"
 #include "menu.h"
 #include "util.h"
+#include "curvature.h"
+#include "highlight.h"
 #include "draw.h"
+#include "pick.h"
+#include "rotate.h"
 
-void    draw();
 REAL angle = 0.0, axis[3];
 
 bool 	trackingMouse = false;
@@ -27,13 +31,10 @@ int     clipping_grp = 1;
 int     rotate_plane = 0;
 int     shift_plane = 0;
 extern REAL* clip_plane;
-void Solve4(double * A, double* x);
 bool	zoomMotion = false;	
 bool	moveMotion = false;
 
 int     scale_moving = -1;  // curvature scale adjusting
-int     clickon_crv_bar(int x, int y, int winWidth, int winHeight);
-void 	adjust_scale(int i, int winy, int winHeight);
 
 int     pick(int x, int y);
 void    define_crv();
@@ -128,7 +129,8 @@ void motionMove(int x, int y){
 	updateProjection();
 }
 
-void mouseMotion(int x, int y, Qt::KeyboardModifiers modifiers )
+
+void mouseMotion(int x, int y, KeyboardModifier modifiers )
 {
     REAL curPos[3], dx, dy, dz;
 	REAL plane_angle;
@@ -137,17 +139,17 @@ void mouseMotion(int x, int y, Qt::KeyboardModifiers modifiers )
    
     trackball_ptov(x, y, winWidth, winHeight, curPos);
 
-    if(modifiers==Qt::ShiftModifier) {
+    if(modifiers==ShiftModifier) {
 		motionZoom(x,y);
 		return;
 	}
 
-    if(modifiers==Qt::AltModifier) {
+    if(modifiers==AltModifier) {
 		motionMove(x,y);
 		return;
 	}
 
-    if(! (modifiers==Qt::ControlModifier) ) {
+    if(! (modifiers==ControlModifier) ) {
 		if(g_mouseMode == ZOOM ) {
 			motionZoom(x,y);
 			return;
@@ -324,7 +326,7 @@ void display(void)
 
 /*----------------------------------------------------------------------*/
 
-void mouseButton(int button, int state, int x, int y, Qt::KeyboardModifiers modifiers)
+void mouseButton(int button, int state, int x, int y, KeyboardModifier modifiers)
 {
     //int picked;
 	clock_t cur = 0;
@@ -356,22 +358,19 @@ void mouseButton(int button, int state, int x, int y, Qt::KeyboardModifiers modi
     {
     case 1:
 
-        if((modifiers==Qt::ControlModifier) && (cur_clipping_plane <0) )
+        if((modifiers==ControlModifier) && (cur_clipping_plane <0) )
         {
 			startMotion(x,y);
-//			printf("rotating\n");
 			return;
         }
-        if(Qt::ShiftModifier==modifiers && (cur_clipping_plane <0) )
+        if( (ShiftModifier==modifiers) && (cur_clipping_plane <0) )
 		{
 			startZoom(x,y);
-//			printf("zooming\n");
 			return;
 		}
-        if((modifiers==Qt::AltModifier) && (cur_clipping_plane <0) )
+        if((modifiers==AltModifier) && (cur_clipping_plane <0) )
 		{
 			startMove(x,y);
-//			printf("moving\n");
 			return;
 		}
 
@@ -407,13 +406,13 @@ void mouseButton(int button, int state, int x, int y, Qt::KeyboardModifiers modi
 		}
 
 
-        if((modifiers==Qt::ControlModifier) && (cur_clipping_plane >=0) )
+        if((modifiers==ControlModifier) && (cur_clipping_plane >=0) )
 		{
 			rotate_plane = 1;
 		}
 		else 
 			rotate_plane = 0;
-        if( (modifiers==Qt::ShiftModifier) && (cur_clipping_plane >=0) )
+        if( (modifiers==ShiftModifier) && (cur_clipping_plane >=0) )
 		{
 			shift_plane = 1;
 		}

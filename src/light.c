@@ -7,7 +7,7 @@
  * -------------------------------------------------------------
  */
 #include "stdheaders.h"
-#include "glob.h"
+#include "light.h"
 
 void updateLights();
 

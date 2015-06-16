@@ -1,15 +1,29 @@
 #include "stdheaders.h"
 #include "bvglwidget.h"
 #include "bview.h"
+extern "C" {
 #include "menu.h"
+#include "util.h"
+#include "light.h"
 #include "draw.h"
+#include "rotate.h"
+}
 
 
 
 
-
-extern  char   mat_name[][20];
 extern int clip_item;
+
+
+
+void log_error(const char* context, const char* reason){
+    QMessageBox e;
+    e.setText(context);
+    e.setInformativeText(reason);
+    e.setStandardButtons(QMessageBox::Ok);
+    e.setIcon(QMessageBox::Critical);
+    e.exec();
+}
 
 
 /*!
@@ -270,19 +284,24 @@ void BVGLWidget::resizeGL(int width, int height){
     glViewport(0,0,winWidth,winHeight);
     updateProjection();
 }
+
+KeyboardModifier qt2key(Qt::KeyboardModifiers k)
+{
+    return (KeyboardModifier) (int) k;
+}
+
 void BVGLWidget::mousePressEvent(QMouseEvent *event){
-    mouseButton(event->button(), event->buttons(), event->x(), event->y(), event->modifiers());
+    mouseButton(event->button(), event->buttons(), event->x(), event->y(), qt2key(event->modifiers()));
     update();
     QGLWidget::mousePressEvent(event);
 }
 void BVGLWidget::mouseReleaseEvent(QMouseEvent *event){
-    mouseButton(event->button(), 2, event->x(), event->y(), event->modifiers());
+    mouseButton(event->button(), 2, event->x(), event->y(),qt2key(event->modifiers()));
     QGLWidget::mouseReleaseEvent(event);
 }
 
 void BVGLWidget::mouseMoveEvent(QMouseEvent *event){
-    mouseMotion(event->x(), event->y(), event->modifiers());
-    int change = HIGHLIGHT;
+    mouseMotion(event->x(), event->y(),qt2key(event->modifiers()));
     updateGL();
 }
 

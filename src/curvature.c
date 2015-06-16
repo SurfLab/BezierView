@@ -9,9 +9,7 @@
  * -------------------------------------------------------------
  */
 #include "stdheaders.h"
-#include "type.h"
 #include "util.h"
-#include "glob.h"
 
 void print_number(GLdouble x, GLdouble y, REAL v, REAL dist, GLfloat *color);
 

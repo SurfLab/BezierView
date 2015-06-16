@@ -2,7 +2,6 @@
 #define POLYGON_H_2002_10_20
 
 #include "type.h"
-#include "util.h"
 #include "Object.h"
 
 

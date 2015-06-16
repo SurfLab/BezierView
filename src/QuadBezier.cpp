@@ -9,10 +9,11 @@
  */
 #include "stdheaders.h"
 #include "QuadBezier.h"
+extern "C" {
+#include "util.h" 
 #include "curvature.h"
 #include "highlight.h"
-#include "util.h" 
-
+}
 
 // functions prototypes -------------------------
 

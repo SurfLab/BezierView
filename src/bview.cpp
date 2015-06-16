@@ -20,11 +20,15 @@
  *               current modelview matrix saving/loading
  */
 #include "stdheaders.h"
-
-#include "glob.h"
+extern "C" {
+#include "type.h"
+#include "curvature.h"
+#include "util.h"
+#include "light.h"
 #include "draw.h"
+}
+#include "glob.h"
 #include "bview.h"
-#include "error.h"
 
 // groups           
 int  c_grp; // current group
@@ -34,9 +38,6 @@ void set_grp(int gid, char* string);  // set a group name
 int  get_kind(FILE* fp, int *kind);
 void set_volumn();
 
-// in SGOL library
-void set_special_curvature(REAL curvature_ratio_a, REAL curvature_ratio_b);
-void set_crv_bound_array(double* max_array, double* min_array);
 
 char dataFileName[500];
 char programDir[500];
@@ -473,12 +474,12 @@ void setObjectColor(const float color[3]){
 }
 
 void loadDataFile(const char* fn){
-
+    char buffer[2048];
     /* read in all objects and define objects */
     FILE  *fp = fopen(fn,"r");
     if(fp == 0){
-        std::string s = "Loading the BezierView file \"" + std::string(fn) + "\"";
-        error(s.c_str(), "File might be nonexistent or unreadable." );
+        snprintf(buffer, 2048, "Loading the BezierView file '%s'", fn);
+        log_error(buffer, "File might be nonexistent or unreadable." );
         return;
     }
 
@@ -514,7 +515,6 @@ void init_bezierview(int argc, char* argv[]){
 
     readin_curv_bounds();
 
-    /* normal clipping planes */
     read_clipping("IN.Clipping");
 
 

@@ -8,11 +8,13 @@
  * ------------------------------------------------------------
  */
 #include "stdheaders.h"
-
-#include "TriBezier.h"
+extern "C" {
+#include "util.h"
 #include "curvature.h"
 #include "highlight.h"
-#include "util.h" 
+}
+
+#include "TriBezier.h"
 
 
 

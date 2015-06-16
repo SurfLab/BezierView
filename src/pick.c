@@ -11,6 +11,7 @@
 #include "stdheaders.h"
 #include "type.h" // GAUSS
 #include "glob.h"
+#include "pick.h"
 
 #define BUFSIZE 512
 

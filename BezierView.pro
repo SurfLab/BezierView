@@ -16,23 +16,22 @@ unix: CONFIG += link_pkgconfig
 unix: PKGCONFIG = glu
 
 SOURCES += \
-    src/texture.cpp \
-    src/rotate.cpp \
-    src/pick.cpp \
     src/Patch.cpp \
-    src/menu.cpp \
-    src/light.cpp \
     src/glob.cpp \
     src/draw.cpp \
-    src/bview.cpp \
     src/bvglwidget.cpp \
-    src/util.cpp \
     src/TriBezier.cpp \
     src/QuadBezier.cpp \
     src/Polygon.cpp \
-    src/highlight.cpp \
-    src/curvature.cpp \
-    src/error.cpp
+    src/curvature.c \
+    src/util.c \
+    src/highlight.c \
+    src/light.c \
+    src/menu.c \
+    src/pick.c \
+    src/rotate.c \
+    src/texture.c \
+    src/bview.cpp
 
 HEADERS  += \
     src/texture.h \
@@ -51,7 +50,9 @@ HEADERS  += \
     src/highlight.h \
     src/curvature.h \
     src/Bezier.h \
-    src/error.h
+    src/light.h \
+    src/pick.h \
+    src/rotate.h
 
 INCLUDEPATH += $$PWD/src 
 

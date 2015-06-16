@@ -10,6 +10,9 @@
  *
  */
 #include "stdheaders.h"
+extern "C" {
+#include "util.h"
+}
 
 #include "TriBezier.h"
 #include "Polygon.h"

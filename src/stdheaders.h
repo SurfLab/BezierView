@@ -14,14 +14,16 @@
 #include <math.h> 	/* sqrt */
 #include <memory.h>
 #include <time.h>  // gettimeofday
-#include <string>
+#include <stdbool.h>
 
 
 // Graphics Libraries
 #include <GL/glu.h>
 
 
+#ifdef __cplusplus
 // Qt Libraries
+#include <string>
 #include <QtCore>
 #include <QDebug>
 #include <QDir>
@@ -29,6 +31,7 @@
 #include <QtOpenGL>
 #include <QtGui/QApplication>
 #include <QtGui/QMenu>
+#endif
 
 #endif // STDHEADERS_H
 

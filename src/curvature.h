@@ -14,5 +14,13 @@ void     evalPN(VEC v00, VEC v01, VEC v10, VEC P, VEC N);
 REAL     get_crv(REAL *crv_array, int loc, int crv_choice);
 
 void	 minmax(REAL* curv, int choice, int num);
-
+int     clickon_crv_bar(int x, int y, int winWidth, int winHeight);
+void 	adjust_scale(int i, int winy, int winHeight);
+void set_crv_scale(double lowc, double highc);
+void draw_crv_bar(GLfloat* color);  // the curvature bar
+void draw_clipping_plane(int index, int mode, REAL  size);
+void set_special_curvature(REAL curvature_ratio_a, REAL curvature_ratio_b);
+void set_crv_bound_array(double* max_array, double* min_array);
+void read_clipping(const char* filename) ;
+int point_clipped(REAL* point);
 #endif

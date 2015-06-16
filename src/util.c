@@ -222,17 +222,6 @@ void *allocate(long size)
     }
 }
 
-void* realloc(void* old, int oldsize, int newsize)
-{
-    void* add;
-    if( (add = (void*) malloc (newsize)) == NULL)
-    {
-        printf("not enough memory\n");
-        exit(1);
-    }
-	memcpy(add, old, oldsize);
-    return add;
-}
 
 
 
