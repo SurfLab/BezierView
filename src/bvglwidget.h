@@ -12,7 +12,11 @@ public:
     QSize sizeHint() const;
 
 
+    QMenu *contextMenu() const;
+    void setContextMenu(QMenu *contextMenu);
+
 protected:
+    void contextMenuEvent(QContextMenuEvent *event);
     void initializeGL();
     void paintGL();
     void resizeGL(int width, int height);
@@ -38,6 +42,9 @@ public slots:
     void toggleRefline();
     void colorDialog();
     void toggleNormal();
+
+private:
+    QMenu* _contextMenu;
 
 };
 

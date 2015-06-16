@@ -6,6 +6,8 @@
 BVGLWidget::BVGLWidget(QWidget *parent) :
     QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
 {
+    setContextMenuPolicy(Qt::DefaultContextMenu);
+
 
 }
 
@@ -14,6 +16,12 @@ void BVGLWidget::initializeGL(){
 
 
 }
+
+void BVGLWidget::contextMenuEvent(QContextMenuEvent *event)
+{
+    _contextMenu->exec(mapToGlobal(event->pos()));
+}
+
 void BVGLWidget::paintGL(){
     display();
 }
@@ -34,12 +42,12 @@ void BVGLWidget::resizeGL(int width, int height){
 void BVGLWidget::mousePressEvent(QMouseEvent *event){
     mouseButton(event->button(), event->buttons(), event->x(), event->y(), event->modifiers());
     update();
-    //draw();
-    }
+    QGLWidget::mousePressEvent(event);
+}
 void BVGLWidget::mouseReleaseEvent(QMouseEvent *event){
     mouseButton(event->button(), 2, event->x(), event->y(), event->modifiers());
-    //draw();
-    }
+    QGLWidget::mouseReleaseEvent(event);
+}
 
 void BVGLWidget::mouseMoveEvent(QMouseEvent *event){
     mouseMotion(event->x(), event->y(), event->modifiers());
@@ -115,6 +123,16 @@ void BVGLWidget::toggleRefline(){
 void BVGLWidget::toggleNormal(){
     changeView(NORMAL);
 }
+QMenu *BVGLWidget::contextMenu() const
+{
+    return _contextMenu;
+}
+
+void BVGLWidget::setContextMenu(QMenu *contextMenu)
+{
+    _contextMenu = contextMenu;
+}
+
 
 
 

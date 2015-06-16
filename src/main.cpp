@@ -1,6 +1,8 @@
 #include <QtGui/QApplication>
 #include "mainwindow.h"
 #include "bview.h"
+#include <QtGui/QMenu>
+
 
 int main(int argc, char *argv[])
 {

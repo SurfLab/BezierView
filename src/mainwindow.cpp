@@ -3,6 +3,8 @@
 #include "menu.h"
 #include "bview.h"
 
+extern  char   mat_name[][20];
+
 MainWindow::MainWindow(QWidget *parent) :
    QMainWindow(parent),
    ui(new Ui::MainWindow)
@@ -11,8 +13,56 @@ MainWindow::MainWindow(QWidget *parent) :
    initializeViewMenu();
    ui->actionOpen->setIcon(style()->standardIcon(QStyle::SP_DialogOpenButton, 0, this));
    ui->actionExit->setIcon(style()->standardIcon(QStyle::SP_DialogCloseButton, 0, this));
-
+   ui->centralWidget->setContextMenu(ui->menuContext);
+   menuBar()->hide();
    tryLoadFile(QString(dataFileName));
+
+   // Initialize sub menus
+   for(int c=0;c<COLORNUM; c++)
+   {
+       QAction *a = ui->menuMaterial->addAction(mat_name[c]);
+       a->setCheckable(true);
+       a->setChecked(g_Material[g_current_grp] == c);
+       a->setData(c);
+   }
+   for(int i=0;i<10;i++)
+   {
+       QAction *a = ui->menuLine_Color->addAction(g_penColorNames[i]);
+       a->setCheckable(true);
+       a->setChecked(g_PenColor[g_current_grp] == i);
+       a->setData(BLACKPEN+i);
+   }
+   for(int i=0; i < 10; i++)
+   {
+       QAction *a = ui->menuBackground->addAction(g_BackColorNames[i]);
+       a->setCheckable(true);
+       a->setChecked(i == back_choice);
+       a->setData(BLACKBACK+i);
+   }
+   for(int i = 0;i < 6; i++)
+   {
+       QAction *a = ui->menuSave_position->addAction(QString::number(i));
+       a->setData(SAVE0 + i);
+   }
+   for(int i = 0;i < 6; i++)
+   {
+       QAction *a = ui->menuLoad_position->addAction(QString::number(i));
+       a->setData(LOAD0 + i);
+   }
+   for(int i = 1; i <= 5; i++ )
+   {
+       QAction *a = ui->menuLine_Width->addAction(QString::number(i));
+       a->setData(LINEWIDTH1-1+i);
+       a->setCheckable(true);
+       a->setChecked(g_LineWidth[g_current_grp]==i);
+   }
+   for(int i = 1; i <= 6; i++)
+   {
+       QAction *a = ui->menuPatch_Detail->addAction(QString::number(1<<i) + QString(QChar(10799)) + QString::number(1<<i));
+       a->setData(SUBST1-1+i);
+       a->setCheckable(true);
+       a->setChecked(g_substs[g_current_grp]==i);
+   }
 
 }
 
