@@ -35,22 +35,6 @@ extern  int    clip_item;
 
 
 
-/* 
- * menu handling function for color changing
- */
-void color_proc(int entry)
-{
-    int color = entry ;
-	if(g_current_grp==0 && (group_num>0) ) {
-        for(int i=0; i<=group_num; i++)
-            g_Material[i] = color;
-	}
-    else
-        g_Material[g_current_grp] = color;
-    set_g_redisplay();
-    draw();
-
-}
 void color_proc_rgb(float rgb[]){
     if(g_current_grp==0 && (group_num>0) ) {
         for(int i=0; i<=group_num; i++){
@@ -68,10 +52,6 @@ void color_proc_rgb(float rgb[]){
     draw();
 }
 
-void group_proc(int entry)
-{
-	g_current_grp = entry;
-}
 
 //  each of the individual menu/keyboard handlers
 //  ---------------------------------------------------------------
@@ -282,12 +262,12 @@ void menu_proc(int entry)
 			Patch* p = &(face[i]);
 			int patch_kind = p->type;
 			int grp_id = p->group_id;
-			int patch_on = (isEnabled(grp_id, DRAWPOLYPATCH) && (patch_kind == POLY) )  ||
-						   (isEnabled(grp_id, DRAWPATCH)     && (patch_kind != POLY) );
-			int mesh_on  = (isEnabled(grp_id, DRAWPOLYMESH) && (patch_kind == POLY) ) ||
-						   (isEnabled(grp_id, DRAWMESH)     && (patch_kind != POLY) );
+            int patch_on = (isDisplayFlagEnabled(grp_id, DRAWPOLYPATCH) && (patch_kind == POLY) )  ||
+                           (isDisplayFlagEnabled(grp_id, DRAWPATCH)     && (patch_kind != POLY) );
+            int mesh_on  = (isDisplayFlagEnabled(grp_id, DRAWPOLYMESH) && (patch_kind == POLY) ) ||
+                           (isDisplayFlagEnabled(grp_id, DRAWMESH)     && (patch_kind != POLY) );
 
-			if(isEnabled(grp_id, HIDDENLINE) && mesh_on && (!patch_on) )
+            if(isDisplayFlagEnabled(grp_id, HIDDENLINE) && mesh_on && (!patch_on) )
 				g_redisplay = 1;
 
 		}
@@ -355,13 +335,38 @@ void menu_proc(int entry)
 		use_display_list = !use_display_list;
 		g_redisplay =1;
 		break;
+    case COLOR0:
+    case COLOR1:
+    case COLOR2:
+    case COLOR3:
+    case COLOR4:
+    case COLOR5:
+    case COLOR6:
+    case COLOR7:
+    case COLOR8:
+    case COLOR9:
+    case COLOR10:
+    case COLOR11:
+    {
+        int color = entry - COLOR0;
+        if(g_current_grp==0 && (group_num>0) ) {
+            for(int i=0; i<=group_num; i++)
+                g_Material[i] = color;
+        }
+        else
+            g_Material[g_current_grp] = color;
+        set_g_redisplay();
+        draw();
+    }
+       break;
     case QUIT:
         exit(0);
     default:
-        return;
+        if(entry >= ALLGROUPS && entry <= ALLGROUPS + group_num)
+            g_current_grp = entry - ALLGROUPS;
+        break;
     }
 
-//	logMessage(" ... Command processed\n");
 }
 
 

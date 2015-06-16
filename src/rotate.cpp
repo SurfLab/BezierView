@@ -381,7 +381,7 @@ void mouseButton(int button, int state, int x, int y, Qt::KeyboardModifiers modi
 		}
 
         // first, check if the mouse is clicked on the curvature bar
-        if ( (isEnabled(g_current_grp, DRAWCRV)|| isEnabled(g_current_grp, DRAWCRVNEEDLE) )
+        if ( (isDisplayFlagEnabled(g_current_grp, DRAWCRV)|| isDisplayFlagEnabled(g_current_grp, DRAWCRVNEEDLE) )
 			&& ((scale_moving=clickon_crv_bar(x,y,winWidth,winHeight)) != -1)) 
         {
             return; 

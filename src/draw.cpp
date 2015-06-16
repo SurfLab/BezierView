@@ -74,7 +74,7 @@ void init_flags()
 
 /////////////////////////////////////////////////////////////
 // check if the display flag is enabled
-bool isEnabled(int grp_id, int flag) {
+bool isDisplayFlagEnabled(int grp_id, int flag) {
 	if(grp_id ==0 && group_num >0) {
 		for(int i=0; i<=group_num; i++) {
 			if(!(g_Mode[i] & flag)) {
@@ -214,22 +214,22 @@ void draw(void)
             float b = g_patchColor[grp_id][2];
 	//		// color of the group that this face belongs to
 
-            if(isEnabled(grp_id, NORMAL)){
+            if(isDisplayFlagEnabled(grp_id, NORMAL)){
                 g_Mode[i]= DRAWPATCH | DRAWPOLYPATCH | SMOOTH ;
             }
-			int patch_on = (isEnabled(grp_id, DRAWPOLYPATCH) && (patch_kind == POLY) )  ||
-						   (isEnabled(grp_id, DRAWPATCH)     && (patch_kind != POLY) );
-			int mesh_on  = (isEnabled(grp_id, DRAWPOLYMESH) && (patch_kind == POLY) ) ||
-						   (isEnabled(grp_id, DRAWMESH)     && (patch_kind != POLY) );
+            int patch_on = (isDisplayFlagEnabled(grp_id, DRAWPOLYPATCH) && (patch_kind == POLY) )  ||
+                           (isDisplayFlagEnabled(grp_id, DRAWPATCH)     && (patch_kind != POLY) );
+            int mesh_on  = (isDisplayFlagEnabled(grp_id, DRAWPOLYMESH) && (patch_kind == POLY) ) ||
+                           (isDisplayFlagEnabled(grp_id, DRAWMESH)     && (patch_kind != POLY) );
 
 			int line_width = g_LineWidth[grp_id];
 
-			if (isEnabled(grp_id, DRAWCRV) ||
-					isEnabled(grp_id, DRAWHIGHLIGHT)	||
-					isEnabled(grp_id, DRAWREFLLINE)) 
+            if (isDisplayFlagEnabled(grp_id, DRAWCRV) ||
+                    isDisplayFlagEnabled(grp_id, DRAWHIGHLIGHT)	||
+                    isDisplayFlagEnabled(grp_id, DRAWREFLLINE))
 					patch_on = 0;
 
-			if(isEnabled(grp_id, DRAWCRV)) {
+            if(isDisplayFlagEnabled(grp_id, DRAWCRV)) {
 				crv_on = 1;
 				(fp->object)->plot_crv(crv_choice);
 			}
@@ -247,10 +247,10 @@ void draw(void)
 
 				glColor3fv(g_penColors[g_PenColor[grp_id]]);
 
-				if( isEnabled(g_current_grp, HIDDENLINE) &&
-					(!patch_on ) && (!isEnabled(grp_id, DRAWCRV)) && 
-					(!isEnabled(grp_id, DRAWHIGHLIGHT))	&& 
-					(!isEnabled(grp_id, DRAWREFLLINE)) )
+                if( isDisplayFlagEnabled(g_current_grp, HIDDENLINE) &&
+                    (!patch_on ) && (!isDisplayFlagEnabled(grp_id, DRAWCRV)) &&
+                    (!isDisplayFlagEnabled(grp_id, DRAWHIGHLIGHT))	&&
+                    (!isDisplayFlagEnabled(grp_id, DRAWREFLLINE)) )
 					(fp->object)->plot_mesh(g_BackColor[back_choice]);
 				else
 					(fp->object)->plot_mesh(NULL);
@@ -258,7 +258,7 @@ void draw(void)
 				glPopAttrib();
 			}
 
-			if(isEnabled(grp_id, ENVMAPPING) )
+            if(isDisplayFlagEnabled(grp_id, ENVMAPPING) )
 			{
 				// Spherical Environment mapping
 				glEnable(GL_TEXTURE_2D); 
@@ -297,7 +297,7 @@ void draw(void)
                        //set_color(0);
 				}
 
-				(fp->object)->plot_patch(isEnabled(grp_id, SMOOTH)==1);
+                (fp->object)->plot_patch(isDisplayFlagEnabled(grp_id, SMOOTH)==1);
 
 				if(mesh_on) {
 					glDisable(GL_POLYGON_OFFSET_FILL);
@@ -308,19 +308,19 @@ void draw(void)
 			glDisable(GL_TEXTURE_GEN_T);                         
 			glDisable(GL_TEXTURE_2D); 
 
-			if(isEnabled(grp_id, DRAWCRVNEEDLE)) {
+            if(isDisplayFlagEnabled(grp_id, DRAWCRVNEEDLE)) {
 				(fp->object)->plot_crv_needles(crv_choice, needle_length);
 			}
 
 			// highlight lines (also called reflection lines if provided an eye poisition)
-			if(isEnabled(grp_id, DRAWHIGHLIGHT) || isEnabled(grp_id, DRAWREFLLINE) )
+            if(isDisplayFlagEnabled(grp_id, DRAWHIGHLIGHT) || isDisplayFlagEnabled(grp_id, DRAWREFLLINE) )
 			{
 				REAL A[DIM] = {  0.0,  0.0, 40.0, 1.0 };
 				REAL H[DIM] = {  0.0,  1.0,  0.0, 0.0 };
 				GLubyte forecolor[3]  = {0, 128, 0};
 				GLubyte backcolor[3]  = {255, 255, 255};
 				int hl_type;
-				if (isEnabled(grp_id, DRAWHIGHLIGHT)) 
+                if (isDisplayFlagEnabled(grp_id, DRAWHIGHLIGHT))
 					hl_type =0;
 				else 
 					hl_type =1;

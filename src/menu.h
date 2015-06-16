@@ -14,6 +14,7 @@
 #define MOVE			1009
 #define DUMMY			1100
 
+#define COLOR0          100
 #define COLOR1			101
 #define COLOR2			102
 #define COLOR3			103
@@ -22,6 +23,9 @@
 #define COLOR6			106
 #define COLOR7			107
 #define COLOR8			108
+#define COLOR9          109
+#define COLOR10         110
+#define COLOR11         111
 
 #define PATCH			201
 #define MESH			202
@@ -86,11 +90,13 @@
 #define HDNLINERMV      832
 #define USELISTS		833
 
+
+#define ALLGROUPS       3000
+#define GROUP1          3001
+
 // menu handling procedures
 
 void    menu_proc(int entry);
-void    color_proc(int entry);
 void color_proc_rgb(float rgb[]);
-void    group_proc(int entry);
 
 #endif

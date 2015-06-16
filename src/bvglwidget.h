@@ -12,9 +12,6 @@ public:
     QSize sizeHint() const;
 
 
-    QMenu *contextMenu() const;
-    void setContextMenu(QMenu *contextMenu);
-
 protected:
     void contextMenuEvent(QContextMenuEvent *event);
     void initializeGL();
@@ -31,6 +28,7 @@ protected:
 signals:
     
 public slots:
+    void command(int);
     void toggleHighlight();
     void toggleSmooth();
     void toggleMesh();
@@ -45,7 +43,12 @@ public slots:
 
 private:
     QMenu* _contextMenu;
+    QSignalMapper *_signalMapper;
 
+    QAction *addMenuAction(QMenu *parent, QString title, int data, const char *shortcut = __null, bool checkable = false, bool checked = false);
+    void createContextMenu();
+    void updateMenuAction(int id, bool checked, bool visible = true);
+    void updateContextMenu();
 };
 
 
