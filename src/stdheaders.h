@@ -5,7 +5,11 @@
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 #define snprintf sprintf_s
+#endif
+#ifdef _MSC_VER
+#ifndef __cplusplus
 #define inline __inline
+#endif
 #endif
 
 
