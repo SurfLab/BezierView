@@ -57,17 +57,16 @@ make
 
  * Patch Data:
    ** For polyhedron, the patch data should contain:
-   
-   {{{
-      Vnum Fnum
-      v0x v0y v0z
-      v1x v1y v1z
-      ..
-      v(n-1)x v(n-1)y v(n-1)z
-      3 f1v1 f1v2 f1v3   (OR: 4 f1v1 f1v2 f1v3 f1v4)
-      ...
-      3 fmv1 fmv2 fmv3    ( vertices are indices from [0, n-1], not [1,n])
-   }}}
+{{{
+Vnum Fnum
+v0x v0y v0z
+v1x v1y v1z
+..
+v(n-1)x v(n-1)y v(n-1)z
+3 f1v1 f1v2 f1v3   (OR: 4 f1v1 f1v2 f1v3 f1v4)
+...
+3 fmv1 fmv2 fmv3    ( vertices are indices from [0, n-1], not [1,n])
+}}}
 
    ** For tensor product patches,  it should contain:
    {{{
