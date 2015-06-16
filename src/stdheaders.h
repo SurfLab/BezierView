@@ -29,8 +29,8 @@
 #include <QDir>
 #include <QFileDialog>
 #include <QtOpenGL>
-#include <QtGui/QApplication>
-#include <QtGui/QMenu>
+#include <QApplication>
+#include <QMenu>
 #endif
 
 #endif // STDHEADERS_H

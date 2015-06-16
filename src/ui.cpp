@@ -335,7 +335,7 @@ void BViewUI::keyPressEvent(QKeyEvent *event)
         colorDialog();
         break;
     default:
-        keyboard(event->text()[0].toAscii());
+        keyboard(event->text()[0].toLatin1());
     }
     updateProjection();
     updateGL();
