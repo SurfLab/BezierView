@@ -9,14 +9,13 @@
  */
 #include "stdheaders.h"
 #include "type.h"
+#include "Patch.h"
 #include "glob.h"
 #include "menu.h"
 #include "light.h"
 #include "draw.h"
-
-
-extern  int    clip_item;
-
+#include "export.h"
+#include "rotate.h"
 
 
 void color_proc_rgb(float rgb[]){
@@ -430,10 +429,10 @@ void keyboard(unsigned char key)
         flip_normal();
         break;
     case 'x':
-        export_eps();
+        export_eps(face, patch_num, ObjectCenter, scale_factor);
         return;
     case 'i':
-        export_igs();
+        export_igs(face, patch_num);
         return;
     case 'e':
         ToggleMode(g_current_grp, ENVMAPPING);

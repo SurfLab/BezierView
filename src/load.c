@@ -20,15 +20,14 @@
  *               current modelview matrix saving/loading
  */
 #include "stdheaders.h"
-extern "C" {
 #include "type.h"
 #include "curvature.h"
 #include "util.h"
 #include "light.h"
 #include "draw.h"
-}
+#include "Patch.h"
 #include "glob.h"
-#include "bview.h"
+#include "load.h"
 
 // groups           
 int  c_grp; // current group
@@ -121,7 +120,7 @@ void updateProjection()
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 	//printf("%f %f %f %f %f %f \n", ViewCenter[0]-ViewSize,ViewCenter[0]+ViewSize, (ViewCenter[1]-ViewSize),(ViewCenter[1]+ViewSize), -3*ViewDepth*ViewSize, 3*ViewDepth*ViewSize); 
-    float aspect = float(winWidth)/float(winHeight);
+    float aspect = (float)winWidth/(float)(winHeight);
 	
     glOrtho(ViewCenter[0]-ViewSize*aspect,ViewCenter[0]+ViewSize*aspect,
 		    (ViewCenter[1]-ViewSize),(ViewCenter[1]+ViewSize), 
@@ -175,8 +174,8 @@ void define_scene(FILE* fp)
 		else              has_patch   = 1;
 
 		// load the patch data from the file
-        face[pat].loadFile(fp);
-		face[pat].enlarge_AABB(pat==1); // increase the bounding box if necessary
+        Patch_loadFile(&face[pat],fp);
+        Patch_enlarge_AABB(&face[pat],pat==1); // increase the bounding box if necessary
 
 		// get the type of next patch
         done = ! get_kind(fp, & patch_kind);
@@ -207,7 +206,7 @@ void define_scene(FILE* fp)
 		c_grp      = face[pat].group_id;
 
 		if(patch_kind!=1) {
-			(face[pat].object)->evaluate_patch(g_substs[c_grp]);
+            Patch_evaluate(&face[pat],g_substs[c_grp]);
 		}
 	}
 

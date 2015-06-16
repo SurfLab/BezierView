@@ -10,6 +10,7 @@
  */
 #include "stdheaders.h"
 #include "type.h" // GAUSS
+#include "Patch.h"
 #include "glob.h"
 #include "pick.h"
 

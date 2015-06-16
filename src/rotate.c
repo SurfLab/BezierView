@@ -9,6 +9,7 @@
 /* Modified from a rotating cube demo with trackball in openGL book */
 #include "stdheaders.h"
 #include "type.h"
+#include "Patch.h"
 #include "glob.h"
 #include "menu.h"
 #include "util.h"

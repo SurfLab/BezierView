@@ -27,15 +27,13 @@
 
 extern int drawbox;
 
+
 /////////////////////////////
 // Data structure
 static const int MAXFACET = 6500;
 static const int MAXGROUP  = 6500;
-#ifdef __cplusplus
-#include "Patch.h"
 extern Patch face[MAXFACET];
 extern Group group [MAXGROUP];
-#endif
 extern int   patch_num;
 extern int   group_num;
 extern int   has_patch;

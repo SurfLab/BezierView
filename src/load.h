@@ -1,6 +1,5 @@
 #ifndef BVIEW_H
 #define BVIEW_H
-#include "glob.h"
 
 extern char dataFileName[500];
 extern char programDir[500];

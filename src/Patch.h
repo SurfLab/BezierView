@@ -1,12 +1,10 @@
 #ifndef PATCH_H_2002_10_20
 #define PATCH_H_2002_10_20
 
-#include "Object.h"
+typedef struct Object Object;
 
+typedef struct Patch{
 
-class Patch{
-
-public:
     int type;  // the type of the patch, see type.h
 
 	Object*  object;
@@ -16,23 +14,31 @@ public:
 
 	REAL position[3];
 
-public:
-	Patch() {
-		for(int i=0;i<3;i++) position[i] = 0;
-	}
-	int  loadFile(FILE* fp);
-	void enlarge_AABB(int first);
-	void translate(REAL* center);
-}; 
+} Patch;
+
+int  Patch_loadFile(Patch* p,FILE* fp);
+void Patch_enlarge_AABB(Patch*p,int first);
+void Patch_translate(Patch*p,REAL* center);
+void Patch_evaluate(Patch* p, int SubDepth);
+void Patch_plotcrv(Patch*p, int crv_choice);
+void Patch_plotmesh(Patch*p, float* bg_color);
+void Patch_plotpatch(Patch*p, bool smooth);
+void Patch_plotcrvneedles(Patch*p, int crv_choice, int needle_length);
+void Patch_plothighlights(Patch*p, VEC A, VEC H, REAL hl_step, int hl_type);
+void Patch_flipnormal(Patch*p);
+void Patch_computecrv(Patch*p);
+void Patch_freeevalmem(Patch*p);
 
 // Group structure: attach faces to a group 
 //                    therefore can specify same color to many faces
-typedef struct _Group
+typedef struct Group
 {   
     char name[255];  // name of the group
     int color_index; // color of the group
 //	int   subDepth;    // subdivision steps of the current group
 
 } Group;
+
+
 
 #endif

@@ -1,7 +1,10 @@
 #include "stdheaders.h"
 #include "bvglwidget.h"
-#include "bview.h"
 extern "C" {
+#include "type.h"
+#include "Patch.h"
+#include "load.h"
+#include "glob.h"
 #include "menu.h"
 #include "util.h"
 #include "light.h"
@@ -12,7 +15,6 @@ extern "C" {
 
 
 
-extern int clip_item;
 
 
 

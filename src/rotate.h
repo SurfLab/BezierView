@@ -16,6 +16,7 @@ void mouseButton(int button, int state, int x, int y, KeyboardModifier modifiers
 void display();
 void spin();
 void zoom(float delta);
+extern int clip_item;
 
 #endif // ROTATE_H
 
