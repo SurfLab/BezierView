@@ -140,38 +140,14 @@ then the control points; then the normals arranged at the same order
 == Example files(in data/) ==
 
 * simple data
-** tensor product patches: 
-{{{
-hex.bv hex2.bv tp2x1.bv tp3x3.bv
-}}}
-** triangular patches:
-{{{
-tri1.bv tri2.bv
-}}}
-** rational patches:
-{{{
-rat1.bv tor.bv sphear.bv
-}}}
-* utal teapot
-{{{
-teapot.bv teapot2.bv tpt_grp.bv
-}}}
-* polyhedra data
-{{{
-cube.bv closedcone.bv hand.bv tetra.bv
-}}}
-* mixed data
-{{{
-tp_poly.bv
-}}}
-* group data
-{{{
-tpt_grp.bv tridat.cube
-}}}
-* g2 patchs
-{{{
-  plm.icosa.260  plm.tw.700  plm.oct.100 cubeg2 twg2.bv cubeg2.bv
-}}}
+** tensor product patches: {{{hex.bv hex2.bv tp2x1.bv tp3x3.bv}}}
+** triangular patches: {{{tri1.bv tri2.bv}}}
+** rational patches: {{{rat1.bv tor.bv sphear.bv}}}
+* utal teapot {{{teapot.bv teapot2.bv tpt_grp.bv}}}
+* polyhedra data {{{cube.bv closedcone.bv hand.bv tetra.bv}}}
+* mixed data {{{tp_poly.bv}}}
+* group data {{{tpt_grp.bv tridat.cube}}}
+* g2 patchs {{{  plm.icosa.260  plm.tw.700  plm.oct.100 cubeg2 twg2.bv cubeg2.bv}}}
 
 == License ==
 Copyright (C) 2015 SurfLab, University of Florida.
