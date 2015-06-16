@@ -19,7 +19,7 @@ extern char programDir[500];
 // load a bitmap 
 //
 // ------------------------------------------------------
-int LoadBitmap(char *filename)
+int LoadBitmapTexture(char *filename)
 {
     FILE * file;
     char temp;

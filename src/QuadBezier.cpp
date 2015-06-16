@@ -420,11 +420,6 @@ void QuadBezier::plot_crv(int crv_choice)
 	glPopAttrib();
 }
 
-//////////////////////////////////////////////////
-// For normal clipping -- Added May 06 2004
-extern int normal_clipping ;
-int point_clipped(REAL* point);
-
 
 /////////////////////////////////////////////////////////
 //

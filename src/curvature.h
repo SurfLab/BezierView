@@ -1,5 +1,6 @@
 #ifndef CURVATURE_H_2004_09_11
 #define CURVATURE_H_2004_09_11
+extern int normal_clipping;
 
 void 	 init_crv();
 

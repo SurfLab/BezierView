@@ -30,8 +30,8 @@ extern int drawbox;
 
 /////////////////////////////
 // Data structure
-static const int MAXFACET = 6500;
-static const int MAXGROUP  = 6500;
+#define MAXFACET 6500
+#define MAXGROUP   6500
 extern Patch face[MAXFACET];
 extern Group group [MAXGROUP];
 extern int   patch_num;

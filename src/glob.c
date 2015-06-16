@@ -6,7 +6,7 @@
  *  Purpose: declare all the global variables
  * -------------------------------------------------------------
  */
-
+#include "stdheaders.h"
 #include "type.h"
 #include "Patch.h"
 #include "glob.h"

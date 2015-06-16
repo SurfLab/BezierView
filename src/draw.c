@@ -50,7 +50,7 @@ void init_flags()
 	g_AntiAlias = false;
 	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST );
 	if(!texture_loaded) {
-		if (LoadBitmap("room.bmp") >=0)
+		if (LoadBitmapTexture("room.bmp") >=0)
 		   texture_loaded = 1;
 	}
 
