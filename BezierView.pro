@@ -17,7 +17,6 @@ unix: PKGCONFIG = glu
 
 SOURCES += \
     src/Patch.cpp \
-    src/bvglwidget.cpp \
     src/TriBezier.cpp \
     src/QuadBezier.cpp \
     src/Polygon.cpp \
@@ -32,7 +31,8 @@ SOURCES += \
     src/export.cpp \
     src/glob.c \
     src/draw.c \
-    src/load.c
+    src/load.c \
+    src/ui.cpp
 
 HEADERS  += \
     src/texture.h \
@@ -40,7 +40,6 @@ HEADERS  += \
     src/menu.h \
     src/glob.h \
     src/draw.h \
-    src/bvglwidget.h \
     src/util.h \
     src/type.h \
     src/TriBezier.h \
@@ -54,7 +53,8 @@ HEADERS  += \
     src/pick.h \
     src/rotate.h \
     src/export.h \
-    src/load.h
+    src/load.h \
+    src/ui.h
 
 INCLUDEPATH += $$PWD/src 
 

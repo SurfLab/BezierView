@@ -1,5 +1,5 @@
 #include "stdheaders.h"
-#include "bvglwidget.h"
+#include "ui.h"
 extern "C" {
 #include "type.h"
 #include "Patch.h"
@@ -40,7 +40,7 @@ void log_error(const char* context, const char* reason){
  * \param checked
  * \return
  */
-QAction* BVGLWidget::addMenuAction(QMenu* parent, QString title, int data, const char * shortcut, bool checkable, bool checked)
+QAction* BViewUI::addMenuAction(QMenu* parent, QString title, int data, const char * shortcut, bool checkable, bool checked)
 {
     QAction* a = parent->addAction(title);
     a->setData(data); a->setCheckable(checkable); a->setChecked(checked);
@@ -57,7 +57,7 @@ QAction* BVGLWidget::addMenuAction(QMenu* parent, QString title, int data, const
  * \param parent
  * \return created menu
  */
-void BVGLWidget::createContextMenu()
+void BViewUI::createContextMenu()
 {
     /*
      * We need to set the icon later
@@ -166,14 +166,14 @@ void BVGLWidget::createContextMenu()
     _contextMenu = menuContext;
 }
 
-void BVGLWidget::updateMenuAction(int id, bool checked, bool visible)
+void BViewUI::updateMenuAction(int id, bool checked, bool visible)
 {
     QAction *a = dynamic_cast<QAction*>(_signalMapper->mapping(id));
     a->setChecked(checked);
     a->setVisible(visible);
 }
 
-void BVGLWidget::updateContextMenu()
+void BViewUI::updateContextMenu()
 {
     if(group_num > 0) // if there are more than one group
     {
@@ -234,7 +234,7 @@ void BVGLWidget::updateContextMenu()
     updateMenuAction(SPECIAL_CRV, crv_choice == SPECIAL_CRV, special_curv);
 }
 
-BVGLWidget::BVGLWidget(QWidget *parent) :
+BViewUI::BViewUI(QWidget *parent) :
     QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
 {
     _mainwindow = new QMainWindow;
@@ -248,13 +248,13 @@ BVGLWidget::BVGLWidget(QWidget *parent) :
     setFocus();
 }
 
-void BVGLWidget::initializeGL(){
+void BViewUI::initializeGL(){
     initGL();
 
 
 }
 
-void BVGLWidget::contextMenuEvent(QContextMenuEvent *event)
+void BViewUI::contextMenuEvent(QContextMenuEvent *event)
 {
     updateContextMenu();
     _contextMenu->exec(mapToGlobal(event->pos()));
@@ -267,21 +267,21 @@ void glDrawText(float x, float y, float z, const char * str)
         currentGL->renderText(x, y, z, str);
 }
 
-void BVGLWidget::paintGL(){
+void BViewUI::paintGL(){
     currentGL = this;
     display();
     currentGL = NULL;
 }
 
-QSize BVGLWidget::minimumSizeHint() const{
+QSize BViewUI::minimumSizeHint() const{
     return QSize(winWidth,winHeight);
 
 }
-QSize  BVGLWidget::sizeHint() const{
+QSize  BViewUI::sizeHint() const{
     return QSize(winWidth,winHeight);
 }
 
-void BVGLWidget::resizeGL(int width, int height){
+void BViewUI::resizeGL(int width, int height){
     winWidth = width, winHeight = height;
     glViewport(0,0,winWidth,winHeight);
     updateProjection();
@@ -292,27 +292,27 @@ KeyboardModifier qt2key(Qt::KeyboardModifiers k)
     return (KeyboardModifier) (int) k;
 }
 
-void BVGLWidget::mousePressEvent(QMouseEvent *event){
+void BViewUI::mousePressEvent(QMouseEvent *event){
     mouseButton(event->button(), event->buttons(), event->x(), event->y(), qt2key(event->modifiers()));
     update();
     QGLWidget::mousePressEvent(event);
 }
-void BVGLWidget::mouseReleaseEvent(QMouseEvent *event){
+void BViewUI::mouseReleaseEvent(QMouseEvent *event){
     mouseButton(event->button(), 2, event->x(), event->y(),qt2key(event->modifiers()));
     QGLWidget::mouseReleaseEvent(event);
 }
 
-void BVGLWidget::mouseMoveEvent(QMouseEvent *event){
+void BViewUI::mouseMoveEvent(QMouseEvent *event){
     mouseMotion(event->x(), event->y(),qt2key(event->modifiers()));
     updateGL();
 }
 
-void BVGLWidget::wheelEvent(QWheelEvent *w){
+void BViewUI::wheelEvent(QWheelEvent *w){
     zoom( w->delta() );
     updateGL();
 }
 
-void BVGLWidget::keyPressEvent(QKeyEvent *event)
+void BViewUI::keyPressEvent(QKeyEvent *event)
 {
     int key = event->key();
     switch(key) {
@@ -341,7 +341,7 @@ void BVGLWidget::keyPressEvent(QKeyEvent *event)
     updateGL();
 }
 
-void BVGLWidget::colorDialog()
+void BViewUI::colorDialog()
 {
     QColor color;
     if (true)
@@ -358,7 +358,7 @@ void BVGLWidget::colorDialog()
 }
 
 
-void BVGLWidget::command(int entry)
+void BViewUI::command(int entry)
 {
     menu_proc(entry);
     updateGL();
@@ -366,7 +366,7 @@ void BVGLWidget::command(int entry)
 
 
 
-void BVGLWidget::tryLoadFile(QString fn){
+void BViewUI::tryLoadFile(QString fn){
     if(!fn.isEmpty()){
         if(QFile::exists(fn)){
             _mainwindow->setWindowFilePath(fn);
@@ -387,7 +387,7 @@ void BVGLWidget::tryLoadFile(QString fn){
 
 const char* filter = "BezierView Files(*.bv);;Text Files(*.txt);;All Files(*.*)";
 
-void BVGLWidget::saveFile()
+void BViewUI::saveFile()
 {
    QString fileName = QFileDialog::getSaveFileName(this,
                                tr("Save BezierView File"),
@@ -398,14 +398,14 @@ void BVGLWidget::saveFile()
    if (!fileName.isEmpty())
        qDebug()<< "Saving is not implemented yet " <<  fileName;
 }
-QMainWindow *BVGLWidget::mainwindow() const
+QMainWindow *BViewUI::mainwindow() const
 {
     return _mainwindow;
 }
 
 
 
-void BVGLWidget::openFile()
+void BViewUI::openFile()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
                                                     tr("Open BezierView File"),
@@ -429,7 +429,7 @@ int main(int argc, char *argv[])
     init_bezierview(argc,argv);
 
     a.setApplicationName("SurfLab BezierView");
-    BVGLWidget viewer;
+    BViewUI viewer;
     viewer.tryLoadFile(QString(dataFileName));
 
     viewer.mainwindow()->show();

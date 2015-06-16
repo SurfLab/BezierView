@@ -1,11 +1,11 @@
-#ifndef BVGLWIDGET_H
-#define BVGLWIDGET_H
+#ifndef UI_H
+#define UI_H
 
-class BVGLWidget : public QGLWidget
+class BViewUI : public QGLWidget
 {
     Q_OBJECT
 public:
-    explicit BVGLWidget(QWidget *parent = 0);
+    explicit BViewUI(QWidget *parent = 0);
 
     QSize minimumSizeHint() const;
     QSize sizeHint() const;
@@ -46,4 +46,4 @@ private:
 
 
 
-#endif // BVGLWIDGET_H
+#endif // UI_H
