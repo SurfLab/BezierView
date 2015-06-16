@@ -7,9 +7,7 @@
  *           including tensor-product, triangular, PNtriangular...
  * ------------------------------------------------------------
  */
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdheaders.h>
+#include "stdheaders.h"
 #include "glob.h"
 #include "SGOL/util.h"
 #include "SGOL/Bezier.h"
@@ -20,7 +18,6 @@
 #include "SGOL/curvature.h"
 #include "draw.h"
 #include "menu.h"
-#include <QtOpenGL>
 
 
 /* curvature utility functions */

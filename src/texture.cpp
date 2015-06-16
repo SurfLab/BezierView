@@ -7,12 +7,7 @@
  *      
  * ------------------------------------------------------------
  */
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdheaders.h>
-#include <GL/glu.h>
+#include "stdheaders.h"
 
 int texture_id=-1;
 extern char programDir[500];

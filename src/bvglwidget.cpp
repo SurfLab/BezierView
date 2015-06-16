@@ -1,11 +1,9 @@
+#include "stdheaders.h"
 #include "bvglwidget.h"
 #include "bview.h"
 #include "menu.h"
-#include <QFileDialog>
 #include "draw.h"
 
-#include <QtGui/QApplication>
-#include <QtGui/QMenu>
 
 
 

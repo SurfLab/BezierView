@@ -8,9 +8,7 @@
  *       patch picking (not available right now)
  * -------------------------------------------------------------
  */
-
-#include <stdio.h>
-#include <stdheaders.h>
+#include "stdheaders.h"
 #include "SGOL/type.h" // GAUSS
 #include "glob.h"
 

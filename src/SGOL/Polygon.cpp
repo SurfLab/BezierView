@@ -7,10 +7,7 @@
  *  Author   : Xiaobin Wu
  * ------------------------------------------------------------
  */
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdheaders.h>
-#include <math.h>
+#include "stdheaders.h"
 #include "Polygon.h"
 
 #include "curvature.h"

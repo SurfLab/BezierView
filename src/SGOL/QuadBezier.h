@@ -1,7 +1,6 @@
 #ifndef QUADBEZIER_H_2002_10_21
 #define QUADBEZIER_H_2002_10_21
 
-#include <stdio.h>
 #include "type.h"
 #include "Bezier.h"
 

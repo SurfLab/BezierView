@@ -9,8 +9,7 @@
  *          2. Translate the patch if needed
  *
  */
-#include <stdio.h>
-#include <stdlib.h>
+#include "stdheaders.h"
 
 #include "SGOL/TriBezier.h"
 #include "SGOL/Polygon.h"

@@ -1,7 +1,6 @@
 #ifndef TRIBEZIER_H_2002_10_20
 #define TRIBEZIER_H_2002_10_20
 
-#include <stdio.h>
 #include "type.h"
 #include "util.h"
 #include "Bezier.h"

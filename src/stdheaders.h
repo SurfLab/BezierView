@@ -9,6 +9,13 @@
 
 // Standard C++ libraries
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h> 	/* sqrt */
+#include <memory.h>
+#include <time.h>  // gettimeofday
+#include <string>
+
 
 // Graphics Libraries
 #include <GL/glu.h>
@@ -19,6 +26,9 @@
 #include <QDebug>
 #include <QDir>
 #include <QFileDialog>
+#include <QtOpenGL>
+#include <QtGui/QApplication>
+#include <QtGui/QMenu>
 
 #endif // STDHEADERS_H
 

@@ -1,5 +1,5 @@
+#include "stdheaders.h"
 #include "error.h"
-#include <QtGui>
 
 
 void error(const char* context, const char* reason){

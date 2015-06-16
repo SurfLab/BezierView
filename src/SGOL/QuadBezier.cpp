@@ -7,10 +7,7 @@
  *  Author   : Xiaobin Wu
  * ------------------------------------------------------------
  */
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdheaders.h>
-#include <math.h>
+#include "stdheaders.h"
 #include "QuadBezier.h"
 #include "curvature.h"
 #include "highlight.h"

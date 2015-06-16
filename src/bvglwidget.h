@@ -1,6 +1,5 @@
 #ifndef BVGLWIDGET_H
 #define BVGLWIDGET_H
-#include <QtOpenGL>
 
 class BVGLWidget : public QGLWidget
 {

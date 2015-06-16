@@ -6,8 +6,7 @@
  *  Purpose: set the light and material property of the surface
  * -------------------------------------------------------------
  */
-
-#include <stdheaders.h>
+#include "stdheaders.h"
 #include "glob.h"
 
 void updateLights();

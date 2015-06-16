@@ -7,10 +7,7 @@
  *  Author   : Xiaobin Wu
  * ------------------------------------------------------------
  */
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <stdheaders.h>
+#include "stdheaders.h"
 #include "util.h"
 #include "type.h"
 

@@ -7,9 +7,7 @@
  *           keyboard event handling.
  * -------------------------------------------------------------
  */
-#include <stdheaders.h>
-#include <string.h>
-#include <stdlib.h>
+#include "stdheaders.h"
 #include "glob.h"
 #include "menu.h"
 #include "draw.h"

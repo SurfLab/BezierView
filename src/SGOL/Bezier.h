@@ -1,6 +1,5 @@
 #ifndef BEZIER_H_2002_10_20
 #define BEZIER_H_2002_10_20
-#include <stdlib.h>
 #include "type.h"
 #include "Object.h"
 

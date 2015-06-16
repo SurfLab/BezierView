@@ -6,9 +6,11 @@
 
 QT       += core gui opengl
 
-CONFIG += warn_off
-TARGET = BezierView
+CONFIG += warn_off precompile_header
+TARGET = bview
 TEMPLATE = app
+
+PRECOMPILED_DIR = "precompile"
 
 unix: CONFIG += link_pkgconfig
 unix: PKGCONFIG = glu
@@ -34,7 +36,6 @@ SOURCES += \
 
 HEADERS  += \
     src/texture.h \
-    src/stdheaders.h \
     src/Patch.h \
     src/menu.h \
     src/glob.h \
@@ -53,6 +54,8 @@ HEADERS  += \
     src/error.h
 
 INCLUDEPATH += $$PWD/src 
+
+PRECOMPILED_HEADER = src/stdheaders.h
 
 
 win32: LIBS += -L$$PWD/dependencies/lib/Win32/

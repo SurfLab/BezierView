@@ -7,9 +7,7 @@
  * -------------------------------------------------------------
  */
 /* Modified from a rotating cube demo with trackball in openGL book */
-#include <math.h>
-#include <time.h> // for clock()
-#include <stdheaders.h>
+#include "stdheaders.h"
 #include "glob.h"
 #include "menu.h"
 #include "SGOL/util.h"
@@ -51,7 +49,6 @@ clock_t  lastmotion = 0; // last motion moment
 clock_t last_click =0 ;
 
 void updateProjection();
-
 
 /*----------------------------------------------------------------------*/
 /* 

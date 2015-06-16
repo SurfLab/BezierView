@@ -8,11 +8,7 @@
  *  Author   : Xiaobin Wu
  * -------------------------------------------------------------
  */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h> 	/* sqrt */
-#include <stdheaders.h>
+#include "stdheaders.h"
 #include "type.h"
 #include "util.h"
 #include "glob.h"

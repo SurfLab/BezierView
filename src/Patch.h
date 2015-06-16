@@ -1,7 +1,6 @@
 #ifndef PATCH_H_2002_10_20
 #define PATCH_H_2002_10_20
 
-#include <stdio.h>
 #include "SGOL/Object.h"
 
 #define MAXFACET 6500

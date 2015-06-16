@@ -7,8 +7,7 @@
  *  Author   : Xiaobin Wu
  * ------------------------------------------------------------
  */
-#include <stdio.h>
-#include <stdheaders.h>
+#include "stdheaders.h"
 
 #include "TriBezier.h"
 #include "curvature.h"

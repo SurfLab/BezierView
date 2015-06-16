@@ -19,16 +19,12 @@
  *            Also included in this file:
  *               current modelview matrix saving/loading
  */
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>  // gettimeofday
-#include <string.h>
-#include <stdheaders.h>
+#include "stdheaders.h"
+
 #include "glob.h"
 #include "draw.h"
 #include "bview.h"
 #include "error.h"
-#include <string>
 
 // groups           
 int  c_grp; // current group

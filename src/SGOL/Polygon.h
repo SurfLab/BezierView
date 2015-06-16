@@ -1,8 +1,6 @@
 #ifndef POLYGON_H_2002_10_20
 #define POLYGON_H_2002_10_20
 
-#include <stdio.h>
-#include <stdlib.h>
 #include "type.h"
 #include "util.h"
 #include "Object.h"
