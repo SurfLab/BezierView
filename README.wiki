@@ -55,8 +55,8 @@ make
    ** 9:    PN triangle patches
    ** 10:    PN quads patches
 
- * Patch Data:
-   ** For polyhedron, the patch data should contain:
+* Patch Data:
+** For polyhedron, the patch data should contain:
 {{{
 Vnum Fnum
 v0x v0y v0z
@@ -67,7 +67,7 @@ v(n-1)x v(n-1)y v(n-1)z
 ...
 3 fmv1 fmv2 fmv3    ( vertices are indices from [0, n-1], not [1,n])
 }}}
-   ** For tensor product patches,  it should contain:
+** For tensor product patches,  it should contain:
 {{{
 degu degv (or type 3 and 4, only degu)
 }}}
@@ -85,7 +85,7 @@ p(degu+1)1 p(degu+1)1 .. p(degu+1)(degv+1)
 p11 p12 ... p1(degv+1) p21 ... p2(degv+1) ....
 p(degu+1)1 ... p(degu+1)(degv+1)
 }}}
-   ** For  triangle Bezier patches, it should contain:
+** For  triangle Bezier patches, it should contain:
 {{{
 deg
 }}}
@@ -101,12 +101,12 @@ deg
 {{{
 p0 p1 p2p p3 ... p9
 }}}
-   ** For PN triangle patches, it should contain:
+** For PN triangle patches, it should contain:
 {{{
 deg Ndeg
 }}}
 then the control points; then the normals arranged at the same order as the control points.
-   ** For PN quads, it should contain:
+** For PN quads, it should contain:
 {{{
 degu degv Ndegu Ndegv
 }}}
