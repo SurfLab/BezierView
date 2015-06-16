@@ -105,7 +105,7 @@ void BViewUI::createContextMenu()
 
     QMenu   *menuPatchDetail= menuContext->addMenu("Patch Detail");
     for(int i = 1; i <= 6; i++)
-        addMenuAction(menuPatchDetail,QString::number(1<<i) + QString(QChar(10799)) + QString::number(1<<i),
+        addMenuAction(menuPatchDetail,QString("%1 %2 %1").arg(QString::number(1<<i)).arg(QChar(215)),
                       SUBST1-1+i, NULL, true, g_substs[g_current_grp]==i);
 
     QMenu   *menuMaterial   = menuContext->addMenu("Material");
@@ -149,7 +149,7 @@ void BViewUI::createContextMenu()
     addMenuAction(menuCurvature, "Mean", MEAN_CRV, NULL, true, crv_choice == MEAN_CRV);
     addMenuAction(menuCurvature, "Max", MAX_CRV, NULL, true, crv_choice == MAX_CRV);
     addMenuAction(menuCurvature, "Min", MIN_CRV, NULL, true, crv_choice == MIN_CRV);
-    addMenuAction(menuCurvature, QString("%1 ⨯ Gauss + %2 ⨯ Mean²").arg(curvature_ratio_a).arg(curvature_ratio_b), SPECIAL_CRV, NULL, true, crv_choice == SPECIAL_CRV);
+    addMenuAction(menuCurvature, QString("%1 %3 Gauss + %2 %3 Mean%4").arg(curvature_ratio_a).arg(curvature_ratio_b).arg(QChar(215)).arg(QChar(178)), SPECIAL_CRV, NULL, true, crv_choice == SPECIAL_CRV);
     menuContext->addSeparator();
     QAction *actionOpen = menuContext->addAction("Open BV file...");
     actionOpen->setShortcut(Qt::Key_F3);
