@@ -12,6 +12,8 @@ TEMPLATE = app
 
 PRECOMPILED_DIR = "precompile"
 
+gcc: QMAKE_CFLAGS += -std=c99
+
 unix: CONFIG += link_pkgconfig
 unix: PKGCONFIG = glu
 
