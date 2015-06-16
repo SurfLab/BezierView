@@ -4,6 +4,12 @@
 #include <QFileDialog>
 #include "draw.h"
 
+#include <QtGui/QApplication>
+#include <QtGui/QMenu>
+
+
+
+
 extern  char   mat_name[][20];
 extern int clip_item;
 
@@ -39,6 +45,12 @@ QAction* BVGLWidget::addMenuAction(QMenu* parent, QString title, int data, const
  */
 void BVGLWidget::createContextMenu()
 {
+    /*
+     * We need to set the icon later
+    ui->actionOpen->setIcon(style()->standardIcon(QStyle::SP_DialogOpenButton, 0, this));
+    ui->actionExit->setIcon(style()->standardIcon(QStyle::SP_DialogCloseButton, 0, this));
+    */
+
     QMenu* menuContext = new QMenu(this);
     _signalMapper = new QSignalMapper(this);
     QObject::connect(_signalMapper, SIGNAL(mapped(int)), this, SLOT(command(int)));
@@ -85,6 +97,9 @@ void BVGLWidget::createContextMenu()
     QMenu   *menuMaterial   = menuContext->addMenu("Material");
     for(int c=0;c<COLORNUM; c++)
         addMenuAction(menuMaterial, mat_name[c], COLOR0 + c, NULL, true, g_Material[g_current_grp] == c);
+    QAction *customColor = menuMaterial->addAction("Custom Color...");
+    customColor->setShortcut(Qt::Key_F5);
+    QObject::connect(customColor,SIGNAL(triggered()), this, SLOT(colorDialog()));
 
     QMenu   *menuLineColor  = menuContext->addMenu("Line Color");
     for(int i=0;i<10;i++)
@@ -122,6 +137,10 @@ void BVGLWidget::createContextMenu()
     addMenuAction(menuCurvature, "Min", MIN_CRV, NULL, true, crv_choice == MIN_CRV);
     addMenuAction(menuCurvature, QString("%1 ⨯ Gauss + %2 ⨯ Mean²").arg(curvature_ratio_a).arg(curvature_ratio_b), SPECIAL_CRV, NULL, true, crv_choice == SPECIAL_CRV);
     menuContext->addSeparator();
+    QAction *actionOpen = menuContext->addAction("Open BV file...");
+    actionOpen->setShortcut(Qt::Key_F3);
+    QObject::connect(actionOpen, SIGNAL(triggered()), this, SLOT(openFile()));
+
     QMenu   *menuSavePosition= menuContext->addMenu("Save position");
     for(int i = 0;i < 6; i++)
         addMenuAction(menuSavePosition,QString::number(i), SAVE0 + i);
@@ -204,10 +223,15 @@ void BVGLWidget::updateContextMenu()
 BVGLWidget::BVGLWidget(QWidget *parent) :
     QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
 {
+    _mainwindow = new QMainWindow;
+    _mainwindow->setCentralWidget(this);
+
     setContextMenuPolicy(Qt::DefaultContextMenu);
 
     createContextMenu();
 
+    setFocusPolicy(Qt::StrongFocus);
+    setFocus();
 }
 
 void BVGLWidget::initializeGL(){
@@ -260,14 +284,33 @@ void BVGLWidget::wheelEvent(QWheelEvent *w){
     updateGL();
 }
 
-void BVGLWidget::keyPressEvent(QKeyEvent *event){
-
-}
-
-void BVGLWidget::changeView(int change){
-    menu_proc(change);
-   updateGL();
-
+void BVGLWidget::keyPressEvent(QKeyEvent *event)
+{
+    int key = event->key();
+    switch(key) {
+    case Qt::Key_Up: // up
+        ViewCenter[1] -= 0.1*ViewSize;
+        break;
+    case Qt::Key_Left: // left
+        ViewCenter[0] += 0.1*ViewSize;
+        break;
+    case Qt::Key_Down:  // down
+        ViewCenter[1] += 0.1*ViewSize;
+        break;
+    case Qt::Key_Right:  // right
+        ViewCenter[0] -= 0.1*ViewSize;
+        break;
+    case Qt::Key_F3:
+        openFile();
+        break;
+    case Qt::Key_F5:
+        colorDialog();
+        break;
+    default:
+        keyboard(event->text()[0].toAscii());
+    }
+    updateProjection();
+    updateGL();
 }
 
 void BVGLWidget::colorDialog()
@@ -279,16 +322,13 @@ void BVGLWidget::colorDialog()
         color = QColorDialog::getColor(Qt::green, this, "Select Color", QColorDialog::DontUseNativeDialog);
 
     if (color.isValid()) {
-        float colorArr[] = {color.red()/255.0f,color.green()/255.0f,color.blue()/255.0f};
+        float rgb[] = {color.red()/255.0f,color.green()/255.0f,color.blue()/255.0f};
 
-        changeColor(colorArr);
+        color_proc_rgb(rgb);
+        updateGL();
     }
 }
 
-void BVGLWidget::changeColor(float rgb[]){
-    color_proc_rgb(rgb);
-    updateGL();
-}
 
 void BVGLWidget::command(int entry)
 {
@@ -296,36 +336,74 @@ void BVGLWidget::command(int entry)
     updateGL();
 }
 
-void BVGLWidget::toggleHighlight(){
-    changeView(HIGHLIGHT);
-}
-void BVGLWidget::toggleSmooth(){
-    changeView(SMOOTH);
-}
-void BVGLWidget::toggleMesh(){
-    changeView(MESH);
-    changeView(POLYMESH);
-}
-void BVGLWidget::togglePatch(){
-    changeView(PATCH);
-    changeView(POLYPATCH);
-}
-void BVGLWidget::togglePolyMesh(){
-    changeView(POLYMESH);
-}
-void BVGLWidget::togglePolyPatch(){
-    changeView(POLYPATCH);
-}
-void BVGLWidget::toggleCurva(){
-    changeView(CURVA);
-}
-void BVGLWidget::toggleCurvaNeedle(){
-    changeView(CURVANEEDLE);
-}
-void BVGLWidget::toggleRefline(){
-    changeView(REFLINE);
+
+
+void BVGLWidget::tryLoadFile(QString fn){
+    if(!fn.isEmpty()){
+        if(QFile::exists(fn)){
+            _mainwindow->setWindowFilePath(fn);
+            loadDataFile(fn.toLatin1().data());
+            updateGL();
+        }else{
+            QMessageBox msg;
+            msg.setText(fn);
+            msg.setInformativeText("File Not Found");
+            msg.setIcon(QMessageBox::Critical);
+            msg.exec();
+            _mainwindow->setWindowFilePath("(Unloaded)");
+        }
+    }else
+        _mainwindow->setWindowFilePath("(Unloaded)");
+
 }
 
-void BVGLWidget::toggleNormal(){
-    changeView(NORMAL);
+const char* filter = "BezierView Files(*.bv);;Text Files(*.txt);;All Files(*.*)";
+
+void BVGLWidget::saveFile()
+{
+   QString fileName = QFileDialog::getSaveFileName(this,
+                               tr("Save BezierView File"),
+                                                   QString(),
+                               tr("BezierView Files(*.bv);;Text Files(*.txt);;All Files(*.*)"),
+                               0,
+                               0);
+   if (!fileName.isEmpty())
+       qDebug()<< "Saving is not implemented yet " <<  fileName;
+}
+QMainWindow *BVGLWidget::mainwindow() const
+{
+    return _mainwindow;
+}
+
+
+
+void BVGLWidget::openFile()
+{
+    QString fileName = QFileDialog::getOpenFileName(this,
+                                                    tr("Open BezierView File"),
+                                                    QString(),
+                               tr("BezierView Files(*.bv);;Text Files(*.txt);;All Files(*.*)"),
+                               0,
+                               0);
+   if (!fileName.isEmpty()){
+       tryLoadFile(fileName);
+   }
+
+
+}
+
+
+
+
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+    init_bezierview(argc,argv);
+
+    a.setApplicationName("SurfLab BezierView");
+    BVGLWidget viewer;
+    viewer.tryLoadFile(QString(dataFileName));
+
+    viewer.mainwindow()->show();
+    return a.exec();
 }

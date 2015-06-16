@@ -12,6 +12,9 @@ public:
     QSize sizeHint() const;
 
 
+    void tryLoadFile(QString fn);
+    QMainWindow *mainwindow() const;
+
 protected:
     void contextMenuEvent(QContextMenuEvent *event);
     void initializeGL();
@@ -22,26 +25,17 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
     void keyPressEvent(QKeyEvent *event);
     void wheelEvent(QWheelEvent *w);
-    void changeView(int change);
-    void changeColor(float change[]);
 
 signals:
     
 public slots:
     void command(int);
-    void toggleHighlight();
-    void toggleSmooth();
-    void toggleMesh();
-    void togglePatch();
-    void togglePolyMesh();
-    void togglePolyPatch();
-    void toggleCurva();
-    void toggleCurvaNeedle();
-    void toggleRefline();
     void colorDialog();
-    void toggleNormal();
 
+    void openFile();
+    void saveFile();
 private:
+    QMainWindow *_mainwindow;
     QMenu* _contextMenu;
     QSignalMapper *_signalMapper;
 

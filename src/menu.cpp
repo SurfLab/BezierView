@@ -373,7 +373,7 @@ void menu_proc(int entry)
 /*
  * keyboard controls
  */
-void keyboard(unsigned char key, int x, int y)
+void keyboard(unsigned char key)
 {
     static int blend =0;
 /*	char logstring[255];
@@ -505,23 +505,3 @@ void keyboard(unsigned char key, int x, int y)
 }
 
 
-void advkeyboard(int key, int x, int y)
-{
-    switch(key) {
-    case 101: // up
-        ViewCenter[1] -= 0.1*ViewSize;
-        break;
-    case 100: // left
-        ViewCenter[0] += 0.1*ViewSize;
-        break;
-    case 103:  // down
-        ViewCenter[1] += 0.1*ViewSize;
-        break;
-    case 102:  // right
-        ViewCenter[0] -= 0.1*ViewSize;
-        break;
-    default:
-        return;
-    }
-    updateProjection();
-}

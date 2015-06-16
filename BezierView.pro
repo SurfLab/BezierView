@@ -6,6 +6,7 @@
 
 QT       += core gui opengl
 
+CONFIG += warn_off
 TARGET = BezierView
 TEMPLATE = app
 
@@ -18,8 +19,6 @@ SOURCES += \
     src/pick.cpp \
     src/Patch.cpp \
     src/menu.cpp \
-    src/mainwindow.cpp \
-    src/main.cpp \
     src/light.cpp \
     src/glob.cpp \
     src/draw.cpp \
@@ -38,7 +37,6 @@ HEADERS  += \
     src/stdheaders.h \
     src/Patch.h \
     src/menu.h \
-    src/mainwindow.h \
     src/glob.h \
     src/draw.h \
     src/bview.h \
@@ -53,9 +51,6 @@ HEADERS  += \
     src/SGOL/curvature.h \
     src/SGOL/Bezier.h \
     src/error.h
-
-FORMS    += \
-    src/mainwindow.ui
 
 INCLUDEPATH += $$PWD/src 
 
