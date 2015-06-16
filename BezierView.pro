@@ -26,12 +26,12 @@ SOURCES += \
     src/draw.cpp \
     src/bview.cpp \
     src/bvglwidget.cpp \
-    src/SGOL/util.cpp \
-    src/SGOL/TriBezier.cpp \
-    src/SGOL/QuadBezier.cpp \
-    src/SGOL/Polygon.cpp \
-    src/SGOL/highlight.cpp \
-    src/SGOL/curvature.cpp \
+    src/util.cpp \
+    src/TriBezier.cpp \
+    src/QuadBezier.cpp \
+    src/Polygon.cpp \
+    src/highlight.cpp \
+    src/curvature.cpp \
     src/error.cpp
 
 HEADERS  += \
@@ -42,15 +42,15 @@ HEADERS  += \
     src/draw.h \
     src/bview.h \
     src/bvglwidget.h \
-    src/SGOL/util.h \
-    src/SGOL/type.h \
-    src/SGOL/TriBezier.h \
-    src/SGOL/QuadBezier.h \
-    src/SGOL/Polygon.h \
-    src/SGOL/Object.h \
-    src/SGOL/highlight.h \
-    src/SGOL/curvature.h \
-    src/SGOL/Bezier.h \
+    src/util.h \
+    src/type.h \
+    src/TriBezier.h \
+    src/QuadBezier.h \
+    src/Polygon.h \
+    src/Object.h \
+    src/highlight.h \
+    src/curvature.h \
+    src/Bezier.h \
     src/error.h
 
 INCLUDEPATH += $$PWD/src 

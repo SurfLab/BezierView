@@ -10,7 +10,7 @@
 #include "stdheaders.h"
 #include "glob.h"
 #include "menu.h"
-#include "SGOL/util.h"
+#include "util.h"
 #include "draw.h"
 
 void    draw();

@@ -1,7 +1,7 @@
 #ifndef PATCH_H_2002_10_20
 #define PATCH_H_2002_10_20
 
-#include "SGOL/Object.h"
+#include "Object.h"
 
 #define MAXFACET 6500
 #define MAXGROUP 6500

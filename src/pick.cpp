@@ -9,7 +9,7 @@
  * -------------------------------------------------------------
  */
 #include "stdheaders.h"
-#include "SGOL/type.h" // GAUSS
+#include "type.h" // GAUSS
 #include "glob.h"
 
 #define BUFSIZE 512

@@ -11,9 +11,9 @@
  */
 #include "stdheaders.h"
 
-#include "SGOL/TriBezier.h"
-#include "SGOL/Polygon.h"
-#include "SGOL/QuadBezier.h"
+#include "TriBezier.h"
+#include "Polygon.h"
+#include "QuadBezier.h"
 #include "Patch.h"
 #include "glob.h"
 
