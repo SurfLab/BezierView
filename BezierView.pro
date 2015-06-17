@@ -30,11 +30,11 @@ SOURCES += \
     src/pick.c \
     src/rotate.c \
     src/texture.c \
-    src/export.cpp \
     src/glob.c \
     src/draw.c \
     src/load.c \
-    src/ui.cpp
+    src/ui.cpp \
+    src/export.cpp
 
 HEADERS  += \
     src/texture.h \
@@ -49,7 +49,6 @@ HEADERS  += \
     src/Polygon.h \
     src/highlight.h \
     src/curvature.h \
-    src/Bezier.h \
     src/light.h \
     src/pick.h \
     src/rotate.h \

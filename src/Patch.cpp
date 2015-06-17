@@ -10,7 +10,6 @@
  *
  */
 #include "stdheaders.h"
-
 extern "C" {
 #include "util.h"
 #include "Patch.h"
@@ -21,41 +20,37 @@ extern "C" {
 #include "Polygon.h"
 #include "QuadBezier.h"
 
-void Patch_evaluate(Patch* p, int SubDepth)
+void Patch_init(Patch*p)
 {
-    p->object->evaluate_patch(SubDepth);
+    p->init = 1;
+    p->normal_flipped = 0;
+    p->art_normal=false;
+    p->evaluated = false;
+    p->eval_P = p->eval_N = NULL;
+    p->crv_array = NULL;
+    p->position = p->normal = NULL;
 }
-////////////////////////////////////////////////////////////////
-//
-//  load the Bezier data from a data file
-//
-int Patch_loadFile(Patch*p,FILE* fp) {
-
-	return 0;
-};
-
 
 // translate the patch so it is centered at the point 'center'
 void Patch_translate(Patch*p,REAL* center)
 {
 	int i;
 	for(i=0;i<3;i++)
-        p->position[i] += center[i];
+        p->location[i] += center[i];
 }
 
 
 void Patch_createSinglePolygon(Patch*p, int side, REAL (*V)[DIM], int *F)
 {
-    Polygon    * newpoly = new Polygon();
-    newpoly->pointCount = side;
-    arrcreate(newpoly->position, side);
-    REAL (*position)[DIM] = newpoly->position;
-    arrcreate(newpoly->normal, side);
-    REAL (*normal)[DIM] = newpoly->normal;
+    p->pointCount = side;
+    arrcreate(p->position, side);
+    REAL (*position)[DIM] = p->position;
+    arrcreate(p->normal, side);
+    REAL (*normal)[DIM] = p->normal;
     for(int i = 0; i < side; i++)
     {
         REAL *v = V[F[i]];
-        newpoly->enlarge_aabb(v[0],v[1],v[2]);
+        Bezier_enlarge_aabb(p, v[0],v[1],v[2]);
         position[i][0] = v[0];
         position[i][1] = v[1];
         position[i][2] = v[2];
@@ -71,50 +66,42 @@ void Patch_createSinglePolygon(Patch*p, int side, REAL (*V)[DIM], int *F)
         VVcross(V2, V1, normal[pt]);
         Normalize(normal[pt]);
     }
-
-    p->object = newpoly;
 }
 
 
 
 void Patch_loadQuadBezier(Patch*p, FILE* fp)
 {
-    QuadBezier * newquad;
-    newquad = new QuadBezier();
-    newquad -> loadFile(fp, p->type==TP_EQ, p->type==RATIONAL, p->type==PNTP);
-    p->object = newquad;
+    QuadBezier_loadFile(p, fp, p->type==TP_EQ, p->type==RATIONAL, p->type==PNTP);
 }
 
 void Patch_loadTriBezier(Patch*p, FILE* fp)
 {
-    TriBezier  * newtri;
-    newtri = new TriBezier();
-    newtri -> loadFile(fp, p->type==PNTRI);
-    p->object = newtri;
+    TriBezier_loadFile(p, fp, p->type==PNTRI);
 }
 
 void Patch_enlarge_AABB(Patch*p,int first) {
 
 	if (first)  // first patch
 	{
-        ViewLeft  = (float)p->object->minx;
-        ViewRight = (float)p->object->maxx;
+        ViewLeft  = (float)p->minx;
+        ViewRight = (float)p->maxx;
 
-        ViewBottom= (float)p->object->miny;
-        ViewTop   = (float)p->object->maxy;
+        ViewBottom= (float)p->miny;
+        ViewTop   = (float)p->maxy;
 
-        ViewFar   = (float)p->object->minz;
-        ViewNear  = (float)p->object->maxz;
+        ViewFar   = (float)p->minz;
+        ViewNear  = (float)p->maxz;
 	}
 	else {
-        if(ViewLeft  > p->object->minx) ViewLeft  = (float)p->object->minx;
-        if(ViewRight < p->object->maxx) ViewRight = (float)p->object->maxx;
+        if(ViewLeft  > p->minx) ViewLeft  = (float)p->minx;
+        if(ViewRight < p->maxx) ViewRight = (float)p->maxx;
 
-        if(ViewBottom> p->object->miny) ViewBottom= (float)p->object->miny;
-        if(ViewTop   < p->object->maxy) ViewTop   = (float)p->object->maxy;
+        if(ViewBottom> p->miny) ViewBottom= (float)p->miny;
+        if(ViewTop   < p->maxy) ViewTop   = (float)p->maxy;
 
-        if(ViewFar   > p->object->minz) ViewFar   = (float)p->object->minz;
-        if(ViewNear  < p->object->maxz) ViewNear  = (float)p->object->maxz;
+        if(ViewFar   > p->minz) ViewFar   = (float)p->minz;
+        if(ViewNear  < p->maxz) ViewNear  = (float)p->maxz;
 	}
 }
 
@@ -122,48 +109,188 @@ void Patch_enlarge_AABB(Patch*p,int first) {
 
 void Patch_plotcrv(Patch *p, int crv_choice)
 {
-    p->object->plot_crv(crv_choice);
+    switch(p->type)
+    {
+    case POLY:
+        break;
+    case TP:
+    case TP_EQ:
+    case RATIONAL:
+    case PNTP:
+        QuadBezier_plot_crv(p, crv_choice);
+        break;
+    case TRIANG:
+    case PNTRI:
+        TriBezier_plot_crv(p, crv_choice);
+        break;
+    }
+
 }
 
 
 
 void Patch_plotmesh(Patch *p, float *bg_color)
 {
-    p->object->plot_mesh(bg_color);
+    switch(p->type)
+    {
+    case POLY:
+        Polygon_plot_mesh(p,bg_color);
+        break;
+    case TP:
+    case TP_EQ:
+    case RATIONAL:
+    case PNTP:
+        QuadBezier_plot_mesh(p, bg_color);
+        break;
+    case TRIANG:
+    case PNTRI:
+        TriBezier_plot_mesh(p, bg_color);
+        break;
+    }
+
 }
 
 
 void Patch_plotpatch(Patch *p, bool smooth)
 {
-    p->object->plot_patch(smooth);
+    switch(p->type)
+    {
+    case POLY:
+        Polygon_plot_patch(p, smooth);
+        break;
+    case TP:
+    case TP_EQ:
+    case RATIONAL:
+    case PNTP:
+        QuadBezier_plot_patch(p, smooth);
+        break;
+    case TRIANG:
+    case PNTRI:
+        TriBezier_plot_patch(p, smooth);
+        break;
+    }
 }
 
 
 void Patch_plotcrvneedles(Patch *p, int crv_choice, int needle_length)
 {
-    p->object->plot_crv_needles(crv_choice, needle_length);
+    switch(p->type)
+    {
+    case POLY:
+        break;
+    case TP:
+    case TP_EQ:
+    case RATIONAL:
+    case PNTP:
+        QuadBezier_plot_crv_needles(p, crv_choice, needle_length);
+        break;
+    case TRIANG:
+    case PNTRI:
+        TriBezier_plot_crv_needles(p, crv_choice, needle_length);
+        break;
+    }
+
 }
 
 
 void Patch_plothighlights(Patch *p, VEC A, VEC H, REAL hl_step, int hl_type)
 {
-    p->object->plot_highlights(A,H,hl_step,hl_type);
+    switch(p->type)
+    {
+    case POLY:
+        Polygon_plot_highlights(p, A, H, hl_step, hl_type);
+        break;
+    case TP:
+    case TP_EQ:
+    case RATIONAL:
+    case PNTP:
+        QuadBezier_plot_highlights(p, A, H, hl_step, hl_type);
+        break;
+    case TRIANG:
+    case PNTRI:
+        TriBezier_plot_highlights(p, A, H, hl_step, hl_type);
+        break;
+    }
+
 }
 
 
 void Patch_flipnormal(Patch *p)
 {
-    p->object->flip_normal();
+    switch(p->type)
+    {
+    case POLY:
+        Polygon_flip_normal(p);
+        break;
+    case TP:
+    case TP_EQ:
+    case RATIONAL:
+    case PNTP:
+        QuadBezier_flip_normal(p);
+        break;
+    case TRIANG:
+    case PNTRI:
+        TriBezier_flip_normal(p);
+        break;
+    }
+
 }
 
 
-void Patch_computecrv(Patch *p)
+
+void Patch_evaluate(Patch* p, int SubDepth)
 {
-    p->object->compute_crv();
+    switch(p->type)
+    {
+    case POLY:
+        break;
+    case TP:
+    case TP_EQ:
+    case RATIONAL:
+    case PNTP:
+        QuadBezier_evaluate_patch(p, SubDepth);
+        break;
+    case TRIANG:
+    case PNTRI:
+        TriBezier_evaluate_patch(p, SubDepth);
+        break;
+    }
 }
 
 
 void Patch_freeevalmem(Patch *p)
 {
-    ((Bezier*) p->object)->free_eval_mem();
+    Patch* b = p;
+    if(b->eval_P)    arrdelete(b->eval_P);
+    if(b->eval_N)    arrdelete(b->eval_N);
+    if(b->crv_array) arrdelete(b->crv_array);
+    b->evaluated = false;
+    b->eval_P = b->eval_N = NULL;
+    b->crv_array = NULL;
+}
+
+void Bezier_free_mem(Patch*p) {
+    Patch* b = p;
+    Patch_freeevalmem(p);
+    if(b->position) arrdelete(b->position);
+    if(b->normal)  arrdelete(b->normal);
+}
+
+
+void Bezier_enlarge_aabb(Patch *p, REAL x, REAL y, REAL z)
+{
+    if(p->init) {
+        p->minx = p->maxx = x;
+        p->miny = p->maxy = y;
+        p->minz = p->maxz = z;
+        p->init = 0;
+    }
+    else {
+        if(x>p->maxx) p->maxx = x;
+        if(x<p->minx) p->minx = x;
+        if(y>p->maxy) p->maxy = y;
+        if(y<p->miny) p->miny = y;
+        if(z>p->maxz) p->maxz = z;
+        if(z<p->minz) p->minz = z;
+    }
 }

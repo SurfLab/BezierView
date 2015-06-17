@@ -175,7 +175,8 @@ void define_scene(FILE* fp)
 
 		// load the patch data from the file
         Patch *p = &face[pat];
-        for(int i=0;i<3;i++) p->position[i] = 0;
+        Patch_init(p);
+        for(int i=0;i<3;i++) p->location[i] = 0;
 
         // read in the
         switch(p->type) {
@@ -209,6 +210,7 @@ void define_scene(FILE* fp)
                 for(int j=0;j<side;j++)
                     fscanf(fp, "%d", &F[j]);
 
+                Patch_init(p+i);
                 Patch_createSinglePolygon(p + i, side, V, F);
                 p[i].type = patch_kind;
                 p[i].group_id = c_grp;

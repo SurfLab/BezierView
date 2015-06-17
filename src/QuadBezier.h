@@ -1,37 +1,20 @@
 #ifndef QUADBEZIER_H_2002_10_21
 #define QUADBEZIER_H_2002_10_21
 
-#include "type.h"
-#include "Bezier.h"
 
-/////////////////////////////////////////////////////////////////
-// 
-// class QuadBezier
-//         A quadrilateral bezier patch
-struct QuadBezier : public Bezier {
-	void evaluate_patch(int subDepth);
-	REAL* get_v(int side);
-    QuadBezier(){evaluated = 0;}
-    ~QuadBezier(){
-        if(evaluated) {
-            arrdelete(eval_P);arrdelete(eval_N);arrdelete(crv_array);
-        }
-    }
 
-    // ploting routines
-	void plot_patch(bool smooth);  // plot the quadrilateral patch
-	void plot_mesh(float* bg_color);   // plot the control polygon of the quadrilateral patch
-	void plot_crv(int crv_choice);   // plot the curvature of the quadrilateral patch
-	void plot_crv_needles(int crv_choice, REAL length=1.0);   // plot the curvature of the quadrilateral patch
-	void plot_highlights(VEC A, VEC H, REAL hl_step, int highlight_type);  // plot the highlight lines for the patch
-	void flip_normal();     	  // flip the normal
+REAL* QuadBezier_get_bb(Patch*p,int i, int j);
+void QuadBezier_loadFile(Patch*p,FILE* fp, bool equal_deg,
+                         bool rational, bool art_normal);
+int QuadBezier_create(Patch*p,int degu, int degv);
+void QuadBezier_plot_patch(Patch*p,bool smooth);
+void QuadBezier_evaluate_patch(Patch*p,int subDepth);
+void QuadBezier_flip_normal(Patch*p);
+void QuadBezier_plot_mesh(Patch*p,float* bg_color);
+void QuadBezier_plot_crv(Patch*p,int crv_choice);
+void QuadBezier_plot_crv_needles(Patch*p,int crv_choice, REAL length);
+void QuadBezier_plot_highlights(Patch*p,VEC A, VEC H, REAL hl_step, int highlight_type);
 
-	REAL* get_bb(int i, int j) const { 
-         return &position[(i*(degv+1)+j)][0];
-    }
-	
-	int loadFile(FILE* fp, bool equal_deg, bool rational, bool art_normal);  
-	int create(int degu, int degv);  // directly construct the memory
-};
+
 
 #endif

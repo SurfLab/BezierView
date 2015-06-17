@@ -15,65 +15,45 @@ extern "C" {
 }
 #include "Polygon.h"
 
-#define MAXSIDE 50
 
-////////////////////////////////////////////////////////////////
-////
-//// set the neighboring information
-
-
-//////////////////////////////////////////////////////////
-// flip the normal
-void Polygon::flip_normal()
+void Polygon_flip_normal(Patch*p)
 {
-    for(int i=0;i<this->pointCount;i++)
+    for(int i=0;i<p->pointCount;i++)
         for(int j = 0; j < 3; j++)
-            this->normal[i][j] = -this->normal[i][j];
-    normal_flipped = !normal_flipped;
+            p->normal[i][j] = -p->normal[i][j];
+    p->normal_flipped = !p->normal_flipped;
 }
 
 
 
-////////////////////////////////////////////////////////////////
-//
-//  plot the polygon
 
-void Polygon::plot_patch(bool smooth)
+void Polygon_plot_patch(Patch*p,bool smooth)
 {
     int j, pt;
-
-	//
-	if(!evaluated) {
-		evaluated = true;
-		compute_crv();
-	}
 
 	glPushAttrib(GL_ENABLE_BIT);
     glEnable(GL_LIGHTING);
 
     glBegin(GL_POLYGON);
-    for (j=0; j<this->pointCount; j++) {
-        if(!normal_flipped)  // reverse the orientation of the polygon
+    for (j=0; j<p->pointCount; j++) {
+        if(!p->normal_flipped)  // reverse the orientation of the polygon
             pt =  (j);
         else
-            pt =  (this->pointCount-1-j);
+            pt =  (p->pointCount-1-j);
 
-        glNormal3dv(this->normal[pt]);
+        glNormal3dv(p->normal[pt]);
 
         double size = 64.0;
-        glTexCoord2f((this->position[pt])[0]/size,(this->position[pt])[2]/size);
-        glVertex4dv(this->position[pt]);
+        glTexCoord2f((p->position[pt])[0]/size,(p->position[pt])[2]/size);
+        glVertex4dv(p->position[pt]);
     }
     glEnd();
 
 	glPopAttrib();
 }
 
-////////////////////////////////////////////////////////////////
-//
-// plot the mesh 
-//
-void Polygon::plot_mesh(float* bg_color)
+
+void Polygon_plot_mesh(Patch*p,float* bg_color)
 {
     int i, j, pt;
 	
@@ -86,8 +66,8 @@ void Polygon::plot_mesh(float* bg_color)
 		glColor3fv(bg_color);
 
         glBegin(GL_POLYGON);
-        for (j=0; j<this->pointCount; j++) {
-            glVertex4dv(this->position[j]);
+        for (j=0; j<p->pointCount; j++) {
+            glVertex4dv(p->position[j]);
         }
         glEnd();
 		glDisable(GL_POLYGON_OFFSET_FILL);	
@@ -95,34 +75,21 @@ void Polygon::plot_mesh(float* bg_color)
 	}
 
 
-    for (j=0; j<this->pointCount; j++) {
+    for (j=0; j<p->pointCount; j++) {
         glBegin(GL_LINES);
-            glVertex4dv(this->position[j]);
-            glVertex4dv(this->position[(j+1)%this->pointCount]);
+            glVertex4dv(p->position[j]);
+            glVertex4dv(p->position[(j+1)%p->pointCount]);
         glEnd();
     }
 }
 
-////////////////////////////////////////////////////////////////
-//
-// plot the highlight lines
-//
-void Polygon::plot_highlights(VEC A, VEC H, REAL hl_step, int highlight_type)
+
+void Polygon_plot_highlights(Patch*p,VEC A, VEC H, REAL hl_step, int highlight_type)
 {
-    int j;
-
-	REAL P[MAXSIDE*DIM];
-	REAL N[MAXSIDE*DIM];
-
 	glPushAttrib(GL_ENABLE_BIT);
     glEnable(GL_LIGHTING);
-    for (j=0; j<this->pointCount; j++) {
-        Vcopy(this->position[j], &P[j*DIM]);
-        Vcopy(this->normal[j], &N[j*DIM]);
-    }
-    Highlight(this->pointCount, P, N, A, H, hl_step, highlight_type);
+
+    Highlight(p->pointCount, &p->position[0][0], &p->normal[0][0], A, H, hl_step, highlight_type);
 	glPopAttrib();
 }
-
-
 

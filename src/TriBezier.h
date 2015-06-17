@@ -1,30 +1,14 @@
 #ifndef TRIBEZIER_H_2002_10_20
 #define TRIBEZIER_H_2002_10_20
 
-#include "type.h"
-#include "Bezier.h"
-
-/////////////////////////////////////////////////////////////////
-// 
-// class TriBezier
-//         A triangular bezier patch
-struct TriBezier : public Bezier {
-	void evaluate_patch(int use_art_normal = true);
-    TriBezier(int degree);
-    TriBezier() {evaluated = false;}
-
-	void plot_patch(bool smooth);  // plot the triangular patch
-	void plot_mesh(float* bg_color);   // plot the control polygon of the triangular patch
-	void plot_crv(int crv_choice);    // plot the curvature of the triangular patch
-
-	void plot_crv_needles(int crv_choice, REAL length); 
-	void plot_highlights(VEC A, VEC H, REAL hl_step, int highlight_type);  // plot the highlight lines for the patch
-	void flip_normal();     	  // flip the normal
-
-	REAL* get_bb(int i, int j);  // return the control point at grid (i,j, d-i,j)
-	
-	int loadFile(FILE* fp, bool art_normal = false);  
-};
-
+int TriBezier_loadFile(Patch*p,FILE* fp, bool art_normal);
+void TriBezier_plot_patch(Patch*p,bool smooth);
+void TriBezier_plot_mesh(Patch*p,float* bg_color);
+void TriBezier_evaluate_patch(Patch*p,int subDepth);
+void TriBezier_flip_normal(Patch*p);
+void TriBezier_plot_crv(Patch*p,int crv_choice);
+void TriBezier_plot_crv_needles(Patch*p,int crv_choice, REAL length=1.0);
+void TriBezier_plot_highlights(Patch*p,VEC A, VEC H, REAL hl_step, int highlight_type);
+REAL* TriBezier_get_bb(Patch*p,int i, int j);
 
 #endif

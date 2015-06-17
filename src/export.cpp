@@ -5,7 +5,6 @@ extern "C" {
 #include "util.h"
 #include "export.h"
 }
-#include "Bezier.h"
 #include "Polygon.h"
 #include "QuadBezier.h"
 #include "TriBezier.h"
@@ -54,7 +53,7 @@ void export_eps(Patch face[], int patch_num, float ObjectCenter[3], double scale
         p = &(face[i]);
         int patch_kind = p->type;
         if(patch_kind == POLY) {
-            Polygon * poly = (Polygon*) p->object;
+            Patch * poly = p;
 
             for (j=0; j<poly->pointCount; j++) {
                 gluProject(
@@ -122,7 +121,7 @@ void export_igs(Patch face[], int patch_num)
         p = &(face[fc]);
         int patch_kind = p->type;
         if(patch_kind == TRIANG ) {
-            TriBezier * tri = (TriBezier*) p->object;
+            Patch * tri = p;
             if(tri->degu == 1) {
                 dg = 1;
                 k = (dg+1)*2;
@@ -142,7 +141,7 @@ void export_igs(Patch face[], int patch_num)
         }
         if(patch_kind == TP || patch_kind == TP_EQ ) {
 
-            QuadBezier * quad = (QuadBezier*) p->object;
+            Patch * quad = p;
 
             dg = quad->degu;
 
@@ -170,7 +169,7 @@ void export_igs(Patch face[], int patch_num)
         int patch_kind = p->type;
 
         if(patch_kind == TRIANG ) {
-            TriBezier * tri = (TriBezier*) p->object;
+            Patch * tri = p;
 
             if(tri->degu == 1) {
                 printf("outputing triangles as degenrated quads\n");
@@ -216,9 +215,9 @@ void export_igs(Patch face[], int patch_num)
                 for (i=0; i<= 1; i++) {
                     for (j=0; j<= 1; j++) {
                         if(i==1 && j==1)
-                            hv=tri->get_bb(0,1);
+                            hv=TriBezier_get_bb(tri,0,1);
                         else
-                            hv=tri->get_bb(i,j);
+                            hv=TriBezier_get_bb(tri,i,j);
 
                         fprintf(fp,"%20e,%20e,%20e,%9dP%7d\n",
                             hv[0],hv[1], hv[2], ffctr,bbctr);
@@ -238,7 +237,7 @@ void export_igs(Patch face[], int patch_num)
         }
         else if(patch_kind == TP || patch_kind == TP_EQ ) {
 
-            QuadBezier * quad = (QuadBezier*) p->object;
+            Patch * quad = p;
 
             dg = quad->degu;
 
@@ -280,7 +279,7 @@ void export_igs(Patch face[], int patch_num)
             // the XYZ coordinates
             for (i=0; i<= dg; i++) {
                 for (j=0; j<= dg; j++) {
-                    hv=quad->get_bb(i,j);
+                    hv=QuadBezier_get_bb(quad,i,j);
                     fprintf(fp,"%20e,%20e,%20e,%9dP%7d\n",
                         hv[0],hv[1], hv[2], ffctr,bbctr);
                     bbctr++;

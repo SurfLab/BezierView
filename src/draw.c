@@ -405,7 +405,7 @@ void    re_evaluate(int substeps)
                 Patch_freeevalmem(fp);
                 Patch_evaluate(fp, substeps);
                 if (normal_flipped) Patch_flipnormal(fp);
-			}
+            }
 		}
     }
 	define_crv();

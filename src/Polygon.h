@@ -2,21 +2,13 @@
 #define POLYGON_H_2002_10_20
 
 #include "type.h"
-#include "Bezier.h"
+#include "Patch.h"
 
 
-
-/////////////////////////////////////////////////////////////////
-//  
-//  class Polygon 
-//      a polygonal patch
-struct Polygon :public Bezier{
-
-    void plot_mesh(float* bg_color);                      // plot the bezier patch
-	void plot_patch(bool smooth);          // plot the control polygon
-	void plot_highlights(VEC A, VEC H, REAL hl_step, int highlight_type);    // plot the highlight lines
-	void flip_normal();
-}; 
+void Polygon_flip_normal(Patch*p);
+void Polygon_plot_patch(Patch*p,bool smooth);
+void Polygon_plot_mesh(Patch*p,float* bg_color);
+void Polygon_plot_highlights(Patch*p,VEC A, VEC H, REAL hl_step, int highlight_type);
 
 
 
