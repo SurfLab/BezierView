@@ -123,7 +123,7 @@ void export_igs(Patch face[], int patch_num)
         int patch_kind = p->type;
         if(patch_kind == TRIANG ) {
             TriBezier * tri = (TriBezier*) p->object;
-            if(tri->deg == 1) {
+            if(tri->degu == 1) {
                 dg = 1;
                 k = (dg+1)*2;
                 k1 = (k%8 != 0) + k/8;  /* knots */
@@ -172,7 +172,7 @@ void export_igs(Patch face[], int patch_num)
         if(patch_kind == TRIANG ) {
             TriBezier * tri = (TriBezier*) p->object;
 
-            if(tri->deg == 1) {
+            if(tri->degu == 1) {
                 printf("outputing triangles as degenrated quads\n");
 
                 dg = 1;

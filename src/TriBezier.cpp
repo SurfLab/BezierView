@@ -16,6 +16,10 @@ extern "C" {
 
 #include "TriBezier.h"
 
+// index mapping functions
+int b2i_j(int i, int j, int k, int d);
+int b2i_i(int i, int j, int k, int d);
+int b2i_k(int i, int j, int k, int d);
 
 
 ////////////////////////////////////////////////////////////////
@@ -26,13 +30,13 @@ int TriBezier::loadFile(FILE* fp, bool art_normal) {
 	int i, m;
 
 	//printf("start evaluated : %d\n", evaluated);
-    fscanf(fp,"%d", &deg);
-    pointCount = (deg+2)*(deg+1) /2;
+    fscanf(fp,"%d", &degu);
+    pointCount = (degu+2)*(degu+1) /2;
 
 	// if artificial normal exists, read in the degree 
 	if(art_normal) {
-        fscanf(fp,"%d", &Ndeg);
-        normalCount = (Ndeg+2)*(Ndeg+1) /2;
+        fscanf(fp,"%d", &Ndegu);
+        normalCount = (Ndegu+2)*(Ndegu+1) /2;
 	}
 
     // read in all control points
@@ -137,10 +141,10 @@ void TriBezier::plot_patch(bool smooth)
 void TriBezier::plot_mesh(float* bg_color)
 {
     int   i,j,k;
-    int   d = deg-1;
+    int   d = degu-1;
 
     glBegin(GL_POINTS);
-    for(i=0; i<((deg+1)*(deg+2)/2); i++)
+    for(i=0; i<((degu+1)*(degu+2)/2); i++)
        glVertex4dv(&position[i][0]);
     glEnd();
 
@@ -149,9 +153,9 @@ void TriBezier::plot_mesh(float* bg_color)
     {
         k = d-i-j;
         glBegin(GL_LINE_LOOP);
-        glVertex4dv(&position[b2i_i(i+1,j,k,deg)][0]);
-        glVertex4dv(&position[b2i_i(i,j+1,k,deg)][0]);
-        glVertex4dv(&position[b2i_i(i,j,k+1,deg)][0]);
+        glVertex4dv(&position[b2i_i(i+1,j,k,degu)][0]);
+        glVertex4dv(&position[b2i_i(i,j+1,k,degu)][0]);
+        glVertex4dv(&position[b2i_i(i,j,k+1,degu)][0]);
         glEnd();
     }
 }
@@ -173,7 +177,7 @@ void TriBezier::evaluate_patch(int subDepth)
 
     GLdouble DeCastel[(MAXDEG+1)*(MAXDEG+2)/2][DIM];
 
-    if(deg>MAXDEG) {
+    if(degu>MAXDEG) {
 		printf("Maximum degree %d reached, please increase the number.\n", MAXDEG);
         exit(0);
     }
@@ -213,61 +217,61 @@ void TriBezier::evaluate_patch(int subDepth)
                 b2i = b2i_i;
 
             /* initialize the DeCastel Array */
-            for(i=0;i<=deg;i++)
-                for(j=0;j<=deg-i;j++)
+            for(i=0;i<=degu;i++)
+                for(j=0;j<=degu-i;j++)
             {
-                k = deg -i-j;
+                k = degu -i-j;
                 for( m = 0; m <DIM; m++)
-                    DeCastel[(*b2i)(i,j,k, deg)][m] = 
-                        position[(*b2i)(i,j,k, deg)][m];
+                    DeCastel[(*b2i)(i,j,k, degu)][m] =
+                        position[(*b2i)(i,j,k, degu)][m];
             }
 
             /* de Casteljau algorithm */
-            for (d = deg-1 ; d >=1; d--)
+            for (d = degu-1 ; d >=1; d--)
             {
                 for(k=0;k<=d;k++)
                     for(j=0;j<=d-k;j++)
                 {
                     i = d-j-k;
                     for (m=0;m<DIM;m++)
-                       DeCastel[(*b2i)(i,j,k,deg)][m] =
-                        u* DeCastel[(*b2i)(i+1,j,k,deg)][m] +
-                        v* DeCastel[(*b2i)(i,j+1,k,deg)][m] +
-                        w* DeCastel[(*b2i)(i,j,k+1,deg)][m];
+                       DeCastel[(*b2i)(i,j,k,degu)][m] =
+                        u* DeCastel[(*b2i)(i+1,j,k,degu)][m] +
+                        v* DeCastel[(*b2i)(i,j+1,k,degu)][m] +
+                        w* DeCastel[(*b2i)(i,j,k+1,degu)][m];
                 }
             }
 
             /* Last step of de Casteljau algorithm */
             for(m=0;m<DIM;m++)
-                 Point[m] = u* DeCastel[(*b2i)(1,0,0, deg)][m] +
-                             v* DeCastel[(*b2i)(0,1,0,deg)][m] +
-                                w* DeCastel[(*b2i)(0,0,1,deg)][m];
+                 Point[m] = u* DeCastel[(*b2i)(1,0,0, degu)][m] +
+                             v* DeCastel[(*b2i)(0,1,0,degu)][m] +
+                                w* DeCastel[(*b2i)(0,0,1,degu)][m];
 
-            //V00   = DeCastel[(*b2i)(0,0,0,deg)];
+            //V00   = DeCastel[(*b2i)(0,0,0,degu)];
             V00   = Point;
             if (atvtx )   {
-                V01   = DeCastel[(*b2i)(0,1,0,deg)];
-                V02   = DeCastel[(*b2i)(0,2,0,deg)];
-                V10   = DeCastel[(*b2i)(1,0,0,deg)];
-                V20   = DeCastel[(*b2i)(2,0,0,deg)];
-                V11   = DeCastel[(*b2i)(1,1,0,deg)];
+                V01   = DeCastel[(*b2i)(0,1,0,degu)];
+                V02   = DeCastel[(*b2i)(0,2,0,degu)];
+                V10   = DeCastel[(*b2i)(1,0,0,degu)];
+                V20   = DeCastel[(*b2i)(2,0,0,degu)];
+                V11   = DeCastel[(*b2i)(1,1,0,degu)];
             }
             else if (onbdy )   
             {
-                V01   = DeCastel[(*b2i)(1,0,0,deg)];
-                V02   = DeCastel[(*b2i)(2,0,0,deg)];
-                V10   = DeCastel[(*b2i)(0,0,1,deg)];
-                V20   = DeCastel[(*b2i)(0,0,2,deg)];
-                V11   = DeCastel[(*b2i)(1,0,1,deg)];
+                V01   = DeCastel[(*b2i)(1,0,0,degu)];
+                V02   = DeCastel[(*b2i)(2,0,0,degu)];
+                V10   = DeCastel[(*b2i)(0,0,1,degu)];
+                V20   = DeCastel[(*b2i)(0,0,2,degu)];
+                V11   = DeCastel[(*b2i)(1,0,1,degu)];
                 //printf("On boundary\n");
             }
             else
             {
-                V01   = DeCastel[(*b2i)(0,0,1,deg)];
-                V02   = DeCastel[(*b2i)(0,0,2,deg)];
-                V10   = DeCastel[(*b2i)(0,1,0,deg)];
-                V20   = DeCastel[(*b2i)(0,2,0,deg)];
-                V11   = DeCastel[(*b2i)(0,1,1,deg)];
+                V01   = DeCastel[(*b2i)(0,0,1,degu)];
+                V02   = DeCastel[(*b2i)(0,0,2,degu)];
+                V10   = DeCastel[(*b2i)(0,1,0,degu)];
+                V20   = DeCastel[(*b2i)(0,2,0,degu)];
+                V11   = DeCastel[(*b2i)(0,1,1,degu)];
             }
 
 			// compute the point and the normal at the (u,v) parameter
@@ -275,7 +279,7 @@ void TriBezier::evaluate_patch(int subDepth)
 
 			// compute the curvatures (Gaussian, mean, min and max)
 			// at the (u,v) parameter
-            h = crv3 (V00, V01, V02, V10, V20, V11, deg, &crv_array[loc*4]);
+            h = crv3 (V00, V01, V02, V10, V20, V11, degu, &crv_array[loc*4]);
 
             //printf("value %f at %d \n", h, loc);
             loc ++;
@@ -293,30 +297,30 @@ void TriBezier::evaluate_patch(int subDepth)
 			//printf("loc = %d, u = %f, v= %f, w= %f\n", loc, u, v, w);
 
             /* initialize the DeCastel Array */
-            for(i=0;i<=Ndeg;i++)
-                for(j=0;j<=Ndeg-i;j++)
+            for(i=0;i<=Ndegu;i++)
+                for(j=0;j<=Ndegu-i;j++)
             {
-                k = Ndeg -i-j;
+                k = Ndegu -i-j;
                 for( m = 0; m <DIM; m++)
-                    DeCastel[(*b2i)(i,j,k, Ndeg)][m] = 
-                        normal[(*b2i)(i,j,k, Ndeg)][m];
+                    DeCastel[(*b2i)(i,j,k, Ndegu)][m] =
+                        normal[(*b2i)(i,j,k, Ndegu)][m];
             }
 
             /* de Casteljau algorithm */
-            for (d = Ndeg-1 ; d >=0; d--)
+            for (d = Ndegu-1 ; d >=0; d--)
             {
                 for(k=0;k<=d;k++)
                     for(j=0;j<=d-k;j++)
                 {
                     i = d-j-k;
                     for (m=0;m<DIM;m++)
-                       DeCastel[(*b2i)(i,j,k,Ndeg)][m] =
-                        u* DeCastel[(*b2i)(i+1,j,k,Ndeg)][m] +
-                        v* DeCastel[(*b2i)(i,j+1,k,Ndeg)][m] +
-                        w* DeCastel[(*b2i)(i,j,k+1,Ndeg)][m];
+                       DeCastel[(*b2i)(i,j,k,Ndegu)][m] =
+                        u* DeCastel[(*b2i)(i+1,j,k,Ndegu)][m] +
+                        v* DeCastel[(*b2i)(i,j+1,k,Ndegu)][m] +
+                        w* DeCastel[(*b2i)(i,j,k+1,Ndegu)][m];
                 }
             }
-            Vcopy(DeCastel[(*b2i)(0,0,0,Ndeg)], &eval_N[loc][0]);
+            Vcopy(DeCastel[(*b2i)(0,0,0,Ndegu)], &eval_N[loc][0]);
             Normalize(&eval_N[loc][0]);
 			loc++;
 		}
@@ -329,8 +333,8 @@ void TriBezier::evaluate_patch(int subDepth)
 
 TriBezier::TriBezier(int degree) {
     evaluated = false;
-    deg = degree; art_normal = false;
-    pointCount = (deg+2)*(deg+1) /2;
+    degu = degree; art_normal = false;
+    pointCount = (degu+2)*(degu+1) /2;
     arrcreate(position, pointCount);
 }
 
@@ -593,5 +597,5 @@ int b2i_k (int i, int j, int k, int d)
 
 
 REAL* TriBezier::get_bb(int i, int j) {
-    return ( &position[b2i_i(i,j,deg-i-j,deg)][0]);
+    return ( &position[b2i_i(i,j,degu-i-j,degu)][0]);
 }

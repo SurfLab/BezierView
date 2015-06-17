@@ -7,6 +7,12 @@
 // abstract class Bezier
 //
 struct Bezier {
+    /*
+     * Degree u and v are equal for the triangular Bezier patch.
+     * For quad patch, they are the tensor-product degrees
+     */
+    int degu, degv;
+    int Ndegu, Ndegv;   // the degrees of the normal if applicable
 
     /// AABB should be struct
     REAL minx, maxx, miny, maxy, minz, maxz; // axis aligned bounding box

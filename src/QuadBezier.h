@@ -8,25 +8,15 @@
 // 
 // class QuadBezier
 //         A quadrilateral bezier patch
-class QuadBezier : public Bezier {
-public:
-	int degu, degv;    // degrees of this quadrilateral patch
-	int Ndegu, Ndegv;   // the degrees of the normal if applicable
-
-//---------------------------------------------------------------
-// methods
-private:
+struct QuadBezier : public Bezier {
 	void evaluate_patch(int subDepth);
 	REAL* get_v(int side);
-
-public:
-
-    // constructors 
-    QuadBezier(){evaluated = 0;};
-
-    // destructor
-    ~QuadBezier(){if(evaluated) {arrdelete(eval_P);arrdelete(eval_N);arrdelete(crv_array);}
-	};
+    QuadBezier(){evaluated = 0;}
+    ~QuadBezier(){
+        if(evaluated) {
+            arrdelete(eval_P);arrdelete(eval_N);arrdelete(crv_array);
+        }
+    }
 
     // ploting routines
 	void plot_patch(bool smooth);  // plot the quadrilateral patch
@@ -36,14 +26,10 @@ public:
 	void plot_highlights(VEC A, VEC H, REAL hl_step, int highlight_type);  // plot the highlight lines for the patch
 	void flip_normal();     	  // flip the normal
 
-	int get_degu() {return degu;};
-	int get_degv() {return degv;};
-
 	REAL* get_bb(int i, int j) const { 
          return &position[(i*(degv+1)+j)][0];
-	};
+    }
 	
-	// load the data from the file
 	int loadFile(FILE* fp, bool equal_deg, bool rational, bool art_normal);  
 	int create(int degu, int degv);  // directly construct the memory
 };
