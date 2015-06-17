@@ -8,23 +8,23 @@
  * ------------------------------------------------------------
  */
 #include "stdheaders.h"
-#include "QuadBezier.h"
 extern "C" {
 #include "util.h" 
 #include "curvature.h"
 #include "highlight.h"
 }
+#include "QuadBezier.h"
 
 // functions prototypes -------------------------
 
 // quad Bezier patch subdivision 
 void     RSubDiv(VEC bb[], int step, int degu, int degv, int sizeu, int sizev);
-void     BBcopy4( REAL * buf, int degu, int degv, int st, VEC * bb);
+void     BBcopy4(VEC *buf, int degu, int degv, int st, VEC * bb);
 
 // Decastel algorithms for 1-D and 2-D Bezier
-void     DeCastel2(GLdouble* coeff, int degu, int degv,   
-				double u, double v, GLdouble* pts);
-void     DeCastel1(GLdouble* coeff, int deg, double u, GLdouble* pts);
+void     DeCastel2(GLdouble (*position)[DIM], int degu, int degv,
+                double u, double v, GLdouble pts[DIM]);
+void     DeCastel1(GLdouble (*position)[DIM], int deg, double u, GLdouble pts[DIM]);
 
 // global variables -------------------------
 
@@ -48,41 +48,39 @@ int QuadBezier::loadFile(FILE* fp, bool equal_deg,
 
 	// create the patch ( allocate memory, assign degrees)
 	create(degu, degv);
-//    num_points = (degu+1)*(degv+1);
-//    coeff = alloc_mem_db(num_points*DIM);    // allocate memory 
 
 	if(art_normal)   // if this is a PN quad Bezier patch
 	{
         fscanf(fp,"%d", &Ndegu);
         fscanf(fp,"%d", &Ndegv);
-		num_normals = (Ndegu+1)*(Ndegv+1);
+		normalCount = (Ndegu+1)*(Ndegv+1);
 	}
 
     // read in all control points
 
-    for (i=0;i<num_points;i++) {
+    for (i=0;i<pointCount;i++) {
  	    for (m=0;m<3;m++)
-            fscanf(fp,"%lg", &coeff[i*DIM+m]);
+            fscanf(fp,"%lg", &position[i][m]);
 
 		if(rational)
-            fscanf(fp,"%lg", &coeff[i*DIM+3]);
+            fscanf(fp,"%lg", &position[i][3]);
 		else
-	    	coeff[i*DIM+3] = 1.0;
+            position[i][3] = 1.0;
 
         // adjust view volume to contain the point
-        enlarge_aabb(coeff[i*DIM+0]/coeff[i*DIM+3],
-           coeff[i*DIM+1]/coeff[i*DIM+3], coeff[i*DIM+2]/coeff[i*DIM+3]);
+        enlarge_aabb(position[i][0]/position[i][3],
+           position[i][1]/position[i][3], position[i][2]/position[i][3]);
     }
 
     // read in all coefficients of the normal function, if PN quad
 	if(art_normal) {
-    	norm = alloc_mem_db(num_normals*DIM);    // allocate memory 
-    	for (i=0;i<num_normals;i++) {
+        arrcreate(normal, normalCount);
+    	for (i=0;i<normalCount;i++) {
  	    	for (m=0;m<3;m++)
-            	fscanf(fp,"%lg", &norm[i*DIM+m]);
+                fscanf(fp,"%lg", &normal[i][m]);
 
 			if (DIM==4)
-	    		norm[i*DIM+3] = 1.0;
+                normal[i][3] = 1.0;
 		}
     }
 	
@@ -100,8 +98,8 @@ int QuadBezier::loadFile(FILE* fp, bool equal_deg,
 int QuadBezier::create(int degu, int degv) {
 	this->degu = degu;
 	this->degv = degv;
-    num_points = (degu+1)*(degv+1);
-    coeff = alloc_mem_db(num_points*DIM);    // allocate memory 
+    pointCount = (degu+1)*(degv+1);
+    arrcreate(position, pointCount);
 	return 0;
 };
 
@@ -135,19 +133,19 @@ void QuadBezier::plot_patch(bool smooth)
         {
 			if(!normal_flipped) { // reverse the orientation of the patch
 				loc = i*(pts+1)+j;                // (i,j)----(i, j+1) -- ...
-				glNormal3dv(&(eval_N[loc*DIM]));  //   |         |
-				glVertex4dv(&(eval_P[loc*DIM]));  //   |         |
+                glNormal3dv(&(eval_N[loc][0]));  //   |         |
+                glVertex4dv(&(eval_P[loc][0]));  //   |         |
 				loc = (i+1)*(pts+1)+j;            // (i+1,j)--(i+1, j+1) -- ...
-				glNormal3dv(&(eval_N[loc*DIM]));
-				glVertex4dv(&(eval_P[loc*DIM]));
+                glNormal3dv(&(eval_N[loc][0]));
+                glVertex4dv(&(eval_P[loc][0]));
 			}
 			else {
 				loc = (i+1)*(pts+1)+j;            // (i+1,j)--(i+1, j+1) -- ...
-				glNormal3dv(&(eval_N[loc*DIM]));
-				glVertex4dv(&(eval_P[loc*DIM]));
+                glNormal3dv(&(eval_N[loc][0]));
+                glVertex4dv(&(eval_P[loc][0]));
 				loc = i*(pts+1)+j;                // (i,j)----(i, j+1) -- ...
-				glNormal3dv(&(eval_N[loc*DIM]));  //   |         |
-				glVertex4dv(&(eval_P[loc*DIM]));  //   |         |
+                glNormal3dv(&(eval_N[loc][0]));  //   |         |
+                glVertex4dv(&(eval_P[loc][0]));  //   |         |
 			}
 		}
 		glEnd();
@@ -175,9 +173,9 @@ void QuadBezier::evaluate_patch(int subDepth)
 	// allocate the memory for the result of evaluation 
 	C    = pts+1;
 	size = C*C;            // how big should the array be
-	eval_P = alloc_mem_db(size*DIM);
-	eval_N = alloc_mem_db(size*DIM);
-	crv_array = alloc_mem_db(size*4);  // 4 types of curvatures
+    arrcreate(eval_P, size);
+    arrcreate(eval_N, size);
+    arrcreate(crv_array, size*4);
 
 	// allocate a temporary memory to perform subdivision
 	//    subdivision VS de Casteljau ?? 
@@ -197,10 +195,10 @@ void QuadBezier::evaluate_patch(int subDepth)
     Cu = sizeu+1;       // 0,0     ..  0,sizeu 
     Cv = sizev+1;       // sizev,0 .. sizev, sizev
 
-    bb = (VEC *) alloc_mem_db( Cu * Cv * DIM);
+    arrcreate(bb, Cu * Cv);
 
     // BBcopy4(PAcopy4) -- copy the original data into the sparse array
-    BBcopy4( coeff, degu, degv, pts, bb);
+    BBcopy4( position, degu, degv, pts, bb);
 
     // subdivision
     for (i=0; i <subDepth; i++)
@@ -227,8 +225,8 @@ void QuadBezier::evaluate_patch(int subDepth)
             h = crv4(bb[rs+c],bb[rs+c+st],bb[rs+c+2*st], // curvature
                 bb[r1+c],bb[r2+c],bb[r1+c+st],degu, degv, &crv_array[loc*4]);
 
-			evalPN(bb[rs+c], bb[r1+c], bb[rs+c+st], &eval_P[loc*DIM],
-							&eval_N[loc*DIM]);
+            evalPN(bb[rs+c], bb[r1+c], bb[rs+c+st], &eval_P[loc][0],
+                            &eval_N[loc][0]);
             //printf (" %d %d %d %d %d %d \n", rs+c, rs+c+st, rs+c+2*st,
             //      r1+c, r2+c, r1+c+st);
         }
@@ -238,8 +236,8 @@ void QuadBezier::evaluate_patch(int subDepth)
         h =crv4(bb[rs+c],bb[r1+c],bb[r2+c], bb[rs+c-st],
 			bb[rs+c-2*st],bb[r1+c-st],degv, degu, &crv_array[loc*4]);
 
-		evalPN(bb[rs+c], bb[rs+c-st], bb[r1+c], &eval_P[loc*DIM],
-							&eval_N[loc*DIM]);
+        evalPN(bb[rs+c], bb[rs+c-st], bb[r1+c], &eval_P[loc][0],
+                            &eval_N[loc][0]);
 
     }
       // top row |-  
@@ -252,8 +250,8 @@ void QuadBezier::evaluate_patch(int subDepth)
         h =crv4(bb[rs+c],bb[r1+c],bb[r2+c], bb[rs+c+st],  	// curvature
 			bb[rs+c+2*st],bb[r1+c+st],degv, degu, &crv_array[loc*4]);
 
-		evalPN(bb[rs+c], bb[rs+c+st], bb[r1+c], &eval_P[loc*DIM],
-							&eval_N[loc*DIM]);
+        evalPN(bb[rs+c], bb[rs+c+st], bb[r1+c], &eval_P[loc][0],
+                            &eval_N[loc][0]);
 
     }
 
@@ -263,10 +261,10 @@ void QuadBezier::evaluate_patch(int subDepth)
     h = crv4(bb[rs+c],bb[rs+c-st],bb[rs+c-2*st], bb[r1+c],  // curvature
 			bb[r2+c], bb[r1+c-st],degu, degv, &crv_array[loc*4]); 
 
-	evalPN(bb[rs+c], bb[r1+c], bb[rs+c-st],  &eval_P[loc*DIM],
-							&eval_N[loc*DIM]);
+    evalPN(bb[rs+c], bb[r1+c], bb[rs+c-st],  &eval_P[loc][0],
+                            &eval_N[loc][0]);
 
-	free(bb);  // free the space used for subdivision
+    arrdelete(bb);  // free the space used for subdivision
 
 	// evaluate the artificial normals if necessary
 	if(art_normal && use_art_normal) {
@@ -277,8 +275,8 @@ void QuadBezier::evaluate_patch(int subDepth)
 			    double v = 1-(double)c/pts;
 				loc = r*C+c;
 				//printf("loc = %d, u=%f, v=%f\n", loc, u, v);
-				DeCastel2(norm, Ndegu, Ndegv, u, v, &eval_N[loc*DIM]);
-				Normalize(&eval_N[loc*DIM]);
+                DeCastel2(normal, Ndegu, Ndegv, u, v, eval_N[loc]);
+                Normalize(&eval_N[loc][0]);
 			}
 		}
 	}
@@ -304,7 +302,7 @@ void QuadBezier::flip_normal()
 	// reverse the normals
 	for(i=0;i<size;i++)
 		for(m=0;m<3;m++)
-			eval_N[i*DIM+m] = -eval_N[i*DIM+m];
+            eval_N[i][m] = -eval_N[i][m];
 
 	normal_flipped = !normal_flipped;
 }
@@ -332,13 +330,13 @@ void QuadBezier::plot_mesh(float* bg_color)
 			for(j=0;j<degv;j++)       // this loop will draw the quad strip:
 			{
 				loc = (i)*(degv+1)+j;            // (i+1,j)--(i+1, j+1) -- ...
-				glVertex4dv(&(coeff[loc*DIM]));
+                glVertex4dv(&(position[loc][0]));
 				loc = (i+1)*(degv+1)+j;                // (i,j)----(i, j+1) -- ...
-				glVertex4dv(&(coeff[loc*DIM]));  //   |         |
+                glVertex4dv(&(position[loc][0]));  //   |         |
 				loc = (i+1)*(degv+1)+j+1;            // (i+1,j)--(i+1, j+1) -- ...
-				glVertex4dv(&(coeff[loc*DIM]));
+                glVertex4dv(&(position[loc][0]));
 				loc = i*(degv+1)+j+1;                // (i,j)----(i, j+1) -- ...
-				glVertex4dv(&(coeff[loc*DIM]));  //   |         |
+                glVertex4dv(&(position[loc][0]));  //   |         |
 			}
 			glEnd();
 		}
@@ -353,13 +351,13 @@ void QuadBezier::plot_mesh(float* bg_color)
         for(j=0;j<degv;j++)       // this loop will draw the quad strip:
         {
 				loc = (i)*(degv+1)+j;            // (i+1,j)--(i+1, j+1) -- ...
-				glVertex4dv(&(coeff[loc*DIM]));
+                glVertex4dv(&(position[loc][0]));
 				loc = (i+1)*(degv+1)+j;                // (i,j)----(i, j+1) -- ...
-				glVertex4dv(&(coeff[loc*DIM]));  //   |         |
+                glVertex4dv(&(position[loc][0]));  //   |         |
 				loc = (i+1)*(degv+1)+j+1;            // (i+1,j)--(i+1, j+1) -- ...
-				glVertex4dv(&(coeff[loc*DIM]));
+                glVertex4dv(&(position[loc][0]));
 				loc = i*(degv+1)+j+1;                // (i,j)----(i, j+1) -- ...
-				glVertex4dv(&(coeff[loc*DIM]));  //   |         |
+                glVertex4dv(&(position[loc][0]));  //   |         |
 		}
 		glEnd();
 	  }
@@ -401,7 +399,7 @@ void QuadBezier::plot_crv(int crv_choice)
 
 //			printf("h=%f\n", h);
 			glColor3fv( crv2color(h));        //   |         |
-		    glVertex4dv(&(eval_P[loc*DIM]));  //   |         |
+            glVertex4dv(&(eval_P[loc][0]));  //   |         |
                                               //   |         |
 		    loc = (i+1)*(pts+1)+j;            // (i+1,0)--(i+1,1) -- ...
 		    h = get_crv(crv_array, loc, crv_choice);
@@ -412,7 +410,7 @@ void QuadBezier::plot_crv(int crv_choice)
 				h = -h;
 
 		    glColor3fv( crv2color(h));
-		    glVertex4dv(&(eval_P[loc*DIM]));
+            glVertex4dv(&(eval_P[loc][0]));
 		}
 		glEnd();
     }
@@ -437,17 +435,17 @@ void QuadBezier::plot_crv_needles(int crv_choice, REAL length)
         {
 			VEC sum;
 		    loc = i*(pts+1)+j;             
-			if(normal_clipping && !point_clipped(&eval_P[loc*DIM])) {
+            if(normal_clipping && !point_clipped(&eval_P[loc][0])) {
 
 			h = get_crv(crv_array, loc, crv_choice);
 
 		    glColor3fv( crv2color(h));   // use the color of the curvature
 			glBegin(GL_LINES);
-		    //glVertex3dv(&(eval_P[loc*DIM]));
+            //glVertex3dv(&(eval_P[loc][0]));
 
-			VVadd(1.0, &(eval_P[loc*DIM]), 0.00, &(eval_N[loc*DIM]),sum);
+            VVadd(1.0, &(eval_P[loc][0]), 0.00, &(eval_N[loc][0]),sum);
 		    glVertex3dv(sum); 
-			VVadd(1.0, &(eval_P[loc*DIM]), h*length, &(eval_N[loc*DIM]),
+            VVadd(1.0, &(eval_P[loc][0]), h*length, &(eval_N[loc][0]),
 					sum);
 		    glVertex3dv(sum); 
 			glEnd();
@@ -466,7 +464,7 @@ void QuadBezier::plot_highlights(VEC A, VEC H, REAL hl_step, int highlight_type)
 {
     int  i,j,k;
     int  loc[4];  
-	REAL P[4*DIM], N[4*DIM];
+    REAL P[4*DIM], N[4*DIM];
 
 	// evaluate the patch first if needed
 	if(!evaluated) {
@@ -495,8 +493,8 @@ void QuadBezier::plot_highlights(VEC A, VEC H, REAL hl_step, int highlight_type)
 		}
 
         for (k=0; k<4; k++) {
-			Vcopy( &eval_P[loc[k]*DIM], &P[k*DIM]);
-			Vcopy( &eval_N[loc[k]*DIM], &N[k*DIM]);
+            Vcopy( &eval_P[loc[k]][0], &P[k]);
+            Vcopy( &eval_N[loc[k]][0], &N[k]);
         }
 	
 		Highlight(4, P, N, A, H, hl_step, highlight_type);
@@ -565,28 +563,30 @@ void RSubDiv(VEC bb[], int step, int degu, int degv, int sizeu, int sizev)
 }
 
 /* De Casteljau algorithm for tensor-product function */
-void DeCastel2(GLdouble* coeff, int degu, int degv, 
-				double u, double v, GLdouble* pts)
+void DeCastel2(GLdouble (*position)[DIM], int degu, int degv,
+                double u, double v, GLdouble pts[DIM])
 {
 	int i,j;
-    REAL *Ubuffer = alloc_mem_db((degu+1)*DIM);
-    REAL *Vbuffer = alloc_mem_db((degv+1)*DIM);
+    REAL (*Ubuffer)[DIM];
+    arrcreate(Ubuffer, degu+1);
+    REAL (*Vbuffer)[DIM];
+    arrcreate(Vbuffer, degv+1);
 
 	// calculate Du
     for (i= 0;  i<=degu; i++)
     {
         for (j= 0; j<=degv; j++)
-			Vcopy(&coeff[(i*(degv+1)+j)*DIM], &Vbuffer[j*DIM]);
+            Vcopy(&position[(i*(degv+1)+j)][0], &Vbuffer[j][0]);
 
-        DeCastel1(Vbuffer, degv, v, &Ubuffer[i*DIM]);
+        DeCastel1(Vbuffer, degv, v, Ubuffer[i]);
     }
     DeCastel1(Ubuffer, degu, u, pts);
-	free(Ubuffer);
-	free(Vbuffer);
+    arrdelete(Ubuffer);
+    arrdelete(Vbuffer);
 }
 
 /* De Casteljau algorithm for 1 variable function */
-void DeCastel1(GLdouble* coeff, int deg, double u, GLdouble* pts)
+void DeCastel1(GLdouble (*position)[DIM], int deg, double u, GLdouble pts[DIM])
 {
     double u1 = 1-u;
     int d, i, m;
@@ -594,10 +594,10 @@ void DeCastel1(GLdouble* coeff, int deg, double u, GLdouble* pts)
     for(d=deg;d>1;d--)
         for(i=0;i<d;i++)
             for(m=0;m<DIM;m++)
-                coeff[i*DIM+m] = u*coeff[i*DIM+m] + u1*coeff[(i+1)*DIM+m];
+                position[i][m] = u*position[i][m] + u1*position[(i+1)][m];
 
     for(m=0;m<DIM;m++)
-        pts[m] = u*coeff[m] + u1*coeff[1*DIM+m];
+        pts[m] = u*position[0][m] + u1*position[1][m];
 }
 
 
@@ -624,7 +624,7 @@ REAL* QuadBezier::get_v(int s)
 //  st: step
 //  degu, degv: degrees for bb
 //
-void BBcopy4( REAL * buf, int degu, int degv, int st, VEC * bb)
+void BBcopy4( VEC * buf, int degu, int degv, int st, VEC * bb)
 {
     int i,j;
     int C;
@@ -639,9 +639,8 @@ void BBcopy4( REAL * buf, int degu, int degv, int st, VEC * bb)
     C = st*degu +1;
     for (i=0; i<=degu; i++) {
         for (j=0; j<=degv; j++) {
-            double *v;
-            v = buf + (i*(degv+1) + j) * DIM;
-            Vcopy(v, bb[(j* st)* C + i*st]);
+            VEC * v = buf + (i*(degv+1) + j);
+            Vcopy(v[0], bb[(j* st)* C + i*st]);
         }
     }
 }

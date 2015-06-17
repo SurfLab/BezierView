@@ -47,7 +47,6 @@ HEADERS  += \
     src/TriBezier.h \
     src/QuadBezier.h \
     src/Polygon.h \
-    src/Object.h \
     src/highlight.h \
     src/curvature.h \
     src/Bezier.h \

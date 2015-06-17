@@ -5,7 +5,6 @@ extern "C" {
 #include "util.h"
 #include "export.h"
 }
-#include "Object.h"
 #include "Bezier.h"
 #include "Polygon.h"
 #include "QuadBezier.h"
@@ -55,13 +54,13 @@ void export_eps(Patch face[], int patch_num, float ObjectCenter[3], double scale
         p = &(face[i]);
         int patch_kind = p->type;
         if(patch_kind == POLY) {
-            PolygonMesh * poly = (PolygonMesh*) p->object;
+            Polygon * poly = (Polygon*) p->object;
 
-            for (j=0; j<poly->VNum; j++) {
+            for (j=0; j<poly->pointCount; j++) {
                 gluProject(
-                    poly->vertices[j].p[0],
-                    poly->vertices[j].p[1],
-                    poly->vertices[j].p[2],
+                    poly->position[j][0],
+                    poly->position[j][1],
+                    poly->position[j][2],
                     modelMatrix,
                     projMatrix,
                     viewport,

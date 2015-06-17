@@ -1,13 +1,13 @@
 #ifndef PATCH_H_2002_10_20
 #define PATCH_H_2002_10_20
 
-typedef struct Object Object;
+typedef struct Bezier Bezier;
 
 typedef struct Patch{
 
     int type;  // the type of the patch, see type.h
 
-	Object*  object;
+    Bezier*  object;
 
     int group_id;    // which group this face belongs to 
  //   int color;       // if the group has random color, record face color here

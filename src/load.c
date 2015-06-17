@@ -195,7 +195,10 @@ void define_scene(FILE* fp)
 
             /* Read vertex data */
             for (int i=0; i<VNum; i++)
+            {
                 fscanf(fp, "%lf %lf %lf\n", &V[i][0], &V[i][1], &V[i][2]);
+                V[i][3] = 1.0;
+            }
 
             /* Read face data */
             for (int i=0; i<FNum; i++)

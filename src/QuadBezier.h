@@ -25,7 +25,7 @@ public:
     QuadBezier(){evaluated = 0;};
 
     // destructor
-    ~QuadBezier(){if(evaluated) {free(eval_P);free(eval_N);free(crv_array);}
+    ~QuadBezier(){if(evaluated) {arrdelete(eval_P);arrdelete(eval_N);arrdelete(crv_array);}
 	};
 
     // ploting routines
@@ -40,7 +40,7 @@ public:
 	int get_degv() {return degv;};
 
 	REAL* get_bb(int i, int j) const { 
-	     return &coeff[(i*(degv+1)+j)*DIM]; 
+         return &position[(i*(degv+1)+j)][0];
 	};
 	
 	// load the data from the file

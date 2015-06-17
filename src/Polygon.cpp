@@ -24,16 +24,12 @@ extern "C" {
 
 //////////////////////////////////////////////////////////
 // flip the normal
-void PolygonMesh::flip_normal()
+void Polygon::flip_normal()
 {
-	REAL* normal;
-	int i;
-    // initialize 
-    for(i=0;i<VNum;i++) {
-		normal = vertices[i].get_n();
-        vertices[i].set_n(-normal[0], -normal[1], -normal[2]);
-	}
-	normal_flipped = !normal_flipped;
+    for(int i=0;i<this->pointCount;i++)
+        for(int j = 0; j < 3; j++)
+            this->normal[i][j] = -this->normal[i][j];
+    normal_flipped = !normal_flipped;
 }
 
 
@@ -42,9 +38,9 @@ void PolygonMesh::flip_normal()
 //
 //  plot the polygon
 
-void PolygonMesh::plot_patch(bool smooth)
+void Polygon::plot_patch(bool smooth)
 {
-    int i, j, pt;
+    int j, pt;
 
 	//
 	if(!evaluated) {
@@ -56,17 +52,17 @@ void PolygonMesh::plot_patch(bool smooth)
     glEnable(GL_LIGHTING);
 
     glBegin(GL_POLYGON);
-    for (j=0; j<VNum; j++) {
+    for (j=0; j<this->pointCount; j++) {
         if(!normal_flipped)  // reverse the orientation of the polygon
             pt =  (j);
         else
-            pt =  (VNum-1-j);
+            pt =  (this->pointCount-1-j);
 
-        glNormal3dv(vertices[pt].get_n());
+        glNormal3dv(this->normal[pt]);
 
         double size = 64.0;
-        glTexCoord2f((vertices[pt].get_p())[0]/size,(vertices[pt].get_p())[2]/size);
-        glVertex4dv(vertices[pt].get_p());
+        glTexCoord2f((this->position[pt])[0]/size,(this->position[pt])[2]/size);
+        glVertex4dv(this->position[pt]);
     }
     glEnd();
 
@@ -77,7 +73,7 @@ void PolygonMesh::plot_patch(bool smooth)
 //
 // plot the mesh 
 //
-void PolygonMesh::plot_mesh(float* bg_color)
+void Polygon::plot_mesh(float* bg_color)
 {
     int i, j, pt;
 	
@@ -90,8 +86,8 @@ void PolygonMesh::plot_mesh(float* bg_color)
 		glColor3fv(bg_color);
 
         glBegin(GL_POLYGON);
-        for (j=0; j<VNum; j++) {
-            glVertex4dv(vertices[j].get_p());
+        for (j=0; j<this->pointCount; j++) {
+            glVertex4dv(this->position[j]);
         }
         glEnd();
 		glDisable(GL_POLYGON_OFFSET_FILL);	
@@ -99,10 +95,10 @@ void PolygonMesh::plot_mesh(float* bg_color)
 	}
 
 
-    for (j=0; j<VNum; j++) {
+    for (j=0; j<this->pointCount; j++) {
         glBegin(GL_LINES);
-            glVertex4dv(vertices[j].get_p());
-            glVertex4dv(vertices[(j+1)%VNum].get_p());
+            glVertex4dv(this->position[j]);
+            glVertex4dv(this->position[(j+1)%this->pointCount]);
         glEnd();
     }
 }
@@ -111,7 +107,7 @@ void PolygonMesh::plot_mesh(float* bg_color)
 //
 // plot the highlight lines
 //
-void PolygonMesh::plot_highlights(VEC A, VEC H, REAL hl_step, int highlight_type)
+void Polygon::plot_highlights(VEC A, VEC H, REAL hl_step, int highlight_type)
 {
     int j;
 
@@ -120,11 +116,11 @@ void PolygonMesh::plot_highlights(VEC A, VEC H, REAL hl_step, int highlight_type
 
 	glPushAttrib(GL_ENABLE_BIT);
     glEnable(GL_LIGHTING);
-    for (j=0; j<VNum; j++) {
-        Vcopy(vertices[j].get_p(), &P[j*DIM]);
-        Vcopy(vertices[j].get_n(), &N[j*DIM]);
+    for (j=0; j<this->pointCount; j++) {
+        Vcopy(this->position[j], &P[j*DIM]);
+        Vcopy(this->normal[j], &N[j*DIM]);
     }
-    Highlight(VNum, P, N, A, H, hl_step, highlight_type);
+    Highlight(this->pointCount, P, N, A, H, hl_step, highlight_type);
 	glPopAttrib();
 }
 

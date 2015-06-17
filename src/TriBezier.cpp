@@ -27,38 +27,38 @@ int TriBezier::loadFile(FILE* fp, bool art_normal) {
 
 	//printf("start evaluated : %d\n", evaluated);
     fscanf(fp,"%d", &deg);
-    num_points = (deg+2)*(deg+1) /2;
+    pointCount = (deg+2)*(deg+1) /2;
 
 	// if artificial normal exists, read in the degree 
 	if(art_normal) {
         fscanf(fp,"%d", &Ndeg);
-        num_normals = (Ndeg+2)*(Ndeg+1) /2;
+        normalCount = (Ndeg+2)*(Ndeg+1) /2;
 	}
 
     // read in all control points
-    coeff = alloc_mem_db(num_points*DIM);    // allocate memory 
-    for (i=0;i<num_points;i++) {
+    arrcreate(position, pointCount);
+    for (i=0;i<pointCount;i++) {
  	    for (m=0;m<3;m++)
-            fscanf(fp,"%lg", &coeff[i*DIM+m]);
+            fscanf(fp,"%lg", &position[i][m]);
 
 		if (DIM==4)
-	    	coeff[i*DIM+3] = 1.0;
+            position[i][3] = 1.0;
 
         // adjust view volume to contain the point
-        enlarge_aabb(coeff[i*DIM+0]/coeff[i*DIM+3],
-           coeff[i*DIM+1]/coeff[i*DIM+3], coeff[i*DIM+2]/coeff[i*DIM+3]);
+        enlarge_aabb(position[i][0]/position[i][3],
+           position[i][1]/position[i][3], position[i][2]/position[i][3]);
 
     }
 
     // read in all coefficients of the normal function
 	if(art_normal) {
-    	norm = alloc_mem_db(num_normals*DIM);    // allocate memory 
-    	for (i=0;i<num_normals;i++) {
+        arrcreate(normal, normalCount);
+        for (i=0;i<normalCount;i++) {
  	    	for (m=0;m<3;m++)
-            	fscanf(fp,"%lg", &norm[i*DIM+m]);
+                fscanf(fp,"%lg", &normal[i][m]);
 
 			if (DIM==4)
-	    		norm[i*DIM+3] = 1.0;
+                normal[i][3] = 1.0;
 		}
     }
 
@@ -99,29 +99,29 @@ void TriBezier::plot_patch(bool smooth)
 
 			if(!normal_flipped) {  // reverse the orientation of the patch
 				loc = b2i_i(i+1, j, pts-i-j-1, pts);
-				glNormal3dv(&(eval_N[loc*DIM]));
-				glVertex4dv(&(eval_P[loc*DIM]));
+                glNormal3dv(&(eval_N[loc][0]));
+                glVertex4dv(&(eval_P[loc][0]));
 
 				loc = b2i_i(i, j, pts-i-j, pts);
-				glNormal3dv(&(eval_N[loc*DIM]));
-				glVertex4dv(&(eval_P[loc*DIM]));
+                glNormal3dv(&(eval_N[loc][0]));
+                glVertex4dv(&(eval_P[loc][0]));
 			}
 			else
 			{
 				loc = b2i_i(i, j, pts-i-j, pts);
-				glNormal3dv(&(eval_N[loc*DIM]));
-				glVertex4dv(&(eval_P[loc*DIM]));
+                glNormal3dv(&(eval_N[loc][0]));
+                glVertex4dv(&(eval_P[loc][0]));
 
 				loc = b2i_i(i+1, j, pts-i-j-1, pts);
-				glNormal3dv(&(eval_N[loc*DIM]));
-				glVertex4dv(&(eval_P[loc*DIM]));
+                glNormal3dv(&(eval_N[loc][0]));
+                glVertex4dv(&(eval_P[loc][0]));
 			}
 		}
 
 		// finish the strip by adding the last triangle
 		loc = b2i_i(i, j, pts-i-j, pts);
-		glNormal3dv(&(eval_N[loc*DIM]));
-		glVertex4dv(&(eval_P[loc*DIM]));
+        glNormal3dv(&(eval_N[loc][0]));
+        glVertex4dv(&(eval_P[loc][0]));
 		glEnd();
     }
 
@@ -141,7 +141,7 @@ void TriBezier::plot_mesh(float* bg_color)
 
     glBegin(GL_POINTS);
     for(i=0; i<((deg+1)*(deg+2)/2); i++)
-       glVertex4dv(&coeff[i*DIM]);
+       glVertex4dv(&position[i][0]);
     glEnd();
 
     for(i=0;i<=d;i++)
@@ -149,9 +149,9 @@ void TriBezier::plot_mesh(float* bg_color)
     {
         k = d-i-j;
         glBegin(GL_LINE_LOOP);
-        glVertex4dv(&coeff[b2i_i(i+1,j,k,deg)*DIM]);
-        glVertex4dv(&coeff[b2i_i(i,j+1,k,deg)*DIM]);
-        glVertex4dv(&coeff[b2i_i(i,j,k+1,deg)*DIM]);
+        glVertex4dv(&position[b2i_i(i+1,j,k,deg)][0]);
+        glVertex4dv(&position[b2i_i(i,j+1,k,deg)][0]);
+        glVertex4dv(&position[b2i_i(i,j,k+1,deg)][0]);
         glEnd();
     }
 }
@@ -184,9 +184,9 @@ void TriBezier::evaluate_patch(int subDepth)
 
 	/* allocate the memory for evaluation */
 	size = (pts+1)*(pts+2)/2;
-	eval_P = alloc_mem_db(size*DIM);
-	eval_N = alloc_mem_db(size*DIM);
-	crv_array = alloc_mem_db(size*4);
+    arrcreate(eval_P, size);
+    arrcreate(eval_N, size);
+    arrcreate(crv_array, size*4);
 
     for (uu=0; uu<=pts; uu++)
     {
@@ -219,7 +219,7 @@ void TriBezier::evaluate_patch(int subDepth)
                 k = deg -i-j;
                 for( m = 0; m <DIM; m++)
                     DeCastel[(*b2i)(i,j,k, deg)][m] = 
-                        coeff[(*b2i)(i,j,k, deg)*DIM+m]; 
+                        position[(*b2i)(i,j,k, deg)][m];
             }
 
             /* de Casteljau algorithm */
@@ -271,7 +271,7 @@ void TriBezier::evaluate_patch(int subDepth)
             }
 
 			// compute the point and the normal at the (u,v) parameter
-            evalPN(V00, V01, V10, &eval_P[loc*DIM], &eval_N[loc*DIM]);
+            evalPN(V00, V01, V10, &eval_P[loc][0], &eval_N[loc][0]);
 
 			// compute the curvatures (Gaussian, mean, min and max)
 			// at the (u,v) parameter
@@ -299,7 +299,7 @@ void TriBezier::evaluate_patch(int subDepth)
                 k = Ndeg -i-j;
                 for( m = 0; m <DIM; m++)
                     DeCastel[(*b2i)(i,j,k, Ndeg)][m] = 
-                        norm[(*b2i)(i,j,k, Ndeg)*DIM+m]; 
+                        normal[(*b2i)(i,j,k, Ndeg)][m];
             }
 
             /* de Casteljau algorithm */
@@ -316,8 +316,8 @@ void TriBezier::evaluate_patch(int subDepth)
                         w* DeCastel[(*b2i)(i,j,k+1,Ndeg)][m];
                 }
             }
-			Vcopy(DeCastel[(*b2i)(0,0,0,Ndeg)], &eval_N[loc*DIM]);
-			Normalize(&eval_N[loc*DIM]);
+            Vcopy(DeCastel[(*b2i)(0,0,0,Ndeg)], &eval_N[loc][0]);
+            Normalize(&eval_N[loc][0]);
 			loc++;
 		}
 		}
@@ -327,22 +327,29 @@ void TriBezier::evaluate_patch(int subDepth)
 	//flip_normal(); // why?
 }
 
+TriBezier::TriBezier(int degree) {
+    evaluated = false;
+    deg = degree; art_normal = false;
+    pointCount = (deg+2)*(deg+1) /2;
+    arrcreate(position, pointCount);
+}
+
 
 void TriBezier::flip_normal()
 {
-	int     i, m, size;
+    int     i, m, size;
 
-	if(!evaluated) {
-		return;
-	}
+    if(!evaluated) {
+        return;
+    }
 
-	size = (pts+1)*(pts+2)/2;
+    size = (pts+1)*(pts+2)/2;
 
-	for(i=0;i<size;i++)
-		for(m=0;m<3;m++)
-			eval_N[i*DIM+m] = -eval_N[i*DIM+m];
+    for(i=0;i<size;i++)
+        for(m=0;m<3;m++)
+            eval_N[i][m] = -eval_N[i][m];
 
-	normal_flipped = !normal_flipped;
+    normal_flipped = !normal_flipped;
 }
 
 //////////////////////////////////////////////////////////////////////// 
@@ -378,7 +385,7 @@ void TriBezier::plot_crv(int crv_choice)
 
 //			printf("h=%f\n", h);
 		    glColor3fv( crv2color(h));
-		    glVertex4dv(&(eval_P[loc*DIM]));
+            glVertex4dv(&(eval_P[loc][0]));
 
 		    loc = b2i_i(i+1, j, pts-i-j-1, pts);
 		    h = get_crv(crv_array, loc, crv_choice);
@@ -389,7 +396,7 @@ void TriBezier::plot_crv(int crv_choice)
 
 //			printf("h=%f\n", h);
 		    glColor3fv( crv2color(h));
-		    glVertex4dv(&(eval_P[loc*DIM]));
+            glVertex4dv(&(eval_P[loc][0]));
 		}
 
 		// finish the strip by adding the last triangle
@@ -401,7 +408,7 @@ void TriBezier::plot_crv(int crv_choice)
 			h = -h;
 
 		glColor3fv( crv2color(h));
-		glVertex4dv(&(eval_P[loc*DIM]));
+        glVertex4dv(&(eval_P[loc][0]));
 		glEnd();
     }
 
@@ -426,15 +433,15 @@ void TriBezier::plot_crv_needles(int crv_choice, REAL length=1.0)
 			VEC sum;
 			loc = b2i_i(i, j, pts-i-j, pts);
 
-			if(normal_clipping && !point_clipped(&eval_P[loc*DIM])) {
+            if(normal_clipping && !point_clipped(&eval_P[loc][0])) {
 
 		    h = get_crv(crv_array, loc, crv_choice);
-			VVadd(1.0, &(eval_P[loc*DIM]), h*length, &(eval_N[loc*DIM]),
+            VVadd(1.0, &(eval_P[loc][0]), h*length, &(eval_N[loc][0]),
 				sum);                              
 			glColor3fv( crv2color(h));      
 
 			glBegin(GL_LINES);                         
-			glVertex3dv(&(eval_P[loc*DIM]));
+            glVertex3dv(&(eval_P[loc][0]));
 			glVertex3dv(sum);  
 			glEnd();                                   
 			}
@@ -449,8 +456,8 @@ void TriBezier::plot_crv_needles(int crv_choice, REAL length=1.0)
 //
 void TriBezier::plot_highlights(VEC A, VEC H, REAL hl_step, int highlight_type)
 {
-	REAL P[3*DIM];
-	REAL N[3*DIM];
+    REAL P[3*DIM];
+    REAL N[3*DIM];
 	int i, j, k;
 	int loc[3];
 
@@ -471,8 +478,8 @@ void TriBezier::plot_highlights(VEC A, VEC H, REAL hl_step, int highlight_type)
 		}
 
         for (k=0; k<3; k++) {
-			Vcopy( &eval_P[loc[k]*DIM], &P[k*DIM]);
-			Vcopy( &eval_N[loc[k]*DIM], &N[k*DIM]);
+            Vcopy( &eval_P[loc[k]][0], &P[k*DIM]);
+            Vcopy( &eval_N[loc[k]][0], &N[k*DIM]);
         }
 		Highlight(3, P, N, A, H, hl_step, highlight_type);
 	}
@@ -492,8 +499,8 @@ void TriBezier::plot_highlights(VEC A, VEC H, REAL hl_step, int highlight_type)
 		}
 
         for (k=0; k<3; k++) {
-			Vcopy( &eval_P[loc[k]*DIM], &P[k*DIM]);
-			Vcopy( &eval_N[loc[k]*DIM], &N[k*DIM]);
+            Vcopy( &eval_P[loc[k]][0], &P[k*DIM]);
+            Vcopy( &eval_N[loc[k]][0], &N[k*DIM]);
         }
 		Highlight(3, P, N, A, H, hl_step, highlight_type);
 	}
@@ -586,5 +593,5 @@ int b2i_k (int i, int j, int k, int d)
 
 
 REAL* TriBezier::get_bb(int i, int j) {
-    return ( &coeff[b2i_i(i,j,deg-i-j,deg)*DIM]);
+    return ( &position[b2i_i(i,j,deg-i-j,deg)][0]);
 }

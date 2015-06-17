@@ -16,7 +16,7 @@ extern "C" {
 #include "Patch.h"
 #include "glob.h"
 }
-#include "Object.h"
+#include "Bezier.h"
 #include "TriBezier.h"
 #include "Polygon.h"
 #include "QuadBezier.h"
@@ -46,27 +46,30 @@ void Patch_translate(Patch*p,REAL* center)
 
 void Patch_createSinglePolygon(Patch*p, int side, REAL (*V)[DIM], int *F)
 {
-    PolygonMesh    * newpoly = new PolygonMesh();
-    newpoly->VNum = side;
-    arrcreate(newpoly->vertices, side);
-    Vertex* vertices = newpoly->vertices;
+    Polygon    * newpoly = new Polygon();
+    newpoly->pointCount = side;
+    arrcreate(newpoly->position, side);
+    REAL (*position)[DIM] = newpoly->position;
+    arrcreate(newpoly->normal, side);
+    REAL (*normal)[DIM] = newpoly->normal;
     for(int i = 0; i < side; i++)
     {
         REAL *v = V[F[i]];
         newpoly->enlarge_aabb(v[0],v[1],v[2]);
-        vertices[i].set_p(v[0],v[1],v[2]);
-        vertices[i].set_n(0,0,0);
-        vertices[i].valid = true;
+        position[i][0] = v[0];
+        position[i][1] = v[1];
+        position[i][2] = v[2];
+        position[i][3] = v[3];
     }
     /* Calculate the normal by averaging side normals */
     for(int i= 0; i < side; i++)
     {
         int prv = i, pt = (i+1)%side, nxt = (i+2)%side;
         REAL V1[DIM], V2[DIM];
-        VVminus(vertices[prv].p, vertices[pt].p, V1);
-        VVminus(vertices[nxt].p, vertices[pt].p, V2);
-        VVcross(V2, V1, vertices[pt].n);
-        Normalize(vertices[pt].n);
+        VVminus(position[prv], position[pt], V1);
+        VVminus(position[nxt], position[pt], V2);
+        VVcross(V2, V1, normal[pt]);
+        Normalize(normal[pt]);
     }
 
     p->object = newpoly;

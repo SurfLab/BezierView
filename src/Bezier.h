@@ -1,68 +1,100 @@
 #ifndef BEZIER_H_2002_10_20
 #define BEZIER_H_2002_10_20
 #include "type.h"
-#include "Object.h"
 
 /////////////////////////////////////////////////////////////////
 //
 // abstract class Bezier
 //
-class Bezier : public Object{
+struct Bezier {
 
-protected:
-	int num_points;
+    /// AABB should be struct
+    REAL minx, maxx, miny, maxy, minz, maxz; // axis aligned bounding box
+    /// what is this init for?
+    int init;
+    /// this can just go into patch
+    int normal_flipped;
 
-public:
-	REAL* coeff; // the coefficients of the Bezier patch
-				 // &coeff[0*DIM] is the pointer to the first coefficient
-				 // &coeff[1*DIM] is the pointer to the second coefficient
-				 // and so on
+    int pointCount;
+    int normalCount;
+
+    REAL (*position)[DIM];
+    REAL (*normal)[DIM];
 	
 	bool art_normal; // true: there is an artificial normal super-posed
 					 //       on the patch
 					 // false: the normal of the patch will be used
 	
 	
-	int num_normals;  
-	REAL* norm;      // the coefficients of the normal
-
-	// evaluated patch
-
-public:
 	bool evaluated; // a flag to show if the eval_* buffer is valid
 	
 	int  pts;       // evaluate density -- how many points are evaluated
 					// on each edge
 
-	REAL* eval_P;   // result of the evaluated points
-	REAL* eval_N;   // result of the evaluated normal
+    REAL (*eval_P)[DIM];   // result of the evaluated points
+    REAL (*eval_N)[DIM];   // result of the evaluated normal
 
 	REAL* crv_array; // result of the curvature
 
 
-public:
-// ------------------------------------------------------------
-// constructor
-// 
-	Bezier() {art_normal=false; 
+    Bezier() {
+        init = 1;
+        normal_flipped = 0;
+        art_normal=false;
 		evaluated = false;
-		eval_P = eval_N = crv_array = NULL;
-		coeff = norm = NULL;
+        eval_P = eval_N = NULL;
+        crv_array = NULL;
+        position = normal = NULL;
 	};
 
 	void free_mem() {
 		free_eval_mem();
-		if(coeff) free(coeff);
-		if(norm)  free(norm);
+        if(position) arrdelete(position);
+        if(normal)  arrdelete(normal);
 	}
 
 
 	void free_eval_mem() {
-		if(eval_P)    free(eval_P);
-		if(eval_N)    free(eval_N);
-		if(crv_array) free(crv_array);
+        if(eval_P)    arrdelete(eval_P);
+        if(eval_N)    arrdelete(eval_N);
+        if(crv_array) arrdelete(crv_array);
 		evaluated = false;
-		eval_P = eval_N = crv_array = NULL;
+        eval_P = eval_N = NULL;
+        crv_array = NULL;
 	};
+
+
+
+    // enlarge the bounding box if necessary to contain (x,y,z)
+    void enlarge_aabb(REAL x, REAL y, REAL z) {
+        if(init) {
+            minx = maxx = x;
+            miny = maxy = y;
+            minz = maxz = z;
+            init = 0;
+        }
+        else {
+            if(x>maxx) maxx = x;
+            if(x<minx) minx = x;
+            if(y>maxy) maxy = y;
+            if(y<miny) miny = y;
+            if(z>maxz) maxz = z;
+            if(z<minz) minz = z;
+        }
+    }
+
+    // the functions the objects of this class HAVE TO provide
+    virtual void plot_patch(bool smooth) = 0;  // plot the patch
+    virtual void plot_mesh(float* bg_color) = 0;             // plot the mesh
+
+    // optional functions
+    virtual void plot_crv(int crv_choice)      {}     	  // plot the curvature
+    virtual void plot_highlights(VEC A, VEC H, REAL hl_step, int hl_type) {}     // plot the highlights
+    virtual void plot_crv_needles(int crv_choice, REAL length=1.0) {}   // plot the curvature needles
+    virtual void flip_normal() {}   	  // flip the normal
+    virtual void evaluate_patch(int SubDepth) {}
+
+    virtual void compute_crv() {}    	  // compute the curvature
+
 };
 #endif

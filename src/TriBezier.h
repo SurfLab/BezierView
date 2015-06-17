@@ -22,13 +22,7 @@ public:
 	void evaluate_patch(int use_art_normal = true);
 
 public:
-	TriBezier(int degree) {evaluated = false;
-		deg = degree; art_normal = false;
-		num_points = (deg+2)*(deg+1) /2;
-
-	   // read in all control points
-		coeff = alloc_mem_db(num_points*DIM);    // allocate memory 
-	};
+    TriBezier(int degree);;
 
 	TriBezier() {evaluated = false;};
 
