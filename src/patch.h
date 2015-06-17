@@ -53,7 +53,7 @@ void Patch_evaluate(Patch* p, int SubDepth);
 void Patch_plotcrv(Patch*p, int crv_choice);
 void Patch_plotmesh(Patch*p, float* bg_color);
 void Patch_plotpatch(Patch*p, bool smooth);
-void Patch_plotcrvneedles(Patch*p, int crv_choice, int needle_length);
+void Patch_plotcrvneedles(Patch*p, int crv_choice, float needle_length);
 void Patch_plothighlights(Patch*p, VEC A, VEC H, REAL hl_step, int hl_type);
 void Patch_flipnormal(Patch*p);
 void Patch_freeevalmem(Patch*p);

@@ -20,54 +20,54 @@ char mat_name[][20] = {
          "transparent"
 };
 
-#define ALPHA 0.5
+#define ALPHA 0.5f
 GLfloat mat_ambient[][4] = {
-        {0.24725 , 0.1995 , 0.0745, ALPHA}, // gold
-        {0.0215, 0.1745,  0.0215,  ALPHA},  // emerald
-        {0.1745, 0.01175, 0.01175, ALPHA},  // ruby
-        {0.19225, 0.19225, 0.19225,ALPHA }, // silver
-        {0.2125, 0.1275, 0.054, ALPHA},     // bronze
-        {0.0, 0.0, 0.0, ALPHA},             // yellow plastic
-        {0.45, 0.45, 0.45, ALPHA},          // chrome
-        {0.10588, 0.058824, 0.113725, ALPHA}, // Pewter
-        {0.0, 0.1, 0.06, ALPHA},            // cyan plastic
-		{0.135, 0.2225, 0.1575, ALPHA},        // Jade
-        {0.0, 0.0, 0.0, ALPHA},             // random
-        {0.0, 0.0, 0.0, ALPHA},             // transparent
+        {0.24725f,0.1995f,0.0745f,ALPHA},// gold
+        {0.0215f,0.1745f, 0.0215f, ALPHA}, // emerald
+        {0.1745f,0.01175f,0.01175f,ALPHA}, // ruby
+        {0.19225f,0.19225f,0.19225f,ALPHA },// silver
+        {0.2125f,0.1275f,0.054f,ALPHA},    // bronze
+        {0.0f,0.0f,0.0f,ALPHA},            // yellow plastic
+        {0.45f,0.45f,0.45f,ALPHA},         // chrome
+        {0.10588f,0.058824f,0.113725f,ALPHA},// Pewter
+        {0.0f,0.1f,0.06f,ALPHA},           // cyan plastic
+        {0.135f,0.2225f,0.1575f,ALPHA},       // Jade
+        {0.0f,0.0f,0.0f,ALPHA},            // random
+        {0.0f,0.0f,0.0f,ALPHA},            // transparent
 };
 
 GLfloat mat_diffuse[][4] = {
-        {0.75164, 0.60648 ,0.22648, ALPHA}, // gold
-        {0.07568, 0.61424, 0.07568, ALPHA}, // emerald
-        {0.61424, 0.04136, 0.04136, ALPHA}, // ruby
-        {0.50754, 0.50754, 0.50754, ALPHA },// silver
-        {0.714,   0.4284,  0.18144, ALPHA },// bronze
-        {0.5, 0.5, 0.0, ALPHA},             // yellow plastic
-        {0.4, 0.4, 0.4, ALPHA},             // chrome
-        {0.427451, 0.470588, 0.541176,  ALPHA}, // Pewter 
-        {0.0, 0.51, 0.51, ALPHA},           // cyan plastic
-		{0.54, 0.89, 0.630, ALPHA},             // Jade
-        {0.0, 0.0, 0.0, 0.0},             // random
-        {0.0, 0.0, 0.0, 0.0},             // transparent
+        {0.75164f, 0.60648f, 0.22648f, ALPHA}, // gold
+        {0.07568f, 0.61424f, 0.07568f, ALPHA}, // emerald
+        {0.61424f, 0.04136f, 0.04136f, ALPHA}, // ruby
+        {0.50754f, 0.50754f, 0.50754f, ALPHA },// silver
+        {0.714f,   0.4284f,  0.18144f, ALPHA },// bronze
+        {0.5f, 0.5f, 0.0f, ALPHA},             // yellow plastic
+        {0.4f, 0.4f, 0.4f, ALPHA},             // chrome
+        {0.427451f, 0.470588f, 0.541176f,  ALPHA}, // Pewter
+        {0.0f, 0.51f, 0.51f, ALPHA},           // cyan plastic
+        {0.54f, 0.89f, 0.630f, ALPHA},             // Jade
+        {0.0f, 0.0f, 0.0f, 0.0},             // random
+        {0.0f, 0.0f, 0.0f, 0.0},             // transparent
 };
 
 GLfloat mat_specular[][4] = {
-        {0.628281, 0.555802, 0.366065, ALPHA},  // gold
-        {0.633, 0.727811, 0.633, ALPHA},        // emerald
-        {0.727811, 0.626959, 0.626959, ALPHA},  // ruby
-        {0.508273, 0.508273, 0.508273, ALPHA},  // silver
-        {0.393548, 0.271906, 0.166721, ALPHA},  // bronze
-        {0.6, 0.6, 0.5, ALPHA},                 // yellow plastic
-        {0.774597, 0.774597, 0.774597, ALPHA},  // chrome
-        {0.3333, 0.3333, 0.521569, ALPHA},      // Pewter
-        {0.502, 0.502, 0.502, ALPHA},           // cyan plastic
-		{0.316228, 0.316228, 0.316228, ALPHA},     // Jade
-        {0.0, 0.0, 0.0, 0.0},                 // random
-        {0.0, 0.0, 0.0, 0.0},                 // transparent
+        {0.628281f, 0.555802f, 0.366065f, ALPHA},  // gold
+        {0.633f, 0.727811f, 0.633f, ALPHA},        // emerald
+        {0.727811f, 0.626959f, 0.626959f, ALPHA},  // ruby
+        {0.508273f, 0.508273f, 0.508273f, ALPHA},  // silver
+        {0.393548f, 0.271906f, 0.166721f, ALPHA},  // bronze
+        {0.6f, 0.6f, 0.5f, ALPHA},                 // yellow plastic
+        {0.774597f, 0.774597f, 0.774597f, ALPHA},  // chrome
+        {0.3333f, 0.3333f, 0.521569f, ALPHA},      // Pewter
+        {0.502f, 0.502f, 0.502f, ALPHA},           // cyan plastic
+        {0.316228f, 0.316228f, 0.316228f, ALPHA},     // Jade
+        {0.0f, 0.0f, 0.0f, 0.0},                 // random
+        {0.0f, 0.0f, 0.0f, 0.0},                 // transparent
 };
 
 GLfloat mat_shininess[] = {
-    0.4, 0.6, 0.6, 0.4, 0.2, 0.25, 76.8/128, 0.2, 0.25, 0.1, 0.0
+    0.4f, 0.6f, 0.6f, 0.4f, 0.2f, 0.25f, 76.8f/128, 0.2f, 0.25f, 0.1f, 0.0
 };
 
 /* choose a color using its float rgb values */
@@ -111,19 +111,19 @@ void set_color(int c)
  */
 void light_init()
 {
-    GLfloat light_specular0[]={1.0, 1.0, 1.0, 1.0};
-    GLfloat light_specular1[]={1.0, 1.0, 1.0, 1.0};
-    GLfloat light_specular2[]={1.0, 1.0, 1.0, 1.0};
-    GLfloat light_diffuse0[] ={1.0, 1.0, 1.0, 1.0};
-    GLfloat light_diffuse1[] ={1.0, 1.0, 1.0, 1.0};
-    GLfloat light_diffuse2[] ={1.0, 1.0, 1.0, 1.0};
-    GLfloat light_ambient0[]={0.4, 0.4, 0.4, 1.0};
-    GLfloat light_ambient1[]={0.2, 0.2, 0.2, 1.0};
-    GLfloat light_ambient2[]={0.8, 0.8, 0.8, 1.0};
+    GLfloat light_specular0[]={1.0f, 1.0f, 1.0f, 1.0f};
+    GLfloat light_specular1[]={1.0f, 1.0f, 1.0f, 1.0f};
+    GLfloat light_specular2[]={1.0f, 1.0f, 1.0f, 1.0f};
+    GLfloat light_diffuse0[] ={1.0f, 1.0f, 1.0f, 1.0f};
+    GLfloat light_diffuse1[] ={1.0f, 1.0f, 1.0f, 1.0f};
+    GLfloat light_diffuse2[] ={1.0f, 1.0f, 1.0f, 1.0f};
+    GLfloat light_ambient0[]={0.4f, 0.4f, 0.4f, 1.0f};
+    GLfloat light_ambient1[]={0.2f, 0.2f, 0.2f, 1.0f};
+    GLfloat light_ambient2[]={0.8f, 0.8f, 0.8f, 1.0f};
 
-    GLfloat light_position0[]={3.0,1.0,1.0,0.0};
-    GLfloat light_position1[]={-1.0,-3.0,-1.0,0.0};
-    GLfloat light_position2[]={0.0,30.0,0.0,0.0};
+    GLfloat light_position0[]={3.0f,1.0f,1.0f,0.0f};
+    GLfloat light_position1[]={-1.0f,-3.0f,-1.0f,0.0f};
+    GLfloat light_position2[]={0.0f,30.0f,0.0f,0.0f};
 
 /* set up ambient, diffuse, and specular components for light 0 & 1*/
 

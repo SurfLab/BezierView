@@ -42,7 +42,7 @@ void Polygon_plot_patch(Patch*p,bool smooth)
         glNormal3dv(p->normal[pt]);
 
         double size = 64.0;
-        glTexCoord2f((p->position[pt])[0]/size,(p->position[pt])[2]/size);
+        glTexCoord2d((p->position[pt])[0]/size,(p->position[pt])[2]/size);
         glVertex4dv(p->position[pt]);
     }
     glEnd();
@@ -53,8 +53,6 @@ void Polygon_plot_patch(Patch*p,bool smooth)
 
 void Polygon_plot_mesh(Patch*p,float* bg_color)
 {
-    int i, j, pt;
-	
     //glShadeModel(GL_SMOOTH);
 	if(bg_color) {   // if hidden line removal
 		glPushAttrib(GL_CURRENT_BIT | GL_ENABLE_BIT | GL_POLYGON_BIT );
@@ -64,7 +62,7 @@ void Polygon_plot_mesh(Patch*p,float* bg_color)
 		glColor3fv(bg_color);
 
         glBegin(GL_POLYGON);
-        for (j=0; j<p->pointCount; j++) {
+        for (int j=0; j<p->pointCount; j++) {
             glVertex4dv(p->position[j]);
         }
         glEnd();
@@ -73,7 +71,7 @@ void Polygon_plot_mesh(Patch*p,float* bg_color)
 	}
 
 
-    for (j=0; j<p->pointCount; j++) {
+    for (int j=0; j<p->pointCount; j++) {
         glBegin(GL_LINES);
             glVertex4dv(p->position[j]);
             glVertex4dv(p->position[(j+1)%p->pointCount]);

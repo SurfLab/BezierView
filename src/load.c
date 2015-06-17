@@ -61,7 +61,7 @@ void print_usage_and_exist(const char* exe)
  */
 void parse_arg(int argc, char* argv[])
 {
-	int i, j, name_pos;
+    size_t i, j, name_pos;
 
 	// Get the directory where the executable sits
 	for(i=strlen(argv[0])-1; i>=0; i--)

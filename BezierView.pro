@@ -6,13 +6,14 @@
 
 QT       += core gui opengl
 
-CONFIG += warn_off precompile_header
+CONFIG += precompile_header
 TARGET = bview
 TEMPLATE = app
 
 PRECOMPILED_DIR = "precompile"
 
 gcc: QMAKE_CFLAGS += -std=c99
+win32-msvc*: DEFINES += _CRT_SECURE_NO_WARNINGS
 
 unix: CONFIG += link_pkgconfig
 unix: PKGCONFIG = glu
@@ -54,15 +55,12 @@ HEADERS  += \
     src/patch.h \
     src/quadbezier.h \
     src/tribezier.h \
-    src/polygon.h
+    src/polygon.h \
+    src/version.h
 
 INCLUDEPATH += $$PWD/src 
 
 PRECOMPILED_HEADER = src/stdheaders.h
-
-
-win32: LIBS += -L$$PWD/dependencies/lib/Win32/
-win32: INCLUDEPATH += $$PWD/dependencies/include
 
 RESOURCES += \
     src/bezierview.qrc

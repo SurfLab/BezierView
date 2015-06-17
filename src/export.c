@@ -14,7 +14,7 @@ void export_eps(Patch face[], int patch_num, float ObjectCenter[3], double scale
 {
     int i;
     FILE* fp;
-    int j, v, f;
+    int j;
     Patch* p;
 
     GLdouble modelMatrix[16];

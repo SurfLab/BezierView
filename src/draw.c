@@ -18,7 +18,7 @@
 #include "draw.h"
 #include "menu.h"
 #include "texture.h"
-
+#include "load.h"
 
 //////////////////////////////////////////////////
 // Display models
@@ -258,7 +258,7 @@ void draw(void)
 			{
 				glPushAttrib(GL_LINE_BIT | GL_ENABLE_BIT );
 				glDisable(GL_LIGHTING);
-				glLineWidth(line_width);
+                glLineWidth((float)line_width);
 				if(g_AntiAlias) 
 					glEnable(GL_LINE_SMOOTH);
 				else

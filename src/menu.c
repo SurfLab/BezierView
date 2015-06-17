@@ -59,8 +59,8 @@ void zoomin() {
 void zoomout() {
     //glMatrixMode(GL_MODELVIEW);
     //glScalef(0.67, 0.67, 0.67);
-	scale_factor *= 0.67;
-    ViewDepth *= 0.67;
+    scale_factor *= 0.67f;
+    ViewDepth *= 0.67f;
     updateProjection(); 
 }
 

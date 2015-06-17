@@ -23,7 +23,7 @@ int LoadBitmapTexture(char *filename)
 {
     FILE * file;
     char temp;
-    long i;
+    size_t i;
 	GLubyte byte;
 	char* data;
 

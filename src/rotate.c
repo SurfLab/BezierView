@@ -104,7 +104,7 @@ void rotate_vector(REAL* v, REAL* axis, REAL angle)
 }
 
 void zoom(float delta){
-    scale_factor *= 1 + delta*0.001;
+    scale_factor *= 1 + delta*0.001f;
 }
 
 void motionZoom(int x, int y){
@@ -113,7 +113,7 @@ void motionZoom(int x, int y){
 		zoomMotion = true;
 		return;
 	}
-	scale_factor *= 1+ (startY-y)*0.005; //(y-startY)/winHeight;
+    scale_factor *= 1+ (startY-y)*0.005f; //(y-startY)/winHeight;
 
     startX = x; startY = y;
 
@@ -124,8 +124,8 @@ void motionMove(int x, int y){
 		moveMotion = true;
 		return;
 	}
-	ViewCenter[0] += 0.005* ViewSize * (startX- x);
-	ViewCenter[1] -= 0.005* ViewSize * (startY- y);
+    ViewCenter[0] += 0.005f* ViewSize * (startX- x);
+    ViewCenter[1] -= 0.005f* ViewSize * (startY- y);
     startX = x; startY = y;
 	updateProjection();
 }
@@ -233,11 +233,11 @@ void mouseMotion(int x, int y, KeyboardModifier modifiers )
         {
         case CLIPNEAR:
 			//group[clipping_grp].ViewNear = (double)y/winHeight;
-			ClipNear = -((double)y/winHeight - 0.5)*ViewSize/2;
+            ClipNear = -((float)y/winHeight - 0.5f)*ViewSize/2;
 			break;
         case CLIPFAR:
 			//group[clipping_grp].ViewFar = 
-			ClipFar = -((double)y/winHeight - 0.5)*ViewSize/2;
+            ClipFar = -((float)y/winHeight - 0.5f)*ViewSize/2;
 			break;
         default:
 			return;
@@ -319,7 +319,7 @@ void display(void)
         glGetDoublev( GL_MODELVIEW_MATRIX, modelview);
         glLoadIdentity();
 
-        glRotatef(angle*1.5, axis[0], axis[1], axis[2]);
+        glRotated(angle*1.5, axis[0], axis[1], axis[2]);
         glMultMatrixd(modelview);
     }
     draw();
