@@ -10,15 +10,12 @@
  *
  */
 #include "stdheaders.h"
-extern "C" {
 #include "util.h"
-#include "Patch.h"
+#include "patch.h"
 #include "glob.h"
-}
-#include "Bezier.h"
-#include "TriBezier.h"
-#include "Polygon.h"
-#include "QuadBezier.h"
+#include "tribezier.h"
+#include "polygon.h"
+#include "quadbezier.h"
 
 void Patch_init(Patch*p)
 {

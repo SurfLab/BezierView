@@ -8,15 +8,13 @@
  * ------------------------------------------------------------
  */
 #include "stdheaders.h"
-extern "C" {
 #include "type.h"
 #include "util.h"
 #include "curvature.h"
 #include "highlight.h"
 #include "type.h"
-#include "Patch.h"
-}
-#include "QuadBezier.h"
+#include "patch.h"
+#include "quadbezier.h"
 
 // functions prototypes -------------------------
 

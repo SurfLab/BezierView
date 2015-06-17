@@ -8,12 +8,10 @@
  * ------------------------------------------------------------
  */
 #include "stdheaders.h"
-extern "C" {
 #include "util.h"
 #include "curvature.h"
 #include "highlight.h"
-}
-#include "Polygon.h"
+#include "polygon.h"
 
 
 void Polygon_flip_normal(Patch*p)

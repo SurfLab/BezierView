@@ -18,10 +18,6 @@ unix: CONFIG += link_pkgconfig
 unix: PKGCONFIG = glu
 
 SOURCES += \
-    src/Patch.cpp \
-    src/TriBezier.cpp \
-    src/QuadBezier.cpp \
-    src/Polygon.cpp \
     src/curvature.c \
     src/util.c \
     src/highlight.c \
@@ -34,19 +30,19 @@ SOURCES += \
     src/draw.c \
     src/load.c \
     src/ui.cpp \
-    src/export.cpp
+    src/export.c \
+    src/patch.c \
+    src/quadbezier.c \
+    src/polygon.c \
+    src/tribezier.c
 
 HEADERS  += \
     src/texture.h \
-    src/Patch.h \
     src/menu.h \
     src/glob.h \
     src/draw.h \
     src/util.h \
     src/type.h \
-    src/TriBezier.h \
-    src/QuadBezier.h \
-    src/Polygon.h \
     src/highlight.h \
     src/curvature.h \
     src/light.h \
@@ -54,7 +50,11 @@ HEADERS  += \
     src/rotate.h \
     src/export.h \
     src/load.h \
-    src/ui.h
+    src/ui.h \
+    src/patch.h \
+    src/quadbezier.h \
+    src/tribezier.h \
+    src/polygon.h
 
 INCLUDEPATH += $$PWD/src 
 

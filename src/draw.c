@@ -9,7 +9,7 @@
  */
 #include "stdheaders.h"
 #include "type.h"
-#include "Patch.h"
+#include "patch.h"
 #include "glob.h"
 #include "util.h"
 #include "curvature.h"

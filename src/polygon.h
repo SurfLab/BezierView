@@ -2,7 +2,7 @@
 #define POLYGON_H_2002_10_20
 
 #include "type.h"
-#include "Patch.h"
+#include "patch.h"
 
 
 void Polygon_flip_normal(Patch*p);

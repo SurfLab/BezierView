@@ -8,16 +8,13 @@
  * ------------------------------------------------------------
  */
 #include "stdheaders.h"
-extern "C" {
 #include "util.h"
 #include "curvature.h"
 #include "highlight.h"
 
 #include "type.h"
-#include "Patch.h"
-}
-
-#include "TriBezier.h"
+#include "patch.h"
+#include "tribezier.h"
 
 // index mapping functions
 int b2i_j(int i, int j, int k, int d);

@@ -25,7 +25,7 @@
 #include "util.h"
 #include "light.h"
 #include "draw.h"
-#include "Patch.h"
+#include "patch.h"
 #include "glob.h"
 #include "load.h"
 

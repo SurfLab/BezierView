@@ -1,13 +1,11 @@
 #include "stdheaders.h"
 #include "type.h"
-#include "Patch.h"
-extern "C" {
+#include "patch.h"
 #include "util.h"
 #include "export.h"
-}
-#include "Polygon.h"
-#include "QuadBezier.h"
-#include "TriBezier.h"
+#include "polygon.h"
+#include "quadbezier.h"
+#include "tribezier.h"
 
 ///////////////////////////////////////
 //

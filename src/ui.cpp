@@ -1,8 +1,7 @@
 #include "stdheaders.h"
-#include "ui.h"
 extern "C" {
 #include "type.h"
-#include "Patch.h"
+#include "patch.h"
 #include "load.h"
 #include "glob.h"
 #include "menu.h"
@@ -11,6 +10,7 @@ extern "C" {
 #include "draw.h"
 #include "rotate.h"
 }
+#include "ui.h"
 #include "version.h"
 
 
