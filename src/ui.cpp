@@ -95,7 +95,7 @@ void BViewUI::createContextMenu()
     addMenuAction(menuDisplay, "Highlight Lines", HIGHLIGHT, "R", true, isDisplayFlagEnabled(g_current_grp, DRAWHIGHLIGHT));
     addMenuAction(menuDisplay, "Reflection Lines", REFLINE, NULL, true, isDisplayFlagEnabled(g_current_grp, DRAWREFLLINE));
     addMenuAction(menuDisplay, "Environment Mapping", ENVMAP, "E", true, isDisplayFlagEnabled(g_current_grp, ENVMAPPING));
-    addMenuAction(menuDisplay, "Bounding Box", DRAWBOX, "B");
+    addMenuAction(menuDisplay, "Bounding Box", DRAWBOX, "B", true, drawbox);
 
     QMenu   *menuPatchDetail= menuContext->addMenu("Patch Detail");
     for(int i = 1; i <= 6; i++)

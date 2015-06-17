@@ -209,6 +209,7 @@ void define_scene(FILE* fp)
                 Patch_createSinglePolygon(p + i, side, V, F);
                 p[i].type = patch_kind;
                 p[i].group_id = c_grp;
+                Patch_enlarge_AABB(&p[i],pat+i==1); // increase the bounding box if necessary
             }
 
             arrdelete(V);

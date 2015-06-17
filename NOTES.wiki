@@ -1,0 +1,5 @@
+= Release Notes for BezierView =
+
+==== 2.12.1
+* Single polygon facet per patch. No smooth polyhedral
+meshes for this release.

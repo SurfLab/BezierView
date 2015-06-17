@@ -57,29 +57,23 @@ void export_eps(Patch face[], int patch_num, float ObjectCenter[3], double scale
         if(patch_kind == POLY) {
             PolygonMesh * poly = (PolygonMesh*) p->object;
 
-            for(f=0;f<poly->FNum; f++) {
-                int n = poly->faces[f].get_n(); // number of vertices on this face
-                //int ignore =0;
-
-                for (j=0; j<n; j++) {
-                    v =  poly->faces[f].get_v_ind(j);
-                    gluProject(
-                        ((poly->get_vertex(v))->get_p())[0],
-                        ((poly->get_vertex(v))->get_p())[1],
-                        ((poly->get_vertex(v))->get_p())[2],
-                        modelMatrix,
-                        projMatrix,
-                        viewport,
-                        &winx, &winy, &winz
-                    );
-                    if(j==0)
-                        fprintf(fp, "%d %d moveto\n", (int)winx, (int)winy);
-                    else
-                        fprintf(fp, "%d %d lineto\n", (int)winx, (int)winy);
-                }
-                fprintf(fp, "closepath\n");
-                fprintf(fp, "stroke\n");
+            for (j=0; j<poly->VNum; j++) {
+                gluProject(
+                    poly->vertices[j].p[0],
+                    poly->vertices[j].p[1],
+                    poly->vertices[j].p[2],
+                    modelMatrix,
+                    projMatrix,
+                    viewport,
+                    &winx, &winy, &winz
+                );
+                if(j==0)
+                    fprintf(fp, "%d %d moveto\n", (int)winx, (int)winy);
+                else
+                    fprintf(fp, "%d %d lineto\n", (int)winx, (int)winy);
             }
+            fprintf(fp, "closepath\n");
+            fprintf(fp, "stroke\n");
         }
     }
     fprintf(fp, "showpage\n");

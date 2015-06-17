@@ -68,85 +68,6 @@ struct Vertex {
 
 typedef Vertex *p_vertex;
 
-/////////////////////////////////////////////////////////////////////
-//
-// class Facet
-// 
-struct Facet {
-    int sides;      // number of vertices/edges in this face
-
-    int *V_ind; // the index of the vertices in this facet
-    double  normal[3];    // normal vector
-
-	REAL *crease_edge;
-
-    // == Memeory allocater ========================================
-	void initMem() {
-		V_ind = alloc_mem_int(sides);
-
-		crease_edge = alloc_mem_db(sides);
-		for(int i=0;i<sides;i++)
-			crease_edge[i] = 0.0;
-	}
-
-
-    // == Constructors ========================================
-	Facet() {V_ind = NULL;crease_edge=NULL;}
-    Facet(int s, int* V) {
-        sides = s;
-		initMem();
-        for(int i = 0; i<sides; i++)
-           V_ind[i] = V[i];
-    }
-    Facet(int v1, int v2, int v3)  {
-        sides = 3; 
-		initMem();
-        V_ind[0] = v1; V_ind[1] = v2; V_ind[2] = v3;
-    }
-    Facet(int v1, int v2, int v3, int v4)  {
-        sides = 4;
-		initMem();
-        V_ind[0] = v1; V_ind[1] = v2; 
-        V_ind[2] = v3; V_ind[3] = v4;
-    }
-
-    // == Initializors ========================================
-	// 
-    void set_f(int s, int* V) {
-        sides = s;
-		initMem();
-        for(int i = 0; i<sides; i++)
-            V_ind[i] = V[i];
-    }
-    void set_f(int v1, int v2, int v3)  {
-        sides = 3; 
-		initMem();
-        V_ind[0] = v1; V_ind[1] = v2; V_ind[2] = v3;
-    }
-	void set_f(int v1, int v2, int v3,int v4)  {
-        sides = 4; 
-		initMem();
-        V_ind[0] = v1; V_ind[1] = v2; V_ind[2] = v3; V_ind[3] = v4;
-    }
-    // == Destructors ========================================
-	virtual ~Facet()
-	{
-		if(V_ind) free(V_ind);
-		if(crease_edge) free(crease_edge);
-	}
-
-    // == Accessors ===========================================
-    int get_v_ind(int i)   const { return V_ind[i]; };
-    int operator [](int i) const { return get_v_ind(i); }
-    int get_n()            const { return sides;};
-
-    void set_normal(REAL* nm) { normal[0] = nm[0]; normal[1] = nm[1]; normal[2] = nm[2];};
-    REAL* get_normal() { return normal;};
-};
-
-typedef Facet *p_face;
-
-
 
 /////////////////////////////////////////////////////////////////
 //  
@@ -155,61 +76,19 @@ typedef Facet *p_face;
 struct PolygonMesh :public Object{
 
 	Vertex * vertices;
-	Facet  * faces;
 	int    VNum;     // Total vertex number
-	int    FNum;     // Total facet number
-
-	// additional vertex information
-	int invalid_num; // number of vertices that are not in the mesh (isolated vertices)
-	int Bnd_Vertex_Num;   // number of vertices on the boundary
-
-	// additional facet information
-	int  tri_fnum;   // number of triangle faces 
-	int quad_fnum;   // number of quad faces
-
-//	bool has_crease;  // if this polygon has crease edges
 
 	int evaluated;
-	void auto_normal();
-	void get_gauss_curvature();//by Jianhua fan
-	void get_mean_curvature();
 
-	void auto_neighboring();
-	//void writeout_patch();
-
-    // == Constructors ========================================
-	PolygonMesh() {		evaluated = false;
-		vertices = NULL; faces = NULL;}
-
-	// == Destructors =========================================
-
-	// == Loading  ==============================================
-	int loadFileBV(FILE* fp);    // in BezierView polygon format
-	int loadFilePOV(FILE* fp);    // in pov-ray mesh2 format
-
-	// == Un-loading ==========================================
 	void free_mem() {
 		if(vertices) delete [] vertices;
-		if(faces) delete [] faces;
 		vertices = NULL;
-		faces    = NULL;
 	};
 
-	// == Accessors ========================================
-	Vertex* get_vertex(int i) { return &vertices[i];}
-	void    getFaceNeighbor(int f, int ind, int* nbr, int* nbr_ind);
-	int     getVertexNeighbor(int v, int i);
-
-    // == Plot routines ========================================
 	void plot_mesh(float* bg_color);                      // plot the bezier patch
 	void plot_patch(bool smooth);          // plot the control polygon
-	void plot_crv(int crv_choice);					   // plot the curvature
-	void plot_crv_needles(int crv_choice, REAL length);   // plot the curvature of the quadrilateral patch
 	void plot_highlights(VEC A, VEC H, REAL hl_step, int highlight_type);    // plot the highlight lines
-
-	// == Misc Routines ========================================
 	void flip_normal();
-	void compute_crv(); // compute the curvature
 }; 
 
 
