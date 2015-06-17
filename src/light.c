@@ -20,8 +20,8 @@ char mat_name[][20] = {
          "transparent"
 };
 
-#define ALPHA 0.5f
-GLfloat mat_ambient[][4] = {
+#define ALPHA 0.5
+float mat_ambient[][4] = {
         {0.24725f,0.1995f,0.0745f,ALPHA},// gold
         {0.0215f,0.1745f, 0.0215f, ALPHA}, // emerald
         {0.1745f,0.01175f,0.01175f,ALPHA}, // ruby
@@ -36,7 +36,7 @@ GLfloat mat_ambient[][4] = {
         {0.0f,0.0f,0.0f,ALPHA},            // transparent
 };
 
-GLfloat mat_diffuse[][4] = {
+float mat_diffuse[][4] = {
         {0.75164f, 0.60648f, 0.22648f, ALPHA}, // gold
         {0.07568f, 0.61424f, 0.07568f, ALPHA}, // emerald
         {0.61424f, 0.04136f, 0.04136f, ALPHA}, // ruby
@@ -51,7 +51,7 @@ GLfloat mat_diffuse[][4] = {
         {0.0f, 0.0f, 0.0f, 0.0},             // transparent
 };
 
-GLfloat mat_specular[][4] = {
+float mat_specular[][4] = {
         {0.628281f, 0.555802f, 0.366065f, ALPHA},  // gold
         {0.633f, 0.727811f, 0.633f, ALPHA},        // emerald
         {0.727811f, 0.626959f, 0.626959f, ALPHA},  // ruby
@@ -66,17 +66,17 @@ GLfloat mat_specular[][4] = {
         {0.0f, 0.0f, 0.0f, 0.0},                 // transparent
 };
 
-GLfloat mat_shininess[] = {
+float mat_shininess[] = {
     0.4f, 0.6f, 0.6f, 0.4f, 0.2f, 0.25f, 76.8f/128, 0.2f, 0.25f, 0.1f, 0.0
 };
 
 /* choose a color using its float rgb values */
 
-void set_colorf(float r, float g, float b){
+void set_colorf(double r, double g, double b){
 
     float MatAmbientBack[]  = {0.0f, 0.2f, 0.0f, 1.0f};
     glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
-    float color[] = {r, g, b, ALPHA};
+    float color[] = {(float)r, (float)g, (float)b, ALPHA};
 
     glMaterialfv(GL_FRONT, GL_AMBIENT, color);
     glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular[0]);
@@ -111,19 +111,19 @@ void set_color(int c)
  */
 void light_init()
 {
-    GLfloat light_specular0[]={1.0f, 1.0f, 1.0f, 1.0f};
-    GLfloat light_specular1[]={1.0f, 1.0f, 1.0f, 1.0f};
-    GLfloat light_specular2[]={1.0f, 1.0f, 1.0f, 1.0f};
-    GLfloat light_diffuse0[] ={1.0f, 1.0f, 1.0f, 1.0f};
-    GLfloat light_diffuse1[] ={1.0f, 1.0f, 1.0f, 1.0f};
-    GLfloat light_diffuse2[] ={1.0f, 1.0f, 1.0f, 1.0f};
-    GLfloat light_ambient0[]={0.4f, 0.4f, 0.4f, 1.0f};
-    GLfloat light_ambient1[]={0.2f, 0.2f, 0.2f, 1.0f};
-    GLfloat light_ambient2[]={0.8f, 0.8f, 0.8f, 1.0f};
+    float light_specular0[]={1.0f, 1.0f, 1.0f, 1.0f};
+    float light_specular1[]={1.0f, 1.0f, 1.0f, 1.0f};
+    float light_specular2[]={1.0f, 1.0f, 1.0f, 1.0f};
+    float light_diffuse0[] ={1.0f, 1.0f, 1.0f, 1.0f};
+    float light_diffuse1[] ={1.0f, 1.0f, 1.0f, 1.0f};
+    float light_diffuse2[] ={1.0f, 1.0f, 1.0f, 1.0f};
+    float light_ambient0[]={0.4f, 0.4f, 0.4f, 1.0f};
+    float light_ambient1[]={0.2f, 0.2f, 0.2f, 1.0f};
+    float light_ambient2[]={0.8f, 0.8f, 0.8f, 1.0f};
 
-    GLfloat light_position0[]={3.0f,1.0f,1.0f,0.0f};
-    GLfloat light_position1[]={-1.0f,-3.0f,-1.0f,0.0f};
-    GLfloat light_position2[]={0.0f,30.0f,0.0f,0.0f};
+    float light_position0[]={3.0f,1.0f,1.0f,0.0f};
+    float light_position1[]={-1.0f,-3.0f,-1.0f,0.0f};
+    float light_position2[]={0.0f,30.0f,0.0f,0.0f};
 
 /* set up ambient, diffuse, and specular components for light 0 & 1*/
 

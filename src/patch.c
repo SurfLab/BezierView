@@ -169,7 +169,7 @@ void Patch_plotpatch(Patch *p, bool smooth)
 }
 
 
-void Patch_plotcrvneedles(Patch *p, int crv_choice, float needle_length)
+void Patch_plotcrvneedles(Patch *p, int crv_choice, double needle_length)
 {
     switch(p->type)
     {

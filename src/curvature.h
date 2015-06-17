@@ -18,7 +18,7 @@ void	 minmax(REAL* curv, int choice, int num);
 int     clickon_crv_bar(int x, int y, int winWidth, int winHeight);
 void 	adjust_scale(int i, int winy, int winHeight);
 void set_crv_scale(double lowc, double highc);
-void draw_crv_bar(GLfloat* color);  // the curvature bar
+void draw_crv_bar(float* color);  // the curvature bar
 void draw_clipping_plane(int index, int mode, REAL  size);
 void set_special_curvature(REAL curvature_ratio_a, REAL curvature_ratio_b);
 void set_crv_bound_array(double* max_array, double* min_array);

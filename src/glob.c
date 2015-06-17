@@ -27,27 +27,27 @@ int    has_polygon = 0;   // the object has polygon
 int   g_Mode[MAXGROUP];
 int   g_PenColor[MAXGROUP];
 int   g_Material[MAXGROUP];
-int   g_LineWidth[MAXGROUP];
+double   g_LineWidth[MAXGROUP];
 int   g_AntiAlias;
 int   g_current_grp;
 int   g_redisplay=1;
 int   g_mouseMode;
 int   g_substs[MAXGROUP];
-float g_patchColor[MAXGROUP][3];
+double g_patchColor[MAXGROUP][3];
 
 int    environmapping=0;
 int    drawbox=0;
 
 // some other display controls
-float scale_factor =1.0; 
+double scale_factor =1.0;
 int    normal_flipped = 0;
 
 // View volume (auto-decided by the patches, thus need an initial bound to start)
-float  ViewLeft, ViewRight, ViewTop, ViewBottom, ViewNear, ViewFar;
-float  ViewSize, ViewDepth=1;
-float  ClipNear, ClipFar;
-float  ViewCenter[2] = {0,0};
-float  ObjectCenter[3];
+double  ViewLeft, ViewRight, ViewTop, ViewBottom, ViewNear, ViewFar;
+double  ViewSize, ViewDepth=1;
+double  ClipNear, ClipFar;
+double  ViewCenter[2] = {0,0};
+double  ObjectCenter[3];
 int    winWidth=700, winHeight=700;
 
 // environment mapping texture information
@@ -71,9 +71,9 @@ REAL hl_step;   // highlight density
 int    light_switch[3];
 
 // the list of available background colors 
-float  g_BackColor[10][3] 
-          = { {1.0f, 1.0, 1.0},       // White
-			{0.0, 0.0, 0.0},        // Black
+float  g_BackColor[10][3]
+          = { {1.0f, 1.0f, 1.0f},       // White
+            {0.0f, 0.0f, 0.0f},        // Black
 			{0.4f, 0.4f, 0.4f},     // Gray 0.4
 			{0.7f, 0.7f, 0.7f},     // Gray 0.7
 			{0.74f, 0.74f, 0.96f},  // light blue 1
@@ -88,9 +88,9 @@ char   g_BackColorNames[10][20] = { "White", "Black", "Gray 0.4", "Gray 0.7", "l
 		"light blue 2", "light green 1", "light green 2", "purple", "yellow"};
 
 // the list of available background colors 
-float  g_penColors[10][3] 
-          = { {1.0f, 1.0, 1.0},       // White
-			{0.0, 0.0, 0.0},        // Black
+float  g_penColors[10][3]
+          = { {1.0f, 1.0f, 1.0f},       // White
+            {0.0f, 0.0f, 0.0f},        // Black
 			{0.4f, 0.4f, 0.4f},     // Gray 0.4
 			{0.7f, 0.7f, 0.7f},     // Gray 0.7
 			{0.74f, 0.74f, 0.96f},  // light blue 1
@@ -112,14 +112,14 @@ float  g_MeshColor[2][3] = { {1.0, 1.0, 1.0}, {0.0, 0.0, 0.0} };
 
 // automatically determine a B/W color 
 float* getMeshColor () {
-	float* back = g_BackColor[back_choice];
+    float* back = g_BackColor[back_choice];
 	if(back[0] + back[1] + back[2] < 1.5)  
 	    return g_MeshColor[0];
 	else
 		return g_MeshColor[1];
 }
 
-float needle_length =1.0;
+double needle_length =1.0;
 int   cur_clipping_plane = -1;
 int   use_display_list = 0; // whether to use display list to draw the object
 

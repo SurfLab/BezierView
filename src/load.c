@@ -120,7 +120,7 @@ void updateProjection()
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 	//printf("%f %f %f %f %f %f \n", ViewCenter[0]-ViewSize,ViewCenter[0]+ViewSize, (ViewCenter[1]-ViewSize),(ViewCenter[1]+ViewSize), -3*ViewDepth*ViewSize, 3*ViewDepth*ViewSize); 
-    float aspect = (float)winWidth/(float)(winHeight);
+    double aspect = (double)winWidth/(double)(winHeight);
 	
     glOrtho(ViewCenter[0]-ViewSize*aspect,ViewCenter[0]+ViewSize*aspect,
 		    (ViewCenter[1]-ViewSize),(ViewCenter[1]+ViewSize), 
@@ -387,7 +387,7 @@ int get_kind(FILE* fp, int *kind)
 void set_volumn()
 {
 	FILE* fp;
-	float sizey, sizez;
+    double sizey, sizez;
 
     // the center of the object
     ObjectCenter[0] = (ViewLeft+ViewRight)/2;

@@ -3,7 +3,7 @@
 
 int TriBezier_loadFile(Patch*p,FILE* fp, bool art_normal);
 void TriBezier_plot_patch(Patch*p,bool smooth);
-void TriBezier_plot_mesh(Patch*p,float* bg_color);
+void TriBezier_plot_mesh(Patch*p, float *bg_color);
 void TriBezier_evaluate_patch(Patch*p,int subDepth);
 void TriBezier_flip_normal(Patch*p);
 void TriBezier_plot_crv(Patch*p,int crv_choice);

@@ -11,7 +11,7 @@
 #include "stdheaders.h"
 #include "util.h"
 
-void print_number(GLdouble x, GLdouble y, REAL v, REAL dist, GLfloat *color);
+void print_number(double x, double y, REAL v, REAL dist, double *color);
 
 // ......................................................................
 //
@@ -35,7 +35,7 @@ double ratio_a =1 , ratio_b=0;
 GLdouble crv_scale[5] = {0, 0.25, 0.5, 0.75, 1.0}; 
 
 int freshObject = 1;  // if first patch, min and max value of curvatures are assigned
-GLdouble RGBValue[3]; // used to store a set of RGB colors
+float RGBValue[3]; // used to store a set of RGB colors
 // the top and bottom of the curvature bar
 GLdouble leftC=0.7, widthC  = 0.02;
 GLdouble topC =0.5, bottomC = 0.9;
@@ -117,7 +117,7 @@ double crv_conv(double in)
 /*
  * relative curvature -> RGB value
  */
-GLdouble* crv2color(double in)
+float* crv2color(double in)
 {
     // RGBValue[3]  is global
     double h;
@@ -157,7 +157,7 @@ GLdouble* crv2color(double in)
     {
 
         // B -> C -> G -> Y -> R
-        GLfloat c[5][3] = { {0.0f, 0.0f, 0.85f},  // blue
+        double c[5][3] = { {0.0f, 0.0f, 0.85f},  // blue
                             {0.0f, 0.9f, 0.9f},   // cyan
                             {0.0f, 0.75f, 0.0f},  // green
                             {0.9f, 0.9f, 0.0f},   // yellow
@@ -175,7 +175,7 @@ GLdouble* crv2color(double in)
                 RGBValue[i] = c[0][i];  // blue
         else
         {        
-            GLdouble u;
+            double u;
             for(i=0;i<4;i++)
                 if (crv_scale[i+1] >= h) break;
             u = (h - crv_scale[i]) /(crv_scale[i+1] - crv_scale[i]);
@@ -448,7 +448,7 @@ int crvListDefined(int crv_choice)
     input: 
 	  color: the color of the numbers and the bars
  */
-void draw_crv_bar(GLfloat* color)
+void draw_crv_bar(float* color)
 {
 
     GLdouble left_crd  = leftC         ; //  coordinates
@@ -480,10 +480,10 @@ void draw_crv_bar(GLfloat* color)
         double segbottom  = (1-u)*bottom_crd + u*top_crd;
         double segtop     = (1-u1)*bottom_crd + u1*top_crd;
 
-        glColor3dv( crv2color( (1-u)*low + u*hi ) );
+        glColor3fv( crv2color( (1-u)*low + u*hi ) );
         glVertex2d( right_crd, segbottom);
         glVertex2d( left_crd, segbottom); 
-        glColor3dv( crv2color( (1-u1)*low + u1*hi) );
+        glColor3fv( crv2color( (1-u1)*low + u1*hi) );
         glVertex2d( left_crd, segtop);
         glVertex2d( right_crd, segtop);
     }
@@ -519,12 +519,12 @@ void draw_crv_bar(GLfloat* color)
 
 
 /* print a floating number on the screen */
-void print_number(GLdouble x, GLdouble y, REAL v, REAL dist, GLfloat *color)
+void print_number(double x, double y, REAL v, REAL dist, double *color)
 {
     char string[20];
-    glColor3fv(color);
+    glColor3dv(color);
     snprintf(string, 20, "%.4f", v);
-    glDrawText((float)x, (float)y, 1.0f, string);
+    glDrawText(x, y, 1.0, string);
 }
 
 

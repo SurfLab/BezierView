@@ -103,7 +103,7 @@ void rotate_vector(REAL* v, REAL* axis, REAL angle)
 	}
 }
 
-void zoom(float delta){
+void zoom(double delta){
     scale_factor *= 1 + delta*0.001f;
 }
 

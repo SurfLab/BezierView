@@ -179,7 +179,7 @@ void QuadBezier_plot_highlights(Patch *p, VEC A, VEC H, REAL hl_step, int highli
 {
     int  i,j,k;
     int  loc[4];
-    REAL P[4*DIM], N[4*DIM];
+    REAL P[4][DIM], N[4][DIM];
 
     // evaluate the patch first if needed
     if(!p->evaluated) {
@@ -208,11 +208,11 @@ void QuadBezier_plot_highlights(Patch *p, VEC A, VEC H, REAL hl_step, int highli
             }
 
             for (k=0; k<4; k++) {
-                Vcopy( &p->eval_P[loc[k]][0], &P[k]);
-                Vcopy( &p->eval_N[loc[k]][0], &N[k]);
+                Vcopy( p->eval_P[loc[k]], P[k]);
+                Vcopy( p->eval_N[loc[k]], N[k]);
             }
 
-            Highlight(4, P, N, A, H, hl_step, highlight_type);
+            Highlight(4, P[0], N[0], A, H, hl_step, highlight_type);
         }
 
     //glEnable(GL_LIGHTING);  // turn the light back on

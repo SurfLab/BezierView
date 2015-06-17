@@ -257,7 +257,7 @@ void BViewUI::contextMenuEvent(QContextMenuEvent *event)
 }
 
 static QGLWidget* currentGL = NULL;
-void glDrawText(float x, float y, float z, const char * str)
+void glDrawText(double x, double y, double z, const char * str)
 {
     if(currentGL)
         currentGL->renderText(x, y, z, str);

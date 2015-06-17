@@ -10,7 +10,7 @@
 ///////////////////////////////////////
 //
 // output to eps file
-void export_eps(Patch face[], int patch_num, float ObjectCenter[3], double scale_factor)
+void export_eps(Patch face[], int patch_num, double ObjectCenter[3], double scale_factor)
 {
     int i;
     FILE* fp;

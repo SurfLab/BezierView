@@ -53,7 +53,7 @@ double* alloc_mem_db(int size);
 int*    alloc_mem_int(int size);
 void*   allocate(long size);
 int*    realloc_mem_int(int* old, int oldsize, int size);
-void glDrawText(float x, float y, float z, const char * str);
+void glDrawText(double x, double y, double z, const char * str);
 void log_error(const char* context, const char* reason);
 
 /* Array allocation routines */

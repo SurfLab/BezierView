@@ -44,8 +44,8 @@ extern int   has_polygon;
 extern int   g_Mode[MAXGROUP];
 extern int   g_PenColor[MAXGROUP];
 extern int   g_Material[MAXGROUP];
-extern float g_patchColor[MAXGROUP][3];
-extern int   g_LineWidth[MAXGROUP];
+extern double g_patchColor[MAXGROUP][3];
+extern double   g_LineWidth[MAXGROUP];
 extern int   g_AntiAlias;
 
 extern int   g_current_grp;
@@ -54,7 +54,7 @@ extern int   g_mouseMode;
 extern int   g_substs[MAXGROUP];
 
 extern int   F_Background;
-extern float scale_factor;
+extern double scale_factor;
 
 // curvature bounds and curvature values
 extern double max_crv[5];
@@ -67,11 +67,11 @@ extern REAL  hl_step;   // highlight density
 
 extern int   firstPatch;
 
-extern float ViewLeft, ViewRight, ViewTop, ViewBottom, ViewNear, ViewFar;
-extern float ViewSize, ViewDepth;
-extern float ClipNear, ClipFar;
-extern float ViewCenter[2];
-extern float ObjectCenter[3];
+extern double ViewLeft, ViewRight, ViewTop, ViewBottom, ViewNear, ViewFar;
+extern double ViewSize, ViewDepth;
+extern double ClipNear, ClipFar;
+extern double ViewCenter[2];
+extern double ObjectCenter[3];
 //extern double sizex, sizey, sizez;
 
 extern int   winWidth;
@@ -96,7 +96,7 @@ float*       getMeshColor ();
 extern int   back_choice;
 extern int   normal_flipped;
 extern int   cur_clipping_plane;
-extern float needle_length;
+extern double needle_length;
 
 extern int   use_display_list; // whether to use display list to draw the object
 

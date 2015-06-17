@@ -215,7 +215,7 @@ void TriBezier_plot_patch(Patch *p, bool smooth)
 }
 
 
-void TriBezier_plot_mesh(Patch *p, float *bg_color)
+void TriBezier_plot_mesh(Patch *p, float* bg_color)
 {
     int   i,j,k;
     int   d = p->degu-1;

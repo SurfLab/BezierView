@@ -228,9 +228,9 @@ void draw(void)
            // qDebug()<<"patch type="<<patch_kind;
 			int grp_id     = fp->group_id;
             int color      = g_Material[grp_id];
-            float r = g_patchColor[grp_id][0];
-            float g = g_patchColor[grp_id][1];
-            float b = g_patchColor[grp_id][2];
+            double r = g_patchColor[grp_id][0];
+            double g = g_patchColor[grp_id][1];
+            double b = g_patchColor[grp_id][2];
 	//		// color of the group that this face belongs to
 
             if(isDisplayFlagEnabled(grp_id, NORMAL)){
@@ -241,7 +241,7 @@ void draw(void)
             int mesh_on  = (isDisplayFlagEnabled(grp_id, DRAWPOLYMESH) && (patch_kind == POLY) ) ||
                            (isDisplayFlagEnabled(grp_id, DRAWMESH)     && (patch_kind != POLY) );
 
-			int line_width = g_LineWidth[grp_id];
+            double line_width = g_LineWidth[grp_id];
 
             if (isDisplayFlagEnabled(grp_id, DRAWCRV) ||
                     isDisplayFlagEnabled(grp_id, DRAWHIGHLIGHT)	||
