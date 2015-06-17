@@ -81,14 +81,7 @@ void BViewUI::createContextMenu()
 
     menuContext->addSeparator();
 
-    if(group_num > 0) // if there are more than one group
-    {
-        QMenu* menuGroup = menuContext->addMenu("Groups");
-        addMenuAction(menuGroup, "All Groups", ALLGROUPS, NULL, true, g_current_grp == 0);
-        menuGroup->addSeparator();
-        for(int i=1;i<=group_num; i++)
-            addMenuAction(menuGroup, group[i].name, GROUP1 + i - 1,NULL, true, g_current_grp == i);
-    }
+    _menuGroup = menuContext->addMenu("Groups");
 
 
     QMenu   *menuDisplay    = menuContext->addMenu("Display");
@@ -178,9 +171,11 @@ void BViewUI::updateContextMenu()
 {
     if(group_num > 0) // if there are more than one group
     {
-        updateMenuAction(ALLGROUPS, g_current_grp == 0);
+        _menuGroup->clear();
+        addMenuAction(_menuGroup, "All Groups", ALLGROUPS, NULL, true, g_current_grp == 0);
+        _menuGroup->addSeparator();
         for(int i=1;i<=group_num; i++)
-            updateMenuAction(GROUP1 + i - 1, g_current_grp == i);
+            addMenuAction(_menuGroup, group[i].name, GROUP1 + i - 1,NULL, true, g_current_grp == i);
     }
 
     updateMenuAction(ZOOM  ,g_mouseMode == ZOOM   && clip_item == 0);

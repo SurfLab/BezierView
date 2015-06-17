@@ -174,7 +174,66 @@ void define_scene(FILE* fp)
 		else              has_patch   = 1;
 
 		// load the patch data from the file
-        Patch_loadFile(&face[pat],fp);
+        Patch *p = &face[pat];
+        for(int i=0;i<3;i++) p->position[i] = 0;
+
+        // read in the
+        switch(p->type) {
+
+        case POLY:
+        {
+            /* Load the polyhedral mesh and turn
+             * every facet into a separate patch
+             */
+
+            /* Read in number of vertices and faces */
+            int VNum, FNum;
+            fscanf(fp, "%d %d", &VNum, &FNum);
+
+            REAL (*V)[DIM]; arrcreate(V,VNum);
+            int  *F = NULL;
+
+            /* Read vertex data */
+            for (int i=0; i<VNum; i++)
+                fscanf(fp, "%lf %lf %lf\n", &V[i][0], &V[i][1], &V[i][2]);
+
+            /* Read face data */
+            for (int i=0; i<FNum; i++)
+            {
+                int side;
+                fscanf(fp, "%d", &side);
+                arrresize(F, side);
+                for(int j=0;j<side;j++)
+                    fscanf(fp, "%d", &F[j]);
+
+                Patch_createSinglePolygon(p + i, side, V, F);
+                p[i].type = patch_kind;
+                p[i].group_id = c_grp;
+            }
+
+            arrdelete(V);
+            arrdelete(F);
+            /* We loaded FNum patches so we have
+             * to increase pat by FNum-1, since the loop has
+             * a pat++ at the top
+             */
+            pat += FNum - 1;
+        }
+            break;
+        case TP:
+        case TP_EQ:
+        case RATIONAL:
+        case PNTP:
+            Patch_loadQuadBezier(p, fp);
+            break;
+        case TRIANG:
+        case PNTRI:
+            Patch_loadTriBezier(p, fp);
+            break;
+        default:
+            fprintf(stderr,"Unknown patch_kind %d\n", p->type);
+            exit(1);
+        }
         Patch_enlarge_AABB(&face[pat],pat==1); // increase the bounding box if necessary
 
 		// get the type of next patch

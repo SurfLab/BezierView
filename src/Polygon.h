@@ -12,13 +12,11 @@
 //
 //  A vertex with a normal vector associated with it
 //  
-class Vertex {
-private:
+struct Vertex {
   double  p[DIM];    // co-ordinates 
   double  n[DIM];    // normal vector
 //  int     N;         // index of this node
 
-public:
   int     valence;  // number of facets that include this vertex 
                     //  (different to number of edges! when this vertex is on boundary)
   int     *F_nbr;     // index of the neighboring facets
@@ -28,7 +26,6 @@ public:
   int     valid; // is the vertex in the mesh
 
  
-public:
   // == constructor ======================
 	void init() {
   	  valence = 0;
@@ -75,14 +72,12 @@ typedef Vertex *p_vertex;
 //
 // class Facet
 // 
-class Facet {
-  public:
+struct Facet {
     int sides;      // number of vertices/edges in this face
 
     int *V_ind; // the index of the vertices in this facet
     double  normal[3];    // normal vector
 
-  public:
 	REAL *crease_edge;
 
     // == Memeory allocater ========================================
@@ -157,13 +152,10 @@ typedef Facet *p_face;
 //  
 //  class Polygon 
 //      a polygonal patch
-class PolygonMesh :public Object{
+struct PolygonMesh :public Object{
 
-protected:
 	Vertex * vertices;
-public: // temp for saving pov fix later
 	Facet  * faces;
-public:
 	int    VNum;     // Total vertex number
 	int    FNum;     // Total facet number
 
@@ -178,7 +170,6 @@ public:
 //	bool has_crease;  // if this polygon has crease edges
 
 	int evaluated;
-protected:
 	void auto_normal();
 	void get_gauss_curvature();//by Jianhua fan
 	void get_mean_curvature();
@@ -186,7 +177,6 @@ protected:
 	void auto_neighboring();
 	//void writeout_patch();
 
-public:
     // == Constructors ========================================
 	PolygonMesh() {		evaluated = false;
 		vertices = NULL; faces = NULL;}

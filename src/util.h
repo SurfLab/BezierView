@@ -56,5 +56,12 @@ int*    realloc_mem_int(int* old, int oldsize, int size);
 void glDrawText(float x, float y, float z, const char * str);
 void log_error(const char* context, const char* reason);
 
+/* Array allocation routines */
+#define arrcreate(pointer,count) (pointer = (typeof(pointer)) malloc(sizeof(*pointer)*count))
+#define arrresize(pointer,count) (pointer = (typeof(pointer)) realloc(pointer, sizeof(*pointer)*count))
+#define arrdelete(pointer) (free(pointer))
+
+
+
 #endif
 

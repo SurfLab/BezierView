@@ -29,6 +29,11 @@ void Patch_flipnormal(Patch*p);
 void Patch_computecrv(Patch*p);
 void Patch_freeevalmem(Patch*p);
 
+
+void Patch_createSinglePolygon(Patch*p, int side, REAL (*V)[DIM], int *F);
+void Patch_loadQuadBezier(Patch*p, FILE* fp);
+void Patch_loadTriBezier(Patch*p, FILE* fp);
+
 // Group structure: attach faces to a group 
 //                    therefore can specify same color to many faces
 typedef struct Group

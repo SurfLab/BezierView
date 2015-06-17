@@ -35,7 +35,7 @@ public slots:
     void saveFile();
 private:
     QMainWindow *_mainwindow;
-    QMenu* _contextMenu;
+    QMenu* _contextMenu, *_menuGroup;
     QSignalMapper *_signalMapper;
 
     QAction *addMenuAction(QMenu *parent, QString title, int data, const char *shortcut = NULL, bool checkable = false, bool checked = false);

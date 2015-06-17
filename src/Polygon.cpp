@@ -307,7 +307,6 @@ void PolygonMesh::auto_normal()
         //printf("face %d, n %d, pt:%d %d %d",j,n,prv,pt,nxt);
         VVminus(vertices[prv].get_p(), vertices[pt].get_p(), V1);
         VVminus(vertices[nxt].get_p(), vertices[pt].get_p(), V2);
-
         VVcross(V2, V1, V3);
 
         int n = faces[j].get_n(); // number of vertices on this face

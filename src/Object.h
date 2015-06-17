@@ -9,8 +9,11 @@
 class Object {
 
 public:
+    /// AABB should be struct
 	REAL minx, maxx, miny, maxy, minz, maxz; // axis aligned bounding box
+    /// what is this init for?
 	int init;
+    /// this can just go into patch
 	int normal_flipped;
 public:
 // ------------------------------------------------------------

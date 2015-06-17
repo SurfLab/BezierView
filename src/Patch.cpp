@@ -30,38 +30,6 @@ void Patch_evaluate(Patch* p, int SubDepth)
 //  load the Bezier data from a data file
 //
 int Patch_loadFile(Patch*p,FILE* fp) {
-    for(int i=0;i<3;i++) p->position[i] = 0;
-    // new patch
-    TriBezier  * newtri;
-    QuadBezier * newquad;
-    PolygonMesh    * newpoly;
-
-	// read in the 
-    switch(p->type) {
-
-    case POLY:
-        newpoly = new PolygonMesh();
-	    newpoly->loadFileBV(fp);
-        p->object = newpoly;
-	    break;
-    case TP:
-    case TP_EQ:
-    case RATIONAL:
-    case PNTP:
-		newquad = new QuadBezier();
-        newquad -> loadFile(fp, p->type==TP_EQ, p->type==RATIONAL, p->type==PNTP);
-        p->object = newquad;
-        break;
-    case TRIANG:
-    case PNTRI:
-		newtri = new TriBezier();
-        newtri -> loadFile(fp, p->type==PNTRI);
-        p->object = newtri;
-		break;
-    default:
-        fprintf(stderr,"Unknown patch_kind %d\n", p->type);
-        exit(1);
-    }
 
 	return 0;
 };
@@ -75,6 +43,62 @@ void Patch_translate(Patch*p,REAL* center)
         p->position[i] += center[i];
 }
 
+
+void Patch_createSinglePolygon(Patch*p, int side, REAL (*V)[DIM], int *F)
+{
+    PolygonMesh    * newpoly = new PolygonMesh();
+    newpoly->VNum = side;
+    newpoly->FNum = 1;
+    arrcreate(newpoly->vertices, side);
+    arrcreate(newpoly->faces, 1);
+    Vertex* vertices = newpoly->vertices;
+    Facet * faces = newpoly->faces;
+    for(int i = 0; i < side; i++)
+    {
+        REAL *v = V[F[i]];
+        newpoly->enlarge_aabb(v[0],v[1],v[2]);
+        vertices[i].set_p(v[0],v[1],v[2]);
+        vertices[i].set_n(0,0,0);
+        vertices[i].valid = true;
+    }
+    faces[0].sides = side;
+    faces[0].initMem();
+    for(int i = 0; i < side; i++)
+        faces[0].V_ind[i] = i;
+    /* Calculate the normal by averaging side normals */
+    for(int i= 0; i < side; i++)
+    {
+        int prv = i, pt = (i+1)%side, nxt = (i+2)%side;
+        REAL V1[DIM], V2[DIM];
+        VVminus(vertices[prv].p, vertices[pt].p, V1);
+        VVminus(vertices[nxt].p, vertices[pt].p, V2);
+        VVcross(V2, V1, vertices[pt].n);
+        Normalize(vertices[pt].n);
+        VVadd(1.0, faces[0].normal, 1.0, vertices[pt].n, faces[0].normal);
+    }
+    Normalize(faces[0].normal);
+
+
+    p->object = newpoly;
+}
+
+
+
+void Patch_loadQuadBezier(Patch*p, FILE* fp)
+{
+    QuadBezier * newquad;
+    newquad = new QuadBezier();
+    newquad -> loadFile(fp, p->type==TP_EQ, p->type==RATIONAL, p->type==PNTP);
+    p->object = newquad;
+}
+
+void Patch_loadTriBezier(Patch*p, FILE* fp)
+{
+    TriBezier  * newtri;
+    newtri = new TriBezier();
+    newtri -> loadFile(fp, p->type==PNTRI);
+    p->object = newtri;
+}
 
 void Patch_enlarge_AABB(Patch*p,int first) {
 
