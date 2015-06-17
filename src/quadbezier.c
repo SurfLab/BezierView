@@ -235,7 +235,7 @@ void QuadBezier_plot_crv_needles(Patch *p, int crv_choice, REAL length)
 
                 h = get_crv(p->crv_array, loc, crv_choice);
 
-                glColor3fv( crv2color(h));   // use the color of the curvature
+                glColorc( crv2color(h));   // use the color of the curvature
                 glBegin(GL_LINES);
                 //glVertex3dv(&(p->eval_P[loc][0]));
 
@@ -282,7 +282,7 @@ void QuadBezier_plot_crv(Patch *p, int crv_choice)
             if(p->normal_flipped && crv_choice != GAUSS_CRV  && crv_choice != SPECIAL_CRV)
                 h = -h;
 
-            glColor3fv( crv2color(h));        //   |         |
+            glColorc( crv2color(h));        //   |         |
             glVertex4dv(&(p->eval_P[loc][0]));  //   |         |
             //   |         |
             loc = (i+1)*(p->pts+1)+j;            // (i+1,0)--(i+1,1) -- ...
@@ -293,7 +293,7 @@ void QuadBezier_plot_crv(Patch *p, int crv_choice)
             if(p->normal_flipped && ( crv_choice != GAUSS_CRV && crv_choice != SPECIAL_CRV ))
                 h = -h;
 
-            glColor3fv( crv2color(h));
+            glColorc( crv2color(h));
             glVertex4dv(&(p->eval_P[loc][0]));
         }
         glEnd();
@@ -303,18 +303,18 @@ void QuadBezier_plot_crv(Patch *p, int crv_choice)
 }
 
 
-void QuadBezier_plot_mesh(Patch *p, float *bg_color)
+void QuadBezier_plot_mesh(Patch *p, color_t bg_color)
 {
     int   i,j;
     int loc;
 
     glPushAttrib(GL_POLYGON_BIT | GL_ENABLE_BIT);
-    if(bg_color) {   // if hidden line removal
+    if(bg_color.alpha != 0.0f) {   // if hidden line removal
         glPushAttrib(GL_CURRENT_BIT | GL_ENABLE_BIT);
         glDisable(GL_LIGHTING);
         glEnable(GL_POLYGON_OFFSET_FILL);
         glPolygonOffset(1.0, 1.0);
-        glColor3fv(bg_color);
+        glColorc(bg_color);
 
         for(i=0;i<p->degu;i++) {
             glBegin(GL_QUADS);

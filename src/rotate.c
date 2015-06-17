@@ -308,8 +308,8 @@ void display(void)
     /* Use to save the previous modelview matrix */
     GLdouble modelview[16];
 
-    glClearColor(g_BackColor[back_choice][0], g_BackColor[back_choice][1],
-                    g_BackColor[back_choice][2], 1.0);
+    glClearColor(g_BackColor[back_choice].red, g_BackColor[back_choice].green,
+                    g_BackColor[back_choice].blue, 1.0);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
     /* modelview transform */

@@ -346,9 +346,7 @@ void BViewUI::colorDialog()
         color = QColorDialog::getColor(Qt::green, this, "Select Color", QColorDialog::DontUseNativeDialog);
 
     if (color.isValid()) {
-        float rgb[] = {color.red()/255.0f,color.green()/255.0f,color.blue()/255.0f};
-
-        color_proc_rgb(rgb);
+        color_proc_rgb(mkcolor3(color.red()/255.0f,color.green()/255.0f,color.blue()/255.0f));
         updateGL();
     }
 }

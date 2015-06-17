@@ -44,7 +44,7 @@ extern int   has_polygon;
 extern int   g_Mode[MAXGROUP];
 extern int   g_PenColor[MAXGROUP];
 extern int   g_Material[MAXGROUP];
-extern double g_patchColor[MAXGROUP][3];
+extern color_t g_patchColor[MAXGROUP];
 extern double   g_LineWidth[MAXGROUP];
 extern int   g_AntiAlias;
 
@@ -87,11 +87,11 @@ extern int    special_curv;
 
 
 
-extern float g_BackColor[10][3];
+extern color_t g_BackColor[10];
 extern char  g_BackColorNames[10][20];
-extern float g_penColors[10][3];
+extern color_t g_penColors[10];
 extern char  g_penColorNames[10][20];
-float*       getMeshColor ();
+color_t       getMeshColor ();
 
 extern int   back_choice;
 extern int   normal_flipped;

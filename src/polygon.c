@@ -51,15 +51,15 @@ void Polygon_plot_patch(Patch*p,bool smooth)
 }
 
 
-void Polygon_plot_mesh(Patch*p,float* bg_color)
+void Polygon_plot_mesh(Patch*p, color_t bg_color)
 {
     //glShadeModel(GL_SMOOTH);
-	if(bg_color) {   // if hidden line removal
+    if(bg_color.alpha != 0.0f) {   // if hidden line removal
 		glPushAttrib(GL_CURRENT_BIT | GL_ENABLE_BIT | GL_POLYGON_BIT );
 		glDisable(GL_LIGHTING);
 		glEnable(GL_POLYGON_OFFSET_FILL);
 		glPolygonOffset(1.0, 1.0);
-		glColor3fv(bg_color);
+        glColorc(bg_color);
 
         glBegin(GL_POLYGON);
         for (int j=0; j<p->pointCount; j++) {

@@ -126,7 +126,7 @@ void Patch_plotcrv(Patch *p, int crv_choice)
 
 
 
-void Patch_plotmesh(Patch *p, float *bg_color)
+void Patch_plotmesh(Patch *p, color_t bg_color)
 {
     switch(p->type)
     {

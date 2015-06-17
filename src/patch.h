@@ -51,7 +51,7 @@ void Patch_enlarge_AABB(Patch*p,int first);
 void Patch_translate(Patch*p,REAL* center);
 void Patch_evaluate(Patch* p, int SubDepth);
 void Patch_plotcrv(Patch*p, int crv_choice);
-void Patch_plotmesh(Patch*p, float *bg_color);
+void Patch_plotmesh(Patch*p, color_t bg_color);
 void Patch_plotpatch(Patch*p, bool smooth);
 void Patch_plotcrvneedles(Patch*p, int crv_choice, double needle_length);
 void Patch_plothighlights(Patch*p, VEC A, VEC H, REAL hl_step, int hl_type);

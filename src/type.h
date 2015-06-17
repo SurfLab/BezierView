@@ -35,4 +35,41 @@ typedef REAL VEC[DIM];
 
 #define MAXDEG 40     // maximum degree of bezier patches
 
+typedef struct Color {
+    float red, green, blue, alpha;
+} color_t;
+
+inline void glColorc(color_t c)
+{
+    glColor4f(c.red, c.green, c.blue, c.alpha);
+}
+
+inline color_t mkcolor4(float red, float green, float blue, float alpha)
+{
+    color_t c = { red, green, blue, alpha };
+    return c;
+}
+inline color_t mkcolor3(float red, float green, float blue)
+{
+    return mkcolor4(red, green, blue, 1.0f);
+}
+
+inline color_t mknullcolor()
+{
+    color_t c = { 0.0f, 0.0f, 0.0f, 0.0f };
+    return c;
+}
+
+
+inline color_t interp(double u, color_t low, color_t high)
+{
+    float v = (float)u;
+    color_t c;
+    c.red = (1-v)*low.red + v * high.red;
+    c.green = (1-v) *low.green + v * high.green;
+    c.blue = (1-v)*low.blue + v * high.blue;
+    c.alpha = (1-v)*low.alpha + v * high.alpha;
+    return c;
+}
+
 #endif

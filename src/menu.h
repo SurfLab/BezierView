@@ -97,7 +97,7 @@
 // menu handling procedures
 
 void    menu_proc(int entry);
-void color_proc_rgb(float rgb[]);
+void color_proc_rgb(color_t c);
 void keyboard(unsigned char key);
 void advkeyboard(int key);
 

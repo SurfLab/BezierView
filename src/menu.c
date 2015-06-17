@@ -29,20 +29,16 @@ void color_proc(int color)
 }
 
 
-void color_proc_rgb(float rgb[]){
+void color_proc_rgb(color_t c){
     color_proc(-1);
     if(g_current_grp==0 && (group_num>0) ) {
         for(int i=0; i<=group_num; i++){
 
-            g_patchColor[i][0] = rgb[0];
-            g_patchColor[i][1]=rgb[1];
-            g_patchColor[i][2]=rgb[2];
+            g_patchColor[i] = c;
         }
     }
     else
-        g_patchColor[g_current_grp][0] = rgb[0];
-        g_patchColor[g_current_grp][1]=rgb[1];
-        g_patchColor[g_current_grp][2]=rgb[2];
+        g_patchColor[g_current_grp]= c;
 }
 
 

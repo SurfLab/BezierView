@@ -215,7 +215,7 @@ void TriBezier_plot_patch(Patch *p, bool smooth)
 }
 
 
-void TriBezier_plot_mesh(Patch *p, float* bg_color)
+void TriBezier_plot_mesh(Patch *p, color_t bg_color)
 {
     int   i,j,k;
     int   d = p->degu-1;
@@ -454,7 +454,7 @@ void TriBezier_plot_crv(Patch *p, int crv_choice)
                 h = -h;
 
             //			printf("h=%f\n", h);
-            glColor3fv( crv2color(h));
+            glColorc( crv2color(h));
             glVertex4dv(&(p->eval_P[loc][0]));
 
             loc = b2i_i(i+1, j, p->pts-i-j-1, p->pts);
@@ -465,7 +465,7 @@ void TriBezier_plot_crv(Patch *p, int crv_choice)
                 h = -h;
 
             //			printf("h=%f\n", h);
-            glColor3fv( crv2color(h));
+            glColorc( crv2color(h));
             glVertex4dv(&(p->eval_P[loc][0]));
         }
 
@@ -477,7 +477,7 @@ void TriBezier_plot_crv(Patch *p, int crv_choice)
         if(p->normal_flipped && crv_choice != GAUSS_CRV  && crv_choice != SPECIAL_CRV)
             h = -h;
 
-        glColor3fv( crv2color(h));
+        glColorc( crv2color(h));
         glVertex4dv(&(p->eval_P[loc][0]));
         glEnd();
     }
@@ -504,7 +504,7 @@ void TriBezier_plot_crv_needles(Patch *p, int crv_choice, REAL length)
                 h = get_crv(p->crv_array, loc, crv_choice);
                 VVadd(1.0, &(p->eval_P[loc][0]), h*length, &(p->eval_N[loc][0]),
                         sum);
-                glColor3fv( crv2color(h));
+                glColorc( crv2color(h));
 
                 glBegin(GL_LINES);
                 glVertex3dv(&(p->eval_P[loc][0]));

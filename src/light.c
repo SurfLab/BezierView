@@ -7,6 +7,7 @@
  * -------------------------------------------------------------
  */
 #include "stdheaders.h"
+#include "type.h"
 #include "light.h"
 
 void updateLights();
@@ -72,11 +73,11 @@ float mat_shininess[] = {
 
 /* choose a color using its float rgb values */
 
-void set_colorf(double r, double g, double b){
+void set_colorf(color_t c){
 
     float MatAmbientBack[]  = {0.0f, 0.2f, 0.0f, 1.0f};
     glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
-    float color[] = {(float)r, (float)g, (float)b, ALPHA};
+    float* color = &c.red;
 
     glMaterialfv(GL_FRONT, GL_AMBIENT, color);
     glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular[0]);

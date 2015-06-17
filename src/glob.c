@@ -33,7 +33,7 @@ int   g_current_grp;
 int   g_redisplay=1;
 int   g_mouseMode;
 int   g_substs[MAXGROUP];
-double g_patchColor[MAXGROUP][3];
+color_t g_patchColor[MAXGROUP];
 
 int    environmapping=0;
 int    drawbox=0;
@@ -71,34 +71,34 @@ REAL hl_step;   // highlight density
 int    light_switch[3];
 
 // the list of available background colors 
-float  g_BackColor[10][3]
-          = { {1.0f, 1.0f, 1.0f},       // White
-            {0.0f, 0.0f, 0.0f},        // Black
-			{0.4f, 0.4f, 0.4f},     // Gray 0.4
-			{0.7f, 0.7f, 0.7f},     // Gray 0.7
-			{0.74f, 0.74f, 0.96f},  // light blue 1
-			{0.5, 0.5, 1.0},        // light blue 2
-			{0.74f, 0.96f, 0.74f},  // light green 1
-			{0.5, 1.0, 0.5},        // light green 2
-			{1.0, 0.5, 1.0},        // light blue 2
-			{1.0, 1.0, 0.5},        // light green
+color_t g_BackColor[10]
+          = { {1.0f, 1.0f, 1.0f, 1.0f},       // White
+            {0.0f, 0.0f, 0.0f, 1.0f},        // Black
+            {0.4f, 0.4f, 0.4f, 1.0f},     // Gray 0.4
+            {0.7f, 0.7f, 0.7f, 1.0f},     // Gray 0.7
+            {0.74f, 0.74f, 0.96f, 1.0f},  // light blue 1
+            {0.5, 0.5, 1.0, 1.0f},        // light blue 2
+            {0.74f, 0.96f, 0.74f, 1.0f},  // light green 1
+            {0.5, 1.0, 0.5, 1.0f},        // light green 2
+            {1.0, 0.5, 1.0, 1.0f},        // light blue 2
+            {1.0, 1.0, 0.5, 1.0f},        // light green
 };
 
 char   g_BackColorNames[10][20] = { "White", "Black", "Gray 0.4", "Gray 0.7", "light blue 1",
 		"light blue 2", "light green 1", "light green 2", "purple", "yellow"};
 
 // the list of available background colors 
-float  g_penColors[10][3]
-          = { {1.0f, 1.0f, 1.0f},       // White
-            {0.0f, 0.0f, 0.0f},        // Black
-			{0.4f, 0.4f, 0.4f},     // Gray 0.4
-			{0.7f, 0.7f, 0.7f},     // Gray 0.7
-			{0.74f, 0.74f, 0.96f},  // light blue 1
-			{0.5, 0.5, 1.0},        // light blue 2
-			{0.74f, 0.96f, 0.74f},  // light green 1
-			{0.5, 1.0, 0.5},        // light green 2
-			{1.0, 0.5, 1.0},        // light blue 2
-			{1.0, 1.0, 0.5},        // light green
+color_t  g_penColors[10]
+          = { {1.0f, 1.0f, 1.0f, 1.0f},       // White
+            {0.0f, 0.0f, 0.0f, 1.0f},        // Black
+            {0.4f, 0.4f, 0.4f, 1.0f},     // Gray 0.4
+            {0.7f, 0.7f, 0.7f, 1.0f},     // Gray 0.7
+            {0.74f, 0.74f, 0.96f, 1.0f},  // light blue 1
+            {0.5, 0.5, 1.0, 1.0f},        // light blue 2
+            {0.74f, 0.96f, 0.74f, 1.0f},  // light green 1
+            {0.5, 1.0, 0.5, 1.0f},        // light green 2
+            {1.0, 0.5, 1.0, 1.0f},        // light blue 2
+            {1.0, 1.0, 0.5, 1.0f},        // light green
 };
 
 char   g_penColorNames[10][20] = { "White", "Black", "Gray 0.4", "Gray 0.7", "light blue 1",
@@ -108,12 +108,12 @@ char   g_penColorNames[10][20] = { "White", "Black", "Gray 0.4", "Gray 0.7", "li
 int    back_choice = 0;
 
 // the available colors of the mesh 
-float  g_MeshColor[2][3] = { {1.0, 1.0, 1.0}, {0.0, 0.0, 0.0} };
+color_t  g_MeshColor[2] = { {1.0, 1.0, 1.0, 1.0f}, {0.0, 0.0, 0.0, 1.0f} };
 
 // automatically determine a B/W color 
-float* getMeshColor () {
-    float* back = g_BackColor[back_choice];
-	if(back[0] + back[1] + back[2] < 1.5)  
+color_t getMeshColor () {
+    color_t back = g_BackColor[back_choice];
+    if(back.red + back.green + back.blue < 1.5f)
 	    return g_MeshColor[0];
 	else
 		return g_MeshColor[1];

@@ -228,9 +228,6 @@ void draw(void)
            // qDebug()<<"patch type="<<patch_kind;
 			int grp_id     = fp->group_id;
             int color      = g_Material[grp_id];
-            double r = g_patchColor[grp_id][0];
-            double g = g_patchColor[grp_id][1];
-            double b = g_patchColor[grp_id][2];
 	//		// color of the group that this face belongs to
 
             if(isDisplayFlagEnabled(grp_id, NORMAL)){
@@ -264,7 +261,7 @@ void draw(void)
 				else
 					glDisable(GL_LINE_SMOOTH);
 
-				glColor3fv(g_penColors[g_PenColor[grp_id]]);
+                glColorc(g_penColors[g_PenColor[grp_id]]);
 
                 if( isDisplayFlagEnabled(g_current_grp, HIDDENLINE) &&
                     (!patch_on ) && (!isDisplayFlagEnabled(grp_id, DRAWCRV)) &&
@@ -272,7 +269,7 @@ void draw(void)
                     (!isDisplayFlagEnabled(grp_id, DRAWREFLLINE)) )
                     Patch_plotmesh(fp,g_BackColor[back_choice]);
 				else
-                    Patch_plotmesh(fp,NULL);
+                    Patch_plotmesh(fp,mknullcolor());
 
 				glPopAttrib();
 			}
@@ -309,7 +306,7 @@ void draw(void)
 					glDisable(GL_BLEND);            // Turn Blending Off
 					glEnable(GL_DEPTH_TEST);        // Turn Depth Testing On
                     if(color == -1)
-                        set_colorf(r,g,b);
+                        set_colorf(g_patchColor[grp_id]);
                     else if(color == COLORNUM-2)
                         set_color(rand()%(COLORNUM-2));
                     else
