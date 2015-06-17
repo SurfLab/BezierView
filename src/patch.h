@@ -16,14 +16,16 @@ typedef struct Patch{
 
     /// AABB should be struct
     REAL minx, maxx, miny, maxy, minz, maxz; // axis aligned bounding box
-    /// what is this init for?
+    /// For bounding box, we want to know if it was initialized
     int init;
-    /// this can just go into patch
     int normal_flipped;
 
+    //! Number of control points for positions
+    //! For polygon, it is the position of vertices around
+    //! the polygon
     int pointCount;
+    //! Number of normal control points of the patch
     int normalCount;
-
     REAL (*position)[DIM];
     REAL (*normal)[DIM];
 
