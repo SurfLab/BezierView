@@ -26,7 +26,6 @@ bool 	redrawContinue = false;
 bool    trackballMove = false;
 
 int     clipping = 0;
-int     clip_item = 0;
 int     clipping_grp = 1;
 
 int     rotate_plane = 0;
@@ -151,12 +150,12 @@ void mouseMotion(int x, int y, KeyboardModifier modifiers )
 	}
 
     if(! (modifiers==ControlModifier) ) {
-        if(g_mouseMode == MENUCONTROL_ZOOM ) {
+        if(g_mouseMode == MOUSEMODE_ZOOM ) {
 			motionZoom(x,y);
 			return;
 		}
 
-        if(g_mouseMode == MENUCONTROL_MOVE ) {
+        if(g_mouseMode == MOUSEMODE_MOVE ) {
 			motionMove(x,y);
 			return;
 		}
@@ -229,13 +228,13 @@ void mouseMotion(int x, int y, KeyboardModifier modifiers )
     else if(clipping)
     {
 
-        switch(clip_item)
+        switch(g_mouseMode)
         {
-        case MENUCONTROL_CLIPNEAR:
+        case MOUSEMODE_CLIPNEAR:
 			//group[clipping_grp].ViewNear = (double)y/winHeight;
             ClipNear = -((float)y/winHeight - 0.5f)*ViewSize/2;
 			break;
-        case MENUCONTROL_CLIPFAR:
+        case MOUSEMODE_CLIPFAR:
 			//group[clipping_grp].ViewFar = 
             ClipFar = -((float)y/winHeight - 0.5f)*ViewSize/2;
 			break;
@@ -344,9 +343,9 @@ void mouseButton(int button, int state, int x, int y, KeyboardModifier modifiers
        if(state == 1)
        {
 
-		   if(clip_item) {
+           if(g_mouseMode == MOUSEMODE_CLIPNEAR || g_mouseMode == MOUSEMODE_CLIPFAR) {
              clipping = 1;
-			 return;
+             return;
 		   }
        }
        else
@@ -420,9 +419,9 @@ void mouseButton(int button, int state, int x, int y, KeyboardModifier modifiers
 		else 
 			shift_plane = 0;
 
-        if(g_mouseMode ==	MENUCONTROL_ROTATE)
+        if(g_mouseMode ==	MOUSEMODE_ROTATE)
 			startMotion( x,y);
-        else if(g_mouseMode ==	MENUCONTROL_MOVE)
+        else if(g_mouseMode ==	MOUSEMODE_MOVE)
 			startMove( x,y);
 		else
 			startZoom( x,y);

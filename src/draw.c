@@ -36,7 +36,7 @@ void init_flags()
 	}
 	g_Material[0] = 0;
 	g_current_grp = 0;
-    g_mouseMode = MENUCONTROL_ROTATE;
+    g_mouseMode = MOUSEMODE_ROTATE;
 	//m_envtexture_id = 0;
     texture1D_initialized = false;
 

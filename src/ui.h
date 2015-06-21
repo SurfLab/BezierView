@@ -37,9 +37,9 @@ private:
     QMenu* _contextMenu, *_menuGroup;
     QSignalMapper *_signalMapper;
 
-    QAction *addMenuAction(QMenu *parent, QString title, int data, const char *shortcut = NULL, bool checkable = false, bool checked = false);
+    QAction *addMenuAction(QMenu *parent, QString title, int entry, int parameter = 0, const char *shortcut = NULL, bool checkable = false, bool checked = false);
     void createContextMenu();
-    void updateMenuAction(int id, bool checked, bool visible = true);
+    void updateMenuAction(int entry, int parameter, bool checked, bool visible = true);
     void updateContextMenu();
 };
 

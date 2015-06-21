@@ -15,5 +15,4 @@ void mouseButton(int button, int state, int x, int y, KeyboardModifier modifiers
 void display();
 void spin();
 void zoom(double delta);
-extern int clip_item;
 

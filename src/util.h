@@ -2,11 +2,7 @@
 
 #include "type.h"
 
-#ifndef DIM
-#define DIM 4
-#endif
-
-#define tol  0.0000001
+static const real tol = 0.0000001;
 
 void   VVcross(vector v1, vector v2, vector v3);  // v3 = v1 X v2
 void   VVminus(vector v1,vector v2, vector v3);   // v3 = v1 - v2

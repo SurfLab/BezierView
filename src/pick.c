@@ -14,8 +14,6 @@
 #include "glob.h"
 #include "pick.h"
 
-#define BUFSIZE 512
-
 
 /* picking */
 int pick(int x, int y)
@@ -23,7 +21,7 @@ int pick(int x, int y)
 
     GLuint hits = 0;
     GLint viewport[4];
-    GLuint selectBuf[BUFSIZE];
+    GLuint selectBuf[512];
     GLuint *ptr;
     GLuint i,j;
     GLint  k;
@@ -36,7 +34,7 @@ int pick(int x, int y)
     glGetDoublev( GL_MODELVIEW_MATRIX, mv_matrix);
         
     glGetIntegerv( GL_VIEWPORT, viewport);
-    glSelectBuffer(BUFSIZE, selectBuf);
+    glSelectBuffer(sizeof(selectBuf)/sizeof(selectBuf[0]), selectBuf);
     
     glRenderMode(GL_SELECT);
     

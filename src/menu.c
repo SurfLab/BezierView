@@ -74,67 +74,72 @@ void increase_highlight()
 	g_redisplay=1;
 }
 
-
-// --------------------------------------------------------
-//
-// main menu handling function  (except for color changing) 
-void menu_proc(int entry)
+void displayProc(int display_flag)
 {
-	int i, substeps ;
-/*	char logstring[255];
-	sprintf(logstring, "Menu selected %i ", entry);
-	logMessage(logstring);
-*/
-    switch(entry)
+
+    switch(display_flag)
     {
-    case MENUCONTROL_ZOOMIN:
-		zoomin();
+    case DRAWFLAGS_PATCH:
+        ToggleMode(g_current_grp, DRAWFLAGS_PATCH);
         break;
-    case MENUCONTROL_ZOOMOUT:
-		zoomout();
-        break;
-    case MENUCONTROL_ZOOM:
-    case MENUCONTROL_ROTATE:
-    case MENUCONTROL_MOVE:
-		g_mouseMode = entry;
-        clip_item = 0;
-        break;
-    case MENUCONTROL_SMOOTHSHD:
-        ToggleMode(g_current_grp, DRAWFLAGS_SMOOTH);
-		break;
-    case MENUCONTROL_MESH:
-       // qDebug()<<"mesh";
+    case DRAWFLAGS_MESH:
         ToggleMode(g_current_grp, DRAWFLAGS_MESH);
         break;
-    case MENUCONTROL_PATCH:
-       // qDebug()<<"patch";
-		ToggleMode(g_current_grp, DRAWFLAGS_PATCH);
+    case DRAWFLAGS_POLYPATCH:
+        ToggleMode(g_current_grp, DRAWFLAGS_POLYPATCH);
         break;
-    case MENUCONTROL_POLYMESH:
-       // qDebug()<<"polymesh";
-
-		ToggleMode(g_current_grp, DRAWFLAGS_POLYMESH);
+    case DRAWFLAGS_POLYMESH:
+        ToggleMode(g_current_grp, DRAWFLAGS_POLYMESH);
         break;
-    case MENUCONTROL_POLYPATCH:
-       // qDebug()<<"polypatch";
-		ToggleMode(g_current_grp, DRAWFLAGS_POLYPATCH);
-        break;
-//    case MENUCONTROL_SELMESH:
-//      drawselmesh = ! drawselmesh;
-//       break;
-//    case MENUCONTROL_SELPATCH:
-//        drawselpatch = ! drawselpatch;
-//        break;
-    case MENUCONTROL_CURVA:
-		ToggleMode(g_current_grp, DRAWFLAGS_CRV);
+    case DRAWFLAGS_CRV:
+        ToggleMode(g_current_grp, DRAWFLAGS_CRV);
 //		DisableMode(g_current_grp, DRAWFLAGS_PATCH); // disable the patch display
-		DisableMode(g_current_grp, DRAWFLAGS_POLYPATCH); // disable the patch display
-		DisableMode(g_current_grp, DRAWFLAGS_HIGHLIGHT); // disable the highlight display
-		DisableMode(g_current_grp, DRAWFLAGS_REFLLINE); // disable the highlight display
+        DisableMode(g_current_grp, DRAWFLAGS_POLYPATCH); // disable the patch display
+        DisableMode(g_current_grp, DRAWFLAGS_HIGHLIGHT); // disable the highlight display
+        DisableMode(g_current_grp, DRAWFLAGS_REFLLINE); // disable the highlight display
         DisableMode(g_current_grp, DRAWFLAGS_ENVMAPPING);
-		define_crv();
+        define_crv();
         break;
-    case MENUCONTROL_NORMAL:
+    case DRAWFLAGS_CRVNEEDLE:
+        ToggleMode(g_current_grp, DRAWFLAGS_CRVNEEDLE);
+        define_crv();
+        break;
+
+    case DRAWFLAGS_HIGHLIGHT:
+        ToggleMode(g_current_grp, DRAWFLAGS_HIGHLIGHT);
+//		DisableMode(g_current_grp, DRAWFLAGS_PATCH); // disable the patch display
+        DisableMode(g_current_grp, DRAWFLAGS_POLYPATCH); // disable the patch display
+        DisableMode(g_current_grp, DRAWFLAGS_CRV); // disable the highlight display
+        DisableMode(g_current_grp, DRAWFLAGS_REFLLINE); // disable the highlight display
+        DisableMode(g_current_grp, DRAWFLAGS_ENVMAPPING);
+
+        draw();
+
+        break;
+    case DRAWFLAGS_REFLLINE:
+        ToggleMode(g_current_grp, DRAWFLAGS_REFLLINE);
+//		DisableMode(g_current_grp, DRAWFLAGS_PATCH); // disable the patch display
+        DisableMode(g_current_grp, DRAWFLAGS_POLYPATCH); // disable the patch display
+        DisableMode(g_current_grp, DRAWFLAGS_CRV); // disable the highlight display
+        DisableMode(g_current_grp, DRAWFLAGS_HIGHLIGHT); // disable the highlight display
+        DisableMode(g_current_grp, DRAWFLAGS_ENVMAPPING);
+        break;
+    case DRAWFLAGS_SMOOTH:
+        ToggleMode(g_current_grp, DRAWFLAGS_SMOOTH);
+        break;
+    case DRAWFLAGS_ENVMAPPING:
+        ToggleMode(g_current_grp, DRAWFLAGS_ENVMAPPING);
+        DisableMode(g_current_grp, DRAWFLAGS_HIGHLIGHT); // disable the highlight display
+        DisableMode(g_current_grp, DRAWFLAGS_REFLLINE); // disable the highlight display
+        break;
+    case DRAWFLAGS_BOX:
+        ToggleMode(0, DRAWFLAGS_BOX);
+        g_redisplay = 1;
+        break;
+    case DRAWFLAGS_HIDDENLINE:
+        ToggleMode(g_current_grp, DRAWFLAGS_HIDDENLINE);
+        break;
+    case DRAWFLAGS_NORMAL:
           DisableMode(g_current_grp, DRAWFLAGS_CRV);
           ToggleMode(g_current_grp, DRAWFLAGS_NORMAL);
 
@@ -142,194 +147,108 @@ void menu_proc(int entry)
           DisableMode(g_current_grp, DRAWFLAGS_REFLLINE); // disable the highlight display
           //DisableMode(g_current_grp, DRAWFLAGS_ENVMAPPING);
           break;
+    default:
+        fprintf(stderr, "Unkown flag %d\n", display_flag);
+        break;
 
-    case MENUCONTROL_CURVANEEDLE:
-		ToggleMode(g_current_grp, DRAWFLAGS_CRVNEEDLE);
-		define_crv();
-		break;
-    case MENUCONTROL_HIGHLIGHT:
-		ToggleMode(g_current_grp, DRAWFLAGS_HIGHLIGHT);
-//		DisableMode(g_current_grp, DRAWFLAGS_PATCH); // disable the patch display
-		DisableMode(g_current_grp, DRAWFLAGS_POLYPATCH); // disable the patch display
-		DisableMode(g_current_grp, DRAWFLAGS_CRV); // disable the highlight display
-		DisableMode(g_current_grp, DRAWFLAGS_REFLLINE); // disable the highlight display
-        DisableMode(g_current_grp, DRAWFLAGS_ENVMAPPING);
+    }
+}
 
-        draw();
+// --------------------------------------------------------
+//
+// main menu handling function  (except for color changing) 
+void menu_proc(int entry, int parameter)
+{
+    switch(entry)
+    {
+    case MENUCONTROL_ZOOMIN:
+        zoomin();
+        break;
+    case MENUCONTROL_ZOOMOUT:
+        zoomout();
+        break;
 
-        break;
-    case MENUCONTROL_REFLINE:
-		ToggleMode(g_current_grp, DRAWFLAGS_REFLLINE);
-//		DisableMode(g_current_grp, DRAWFLAGS_PATCH); // disable the patch display
-		DisableMode(g_current_grp, DRAWFLAGS_POLYPATCH); // disable the patch display
-		DisableMode(g_current_grp, DRAWFLAGS_CRV); // disable the highlight display
-		DisableMode(g_current_grp, DRAWFLAGS_HIGHLIGHT); // disable the highlight display
-        DisableMode(g_current_grp, DRAWFLAGS_ENVMAPPING);
-        break;
-    case MENUCONTROL_CRVSTYLE0:
-        crv_style = 0;
-		define_crv();
-        break;
-    case MENUCONTROL_CRVSTYLE1:
-        crv_style = 1;
-		define_crv();
-        break;
-    case MENUCONTROL_CRVSTYLE2:
-        crv_style = 2;
-		define_crv();
+    case MENUCONTROL_RESET_PROJECTION:
+        scale_factor = 1.0;
+        ViewCenter[0] = ViewCenter[1] = 0;
+        updateModelView();
+        updateProjection();
         break;
     case MENUCONTROL_INHLDENSE:
         increase_highlight();
-		break;
+        break;
     case MENUCONTROL_DEHLDENSE:
         decrease_highlight();
-		break;
-    case MENUCONTROL_GAUSS_CRV:
-    case MENUCONTROL_MEAN_CRV:
-    case MENUCONTROL_MIN_CRV:
-    case MENUCONTROL_MAX_CRV:
-    case MENUCONTROL_SPECIAL_CRV:
-		crv_choice  =entry ;
-		define_crv();
-	break;
-    case MENUCONTROL_SAVE0:
-    case MENUCONTROL_SAVE1:
-    case MENUCONTROL_SAVE2:
-    case MENUCONTROL_SAVE3:
-    case MENUCONTROL_SAVE4:
-        save_position(entry-MENUCONTROL_SAVE0);
-        break;
-    case MENUCONTROL_LOAD0:
-    case MENUCONTROL_LOAD1:
-    case MENUCONTROL_LOAD2:
-    case MENUCONTROL_LOAD3:
-    case MENUCONTROL_LOAD4:
-        load_position(entry-MENUCONTROL_LOAD0);
-        break;
-    case MENUCONTROL_RESETP:
-		scale_factor = 1.0;
-		ViewCenter[0] = ViewCenter[1] = 0;
-        updateModelView();
-		updateProjection();
-        break;
-    case MENUCONTROL_CLIPRIGHT:
-    case MENUCONTROL_CLIPLEFT:
-    case MENUCONTROL_CLIPNEAR:
-    case MENUCONTROL_CLIPFAR:
-//        printf("Use the left button to clip; choose \"stop clipping\" to stop.\n");
-        clip_item = entry;
-        g_mouseMode = MENUCONTROL_ROTATE;
         break;
     case MENUCONTROL_CLIPSTOP:
-		ClipNear = - ViewSize;
-		ClipFar  = ViewSize;
-		updateProjection();
+        ClipNear = - ViewSize;
+        ClipFar  = ViewSize;
+        updateProjection();
         break;
 
-    case MENUCONTROL_LIGHT0:
-    case MENUCONTROL_LIGHT1:
-    case MENUCONTROL_LIGHT2:
-        light_switch[entry-MENUCONTROL_LIGHT0] = !light_switch[entry-MENUCONTROL_LIGHT0];
-        updateLights();
-        break;
 
-    case MENUCONTROL_BLACKBACK:
-    case MENUCONTROL_BLACKBACK+1:
-    case MENUCONTROL_BLACKBACK+2:
-    case MENUCONTROL_BLACKBACK+3:
-    case MENUCONTROL_BLACKBACK+4:
-    case MENUCONTROL_BLACKBACK+5:
-    case MENUCONTROL_BLACKBACK+6:
-    case MENUCONTROL_BLACKBACK+7:
-    case MENUCONTROL_BLACKBACK+8:
-    case MENUCONTROL_BLACKBACK+9:
-    case MENUCONTROL_BLACKBACK+10:
-        back_choice = (entry-MENUCONTROL_BLACKBACK);
-		break;
-    case MENUCONTROL_BLACKPEN:
-    case MENUCONTROL_BLACKPEN+1:
-    case MENUCONTROL_BLACKPEN+2:
-    case MENUCONTROL_BLACKPEN+3:
-    case MENUCONTROL_BLACKPEN+4:
-    case MENUCONTROL_BLACKPEN+5:
-    case MENUCONTROL_BLACKPEN+6:
-    case MENUCONTROL_BLACKPEN+7:
-    case MENUCONTROL_BLACKPEN+8:
-    case MENUCONTROL_BLACKPEN+9:
-    case MENUCONTROL_BLACKPEN+10:
-        g_PenColor[g_current_grp] = (entry-MENUCONTROL_BLACKPEN);
-		if(g_current_grp ==0) 
-		for(int i=1; i<= group_num; i++) {
-            g_PenColor[i]  = (entry-MENUCONTROL_BLACKPEN);
-		}
-		g_redisplay = 1;
-		break;
     case MENUCONTROL_FLIPNORMAL:
-		flip_normal();
-		g_redisplay = 1;
-		break;
-    case MENUCONTROL_ENVMAP:
-        ToggleMode(g_current_grp, DRAWFLAGS_ENVMAPPING);
-		DisableMode(g_current_grp, DRAWFLAGS_HIGHLIGHT); // disable the highlight display
-		DisableMode(g_current_grp, DRAWFLAGS_REFLLINE); // disable the highlight display
-		break;
-    case MENUCONTROL_DRAWBOX:
-        ToggleMode(0, DRAWFLAGS_BOX);
-		g_redisplay = 1;
-		break;
-    case MENUCONTROL_SUBST1:
-    case MENUCONTROL_SUBST2:
-    case MENUCONTROL_SUBST3:
-    case MENUCONTROL_SUBST4:
-    case MENUCONTROL_SUBST5:
-    case MENUCONTROL_SUBST6:
-        substeps = entry-MENUCONTROL_SUBST1 +1;
-//		printf("new subdivision steps: %d\n", substeps);
-		re_evaluate(substeps);
-		g_redisplay = 1;
-		break;
-    case MENUCONTROL_ANTIALIAS:
-		g_AntiAlias = ! g_AntiAlias;
-		g_redisplay = 1;
-		break;
-    case MENUCONTROL_HDNLINERMV:
-        ToggleMode(g_current_grp, DRAWFLAGS_HIDDENLINE);
-		break;
-    case MENUCONTROL_LINEWIDTH1:
-    case MENUCONTROL_LINEWIDTH2:
-    case MENUCONTROL_LINEWIDTH3:
-    case MENUCONTROL_LINEWIDTH4:
-    case MENUCONTROL_LINEWIDTH5:
-		for(i=0;i<=group_num;i++)
-            g_LineWidth[i] = entry - MENUCONTROL_LINEWIDTH1 +1;
-		g_redisplay = 1;
-		break;
-    case MENUCONTROL_USELISTS:
-		use_display_list = !use_display_list;
-		g_redisplay =1;
-		break;
-    case MENUCONTROL_COLOR0:
-    case MENUCONTROL_COLOR1:
-    case MENUCONTROL_COLOR2:
-    case MENUCONTROL_COLOR3:
-    case MENUCONTROL_COLOR4:
-    case MENUCONTROL_COLOR5:
-    case MENUCONTROL_COLOR6:
-    case MENUCONTROL_COLOR7:
-    case MENUCONTROL_COLOR8:
-    case MENUCONTROL_COLOR9:
-    case MENUCONTROL_COLOR10:
-    case MENUCONTROL_COLOR11:
-        color_proc(entry - MENUCONTROL_COLOR0);
-       break;
+        flip_normal();
+        break;
+
+
     case MENUCONTROL_QUIT:
         exit(0);
+    case MENUCONTROL_ANTIALIAS:
+        g_AntiAlias = ! g_AntiAlias;
+        break;
+    case MENUCONTROL_USELISTS:
+        use_display_list = !use_display_list;
+        break;
+    case MENUCONTROL_GROUP:
+        if(parameter <= group_num) g_current_grp = parameter;
+        break;
+    case MENUCONTROL_COLOR:
+        if(parameter < COLORNUM) color_proc(parameter);
+    case MENUCONTROL_LINEWIDTH:
+        for(int i=0;i<=group_num;i++)
+            g_LineWidth[i] = parameter;
+        break;
+    case MENUCONTROL_SUBST:
+        re_evaluate(parameter);
+        break;
+    case MENUCONTROL_BLACKPEN:
+        g_PenColor[g_current_grp] = parameter;
+        if(g_current_grp ==0)
+        for(int i=1; i<= group_num; i++) {
+            g_PenColor[i]  = parameter;
+        }
+        break;
+    case MENUCONTROL_BLACKBACK:
+        back_choice = parameter;
+        break;
+    case MENUCONTROL_LIGHT:
+        light_switch[parameter] = !light_switch[parameter];
+        updateLights();
+        break;
+    case MENUCONTROL_CURVATURE_TYPE:
+        crv_choice  = parameter ;
+        define_crv();
+    break;
+    case MENUCONTROL_SAVE:
+        save_position(parameter);
+        break;
+    case MENUCONTROL_LOAD:
+        load_position(parameter);
+        break;
+    case MENUCONTROL_CRVSTYLE:
+        crv_style = parameter;
+        define_crv();
+        break;
+    case MENUCONTROL_DISPLAY:
+        displayProc(parameter);
+        break;
+    case MENUCONTROL_MOUSEMODE:
+        g_mouseMode = parameter;
+        break;
     default:
-        if(entry >= MENUCONTROL_ALLGROUPS && entry <= MENUCONTROL_ALLGROUPS + group_num)
-            g_current_grp = entry - MENUCONTROL_ALLGROUPS;
         break;
     }
-
 }
 
 
