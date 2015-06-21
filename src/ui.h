@@ -1,5 +1,4 @@
-#ifndef UI_H
-#define UI_H
+#pragma once
 
 class BViewUI : public QGLWidget
 {
@@ -45,5 +44,3 @@ private:
 };
 
 
-
-#endif // UI_H

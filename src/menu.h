@@ -1,5 +1,4 @@
-#ifndef MENU_H_2002_10_20
-#define MENU_H_2002_10_20
+#pragma once
 
 // menu controls 
 
@@ -101,4 +100,3 @@ void color_proc_rgb(color_t c);
 void keyboard(unsigned char key);
 void advkeyboard(int key);
 
-#endif

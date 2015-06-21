@@ -19,7 +19,7 @@
 #include "pick.h"
 #include "rotate.h"
 
-REAL angle = 0.0, axis[3];
+real angle = 0.0, axis[3];
 
 bool 	trackingMouse = false;
 bool 	redrawContinue = false;
@@ -31,7 +31,7 @@ int     clipping_grp = 1;
 
 int     rotate_plane = 0;
 int     shift_plane = 0;
-extern REAL* clip_plane;
+extern real* clip_plane;
 bool	zoomMotion = false;	
 bool	moveMotion = false;
 
@@ -57,13 +57,13 @@ void updateProjection();
 ** These functions implement a simple trackball-like motion control.
 */
 
-REAL lastPos[3] = {0.0, 0.0, 0.0};
+real lastPos[3] = {0.0, 0.0, 0.0};
 int curx, cury;
 int startX, startY;
 
-void trackball_ptov(int x, int y, int width, int height, REAL v[3])
+void trackball_ptov(int x, int y, int width, int height, real v[3])
 {
-    REAL d, a;
+    real d, a;
 
    /* --- project x,y onto a hemi-sphere centered within width, height */
     v[0] = (2.0*x - width) / width;
@@ -77,11 +77,11 @@ void trackball_ptov(int x, int y, int width, int height, REAL v[3])
     v[2] /= a;
 }
 
-void rotate_vector(REAL* v, REAL* axis, REAL angle)
+void rotate_vector(real* v, real* axis, real angle)
 {
-	REAL temp[4];
-	REAL scr_axis[4];
-	REAL d, rad;
+	real temp[4];
+	real scr_axis[4];
+	real d, rad;
 	int i;
 
 	Vcopy(axis, scr_axis);
@@ -133,9 +133,9 @@ void motionMove(int x, int y){
 
 void mouseMotion(int x, int y, KeyboardModifier modifiers )
 {
-    REAL curPos[3], dx, dy, dz;
-	REAL plane_angle;
-	REAL plane_axis[3];
+    real curPos[3], dx, dy, dz;
+	real plane_angle;
+	real plane_axis[3];
     lastmotion =clock();  // record the last motion time
    
     trackball_ptov(x, y, winWidth, winHeight, curPos);

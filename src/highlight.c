@@ -16,7 +16,7 @@
 
 int hl_error;
 
-REAL calc_D(VEC P, VEC N, VEC A, VEC H){
+real calc_D(vector P, vector N, vector A, vector H){
     // // according to Beier/Chen's 1994 CAD paper
 	/*
 
@@ -29,10 +29,10 @@ REAL calc_D(VEC P, VEC N, VEC A, VEC H){
 
     */
 
-    REAL SA[DIM];
-    REAL temp[DIM];
+    real SA[DIM];
+    real temp[DIM];
     int m;
-    REAL div;
+    real div;
 
     for(m=0;m<DIM;m++)
         SA[m] = A[m]-P[m];
@@ -53,11 +53,11 @@ REAL calc_D(VEC P, VEC N, VEC A, VEC H){
 }
 
 // 
-REAL calc_ref_line(VEC P, VEC N, VEC A, VEC H, VEC eye)
+real calc_ref_line(vector P, vector N, vector A, vector H, vector eye)
 {
-	VEC RefN;
-	REAL th;
-    REAL SA[DIM];
+	vector RefN;
+	real th;
+    real SA[DIM];
 	int m;
     
 	for(m=0;m<DIM;m++)
@@ -97,13 +97,8 @@ void init_texture(GLubyte* forecolor, GLubyte* backcolor)
       stripeImage[4*j+3] = (GLubyte) 255;
    }
    
-#ifdef GL_VERSION_1_1
    glTexImage1D(GL_TEXTURE_1D, 0, GL_RGBA, stripeImageWidth, 0,
                 GL_RGBA, GL_UNSIGNED_BYTE, stripeImage);
-#else
-   glTexImage1D(GL_TEXTURE_1D, 0, 4, stripeImageWidth, 0,
-                GL_RGBA, GL_UNSIGNED_BYTE, stripeImage);
-#endif
 
    glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // <--- stripImage: 4bytes
 
@@ -120,12 +115,12 @@ void init_texture(GLubyte* forecolor, GLubyte* backcolor)
 //
 //  plot the high light
 //
-void Highlight(int n, REAL* P, REAL* N, VEC A, VEC H, REAL hl_step, int highlight_type) {
+void Highlight(int n, real* P, real* N, vector A, vector H, real hl_step, int highlight_type) {
 
-	REAL func[40];
+	real func[40];
     int i;
 
-	REAL eye[3] = {0, 0, 1000};
+	real eye[3] = {0, 0, 1000};
 	// calculate the highlight values according to point and normal
 	for(i = 0; i<n; i++) 
 	{
@@ -150,8 +145,8 @@ void Highlight(int n, REAL* P, REAL* N, VEC A, VEC H, REAL hl_step, int highligh
 
 	glBegin(GL_POLYGON);
     for(i=0;i<n;i++) {
-		REAL f = func[i];
-		REAL color;
+		real f = func[i];
+		real color;
 
 		color = f/hl_step;
 

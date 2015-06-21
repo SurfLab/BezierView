@@ -1,5 +1,4 @@
-#ifndef DRAW_H_2004_9_13
-#define DRAW_H_2004_9_13
+#pragma once
 
 void DisableMode(int grp_id, int flag);
 bool isDisplayFlagEnabled(int grp_id, int flag);
@@ -17,6 +16,3 @@ void	export_eps();
 void	export_igs();
 void	flip_normal();
 void    re_evaluate(int substeps);
-
-
-#endif

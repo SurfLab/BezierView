@@ -29,7 +29,7 @@ void Patch_init(Patch*p)
 }
 
 // translate the patch so it is centered at the point 'center'
-void Patch_translate(Patch*p,REAL* center)
+void Patch_translate(Patch*p,real* center)
 {
 	int i;
 	for(i=0;i<3;i++)
@@ -37,16 +37,16 @@ void Patch_translate(Patch*p,REAL* center)
 }
 
 
-void Patch_createSinglePolygon(Patch*p, int side, REAL (*V)[DIM], int *F)
+void Patch_createSinglePolygon(Patch*p, int side, real (*V)[DIM], int *F)
 {
     p->pointCount = side;
     arrcreate(p->position, side);
-    REAL (*position)[DIM] = p->position;
+    real (*position)[DIM] = p->position;
     arrcreate(p->normal, side);
-    REAL (*normal)[DIM] = p->normal;
+    real (*normal)[DIM] = p->normal;
     for(int i = 0; i < side; i++)
     {
-        REAL *v = V[F[i]];
+        real *v = V[F[i]];
         Bezier_enlarge_aabb(p, v[0],v[1],v[2]);
         position[i][0] = v[0];
         position[i][1] = v[1];
@@ -57,7 +57,7 @@ void Patch_createSinglePolygon(Patch*p, int side, REAL (*V)[DIM], int *F)
     for(int i= 0; i < side; i++)
     {
         int prv = i, pt = (i+1)%side, nxt = (i+2)%side;
-        REAL V1[DIM], V2[DIM];
+        real V1[DIM], V2[DIM];
         VVminus(position[prv], position[pt], V1);
         VVminus(position[nxt], position[pt], V2);
         VVcross(V2, V1, normal[pt]);
@@ -190,7 +190,7 @@ void Patch_plotcrvneedles(Patch *p, int crv_choice, double needle_length)
 }
 
 
-void Patch_plothighlights(Patch *p, VEC A, VEC H, REAL hl_step, int hl_type)
+void Patch_plothighlights(Patch *p, vector A, vector H, real hl_step, int hl_type)
 {
     switch(p->type)
     {
@@ -274,7 +274,7 @@ void Bezier_free_mem(Patch*p) {
 }
 
 
-void Bezier_enlarge_aabb(Patch *p, REAL x, REAL y, REAL z)
+void Bezier_enlarge_aabb(Patch *p, real x, real y, real z)
 {
     if(p->init) {
         p->minx = p->maxx = x;

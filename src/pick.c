@@ -28,7 +28,7 @@ int pick(int x, int y)
     GLuint i,j;
     GLint  k;
     GLint picked = -1;
-	REAL mv_matrix[16];
+	real mv_matrix[16];
 
     GLuint names, z1, z2, zmax;
     

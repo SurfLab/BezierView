@@ -11,6 +11,10 @@
 #include "util.h"
 #include "curvature.h"
 #include "highlight.h"
+
+#include "type.h"
+#include "patch.h"
+
 #include "polygon.h"
 
 
@@ -80,7 +84,7 @@ void Polygon_plot_mesh(Patch*p, color_t bg_color)
 }
 
 
-void Polygon_plot_highlights(Patch*p,VEC A, VEC H, REAL hl_step, int highlight_type)
+void Polygon_plot_highlights(Patch*p,vector A, vector H, real hl_step, int highlight_type)
 {
 	glPushAttrib(GL_ENABLE_BIT);
     glEnable(GL_LIGHTING);

@@ -1,37 +1,31 @@
-#ifndef TYPE_H_2002_10_20
-#define TYPE_H_2002_10_20
-
+#pragma once
 // primitive data type
-#ifndef REAL
-typedef double REAL;
-#endif
-
+typedef double real;
 /* Dimension */
-#ifndef DIM
 #define DIM 4
-#endif
-
-typedef REAL VEC[DIM];
+typedef real vector[DIM];
 
 /* patch type definitions */
-#define POLY   1        /* polyhedron */
-#define TRIANG 3        /* triangular patch */
-#define TP_EQ  4        /* tensorproduct with same degree in both dir. */
-#define TP     5        /* general tensorproduct */
-#define TRIM_CURVE 6
-#define TP_BSP 7        /* general b-spline tensorproduct */
-#define RATIONAL 8
+enum PatchType {
+     POLY   =1,        /* polyhedron */
+     TRIANG =3,        /* triangular patch */
+     TP_EQ  =4,        /* tensorproduct with same degree in both dir. */
+     TP     =5,        /* general tensorproduct */
+     TRIM_CURVE =6,
+     TP_BSP =7,        /* general b-spline tensorproduct */
+     RATIONAL =8,
+     PNTRI    =9,      /* PN triangle patch, containing points and normals */
+     PNTP    =10,      /* PN quads patch, containing points and normals */
+};
 
-// added Feb. 2002
-#define PNTRI    9      /* PN triangle patch, containing points and normals */
-#define PNTP    10      /* PN quads patch, containing points and normals */
-
+enum CurvatureType {
 // Curvature types 
-#define GAUSS_CRV  0      // Gaussian curvature
-#define MEAN_CRV   1      // mean curvature
-#define MAX_CRV    2      // maximum curvature
-#define MIN_CRV    3      // minimum curvature
-#define SPECIAL_CRV 4      // special curvature
+     GAUSS_CRV  =0,      // Gaussian curvature
+     MEAN_CRV   =1,      // mean curvature
+     MAX_CRV    =2,      // maximum curvature
+     MIN_CRV    =3,      // minimum curvature
+     SPECIAL_CRV=4      // special curvature
+};
 
 #define MAXDEG 40     // maximum degree of bezier patches
 
@@ -71,5 +65,3 @@ inline color_t interp(double u, color_t low, color_t high)
     c.alpha = (1-v)*low.alpha + v * high.alpha;
     return c;
 }
-
-#endif

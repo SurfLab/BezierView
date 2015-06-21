@@ -1,5 +1,4 @@
-#ifndef BVIEW_H
-#define BVIEW_H
+#pragma once
 
 extern char dataFileName[500];
 extern char programDir[500];
@@ -19,5 +18,3 @@ void printkeys();
 void initGL();
 void init_bezierview(int argc, char* argv[]);
 void loadDataFile(const char* fn);
-
-#endif // BVIEW_H

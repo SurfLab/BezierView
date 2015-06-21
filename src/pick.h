@@ -1,7 +1,5 @@
-#ifndef PICK_H
-#define PICK_H
+#pragma once
 
 int pick(int x, int y);
 
-#endif // PICK_H
 

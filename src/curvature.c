@@ -11,7 +11,7 @@
 #include "stdheaders.h"
 #include "util.h"
 
-void print_number(double x, double y, REAL v, REAL dist, color_t color);
+void print_number(double x, double y, real v, real dist, color_t color);
 
 // ......................................................................
 //
@@ -19,7 +19,7 @@ void print_number(double x, double y, REAL v, REAL dist, color_t color);
 //
 
 // curvature minimum and maximum 
-REAL* max_crv_value, * min_crv_value;
+real* max_crv_value, * min_crv_value;
 
 // current type of curvature
 int crv_style  = 1;
@@ -43,7 +43,7 @@ GLdouble topC =0.5, bottomC = 0.9;
 
 
 // core function to compute the curvature, later in the file
-double krv(VEC v00, VEC Deriv[3][3], REAL* crv_result);
+double krv(vector v00, vector Deriv[3][3], real* crv_result);
 
 
 // this is the function to initialize the curvature computation
@@ -166,7 +166,7 @@ color_t crv2color(double in)
     }
 }
 
-double wedge(VEC a, VEC b)
+double wedge(vector a, vector b)
 {
     double ret;
 
@@ -195,10 +195,10 @@ double wedge(VEC a, VEC b)
             ----------------> u
    output: curvature at v00
 */
-double crv3(VEC v00,VEC v10,VEC v20,VEC v01,VEC v02,VEC v11,int deg, 
-		REAL* crv_result)
+double crv3(vector v00,vector v10,vector v20,vector v01,vector v02,vector v11,int deg, 
+		real* crv_result)
 {
-    VEC         Deriv[3][3];
+    vector         Deriv[3][3];
     int         m;
     int         d1 = deg-1;
 
@@ -232,10 +232,10 @@ double crv3(VEC v00,VEC v10,VEC v20,VEC v01,VEC v02,VEC v11,int deg,
             ----------------> u
    output: curvature at v00
 */
-double crv4(VEC v00, VEC v01,VEC v02, VEC v10, VEC v20, VEC v11,
-		int degu, int degv, REAL* crv_result)
+double crv4(vector v00, vector v01,vector v02, vector v10, vector v20, vector v11,
+		int degu, int degv, real* crv_result)
 { 
-    VEC         Deriv[3][3];
+    vector         Deriv[3][3];
     int m;
     int         degu1 = degu-1;
     int         degv1 = degv-1;
@@ -263,7 +263,7 @@ double crv4(VEC v00, VEC v01,VEC v02, VEC v10, VEC v20, VEC v11,
 /* 
  * update the min max of the curvature
  */
-void minmax(REAL* curv, int choice, int num)
+void minmax(real* curv, int choice, int num)
 {
 	int i;
 	if(max_crv_value == NULL || min_crv_value == NULL) return;
@@ -288,7 +288,7 @@ void minmax(REAL* curv, int choice, int num)
  * curvatures are saved into an array: crv_result
  *     in order of: Gauss, Mean, Max, Min
  */
-double krv(VEC v00, VEC Deriv[3][3], REAL* crv_result)
+double krv(vector v00, vector Deriv[3][3], real* crv_result)
 {
     double x,y,z,d;
     double xu,yu,zu,du, xv,yv,zv,dv;
@@ -491,7 +491,7 @@ void draw_crv_bar(color_t color)
 
 
 /* print a floating number on the screen */
-void print_number(double x, double y, REAL v, REAL dist, color_t color)
+void print_number(double x, double y, real v, real dist, color_t color)
 {
     char string[20];
     glColorc(color);
@@ -546,9 +546,9 @@ int clickon_crv_bar(int x, int y, int winWidth, int winHeight)
 /* compute the normal and the point of
  * a bezier patch corner from the close-by control points 
  */ 
-void evalPN(VEC v00, VEC v01, VEC v10, VEC P, VEC N)
+void evalPN(vector v00, vector v01, vector v10, vector P, vector N)
 {
-	VEC hv1, hv2, Normal;
+	vector hv1, hv2, Normal;
 	int i;
 
    	VVminus(v10 , v00, hv1); 
@@ -605,14 +605,14 @@ void adjust_scale(int i, int winy, int winHeight)
 //////////////////////////////////////////////////
 // get the curvature value inside the array
 //  crv_choice: GAUSS, MEAN, MAX, MIN
-REAL get_crv(REAL *crv_array, int loc, int crv_choice)
+real get_crv(real *crv_array, int loc, int crv_choice)
 {
 	if(crv_choice != SPECIAL_CRV)
 		return crv_array[loc*4+ crv_choice];
 
 	else  // special curvature 
 	{
-		REAL K, H; // Gauss, Mean curvature
+		real K, H; // Gauss, Mean curvature
 		K  = crv_array[loc*4];
 		H  = crv_array[loc*4+1];
 		return ratio_a*K+ ratio_b*H*H;
@@ -623,8 +623,8 @@ REAL get_crv(REAL *crv_array, int loc, int crv_choice)
 //////////////////////////////////////////////////
 // For normal clipping -- Added May 06 2004
 int num_clipping_planes=0;
-REAL* clip_plane;
-REAL* clip_width;
+real* clip_plane;
+real* clip_width;
 int normal_clipping = 1;
  
 /* 
@@ -678,8 +678,8 @@ void read_clipping(const char* filename)
 		return;
 	}
 
-	clip_plane = (REAL *) malloc( sizeof(REAL) * 4* num_clipping_planes);
-	clip_width = (REAL *) malloc( sizeof(REAL) * num_clipping_planes);
+	clip_plane = (real *) malloc( sizeof(real) * 4* num_clipping_planes);
+	clip_width = (real *) malloc( sizeof(real) * num_clipping_planes);
 	for(i=0;i<num_clipping_planes; i++)
 	{
 		double norm;
@@ -711,7 +711,7 @@ void release_clipping()
 
 //////////////////////////////////////////////////
 // if a point is cliped : 1-- clipped, 0 -- not clipped
-int point_clipped(REAL* point)
+int point_clipped(real* point)
 {
 	int i;
 
@@ -721,7 +721,7 @@ int point_clipped(REAL* point)
 
 	for(i=0;i<num_clipping_planes;i++)
 	{
-		REAL dist;
+		real dist;
 		dist = VVmult(point, &clip_plane[i*4]) - clip_plane[i*4+3] ;
 		if( fabs(dist) < clip_width[i] ) 
 			return 0;
@@ -732,7 +732,7 @@ int point_clipped(REAL* point)
 
 //////////////////////////////////////////////////
 // draw the clipping plane
-void draw_clipping_plane(int index, int mode, REAL  size)
+void draw_clipping_plane(int index, int mode, real  size)
 {
 //	int i;
 
@@ -767,7 +767,7 @@ void draw_clipping_plane(int index, int mode, REAL  size)
 	glEnd();
 
 
-	REAL* pl = &clip_plane[index*4];
+	real* pl = &clip_plane[index*4];
 
 	if(pl[2]!=1)
 		glRotated(acos(pl[2])*180/3.14159, -pl[1], pl[0], 0 );

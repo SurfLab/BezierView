@@ -1,5 +1,4 @@
-#ifndef STDHEADERS_H
-#define STDHEADERS_H
+#pragma once
 
 #ifdef WIN32
 #define WIN32_LEAN_AND_MEAN
@@ -38,6 +37,3 @@
 #include <QApplication>
 #include <QMenu>
 #endif
-
-#endif // STDHEADERS_H
-

@@ -1,5 +1,4 @@
-#ifndef ROTATE_H
-#define ROTATE_H
+#pragma once
 
 typedef enum KeyboardModifier {
     NoModifier           = 0x00000000,
@@ -17,6 +16,4 @@ void display();
 void spin();
 void zoom(double delta);
 extern int clip_item;
-
-#endif // ROTATE_H
 

@@ -1,5 +1,4 @@
-#ifndef GLOB_H_2002_10_20
-#define GLOB_H_2002_10_20
+#pragma once
 
 // this is a copy of glob.c , with extern decalaration
 // more detail explanation, refer to glob.c
@@ -63,7 +62,7 @@ extern double min_crv[5];
 // current type of curvature
 extern int   crv_choice;
 extern int   crv_style;
-extern REAL  hl_step;   // highlight density
+extern real  hl_step;   // highlight density
 
 extern int   firstPatch;
 
@@ -99,5 +98,3 @@ extern int   cur_clipping_plane;
 extern double needle_length;
 
 extern int   use_display_list; // whether to use display list to draw the object
-
-#endif

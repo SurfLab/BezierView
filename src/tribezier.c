@@ -107,7 +107,7 @@ int b2i_k (int i, int j, int k, int d)
 }
 
 
-REAL* TriBezier_get_bb(Patch*p,int i, int j) {
+real* TriBezier_get_bb(Patch*p,int i, int j) {
     return ( &p->position[b2i_i(i,j,p->degu-i-j,p->degu)][0]);
 }
 
@@ -429,7 +429,7 @@ void TriBezier_plot_crv(Patch *p, int crv_choice)
 {
     int   i,j;
     int     loc;
-    REAL h;
+    real h;
 
     glPushAttrib(GL_ENABLE_BIT);
 
@@ -486,17 +486,17 @@ void TriBezier_plot_crv(Patch *p, int crv_choice)
 }
 
 
-void TriBezier_plot_crv_needles(Patch *p, int crv_choice, REAL length)
+void TriBezier_plot_crv_needles(Patch *p, int crv_choice, real length)
 {
     int i,j, loc;
-    REAL h;
+    real h;
 
     glPushAttrib(GL_ENABLE_BIT);
     glDisable(GL_LIGHTING);  // curvature is shown with lighting off
     for(i=0;i<=p->pts;i++) {
         for(j=0;j<=p->pts-i;j++)
         {
-            VEC sum;
+            vector sum;
             loc = b2i_i(i, j, p->pts-i-j, p->pts);
 
             if(normal_clipping && !point_clipped(&p->eval_P[loc][0])) {
@@ -517,10 +517,10 @@ void TriBezier_plot_crv_needles(Patch *p, int crv_choice, REAL length)
 }
 
 
-void TriBezier_plot_highlights(Patch *p, VEC A, VEC H, REAL hl_step, int highlight_type)
+void TriBezier_plot_highlights(Patch *p, vector A, vector H, real hl_step, int highlight_type)
 {
-    REAL P[3*DIM];
-    REAL N[3*DIM];
+    real P[3*DIM];
+    real N[3*DIM];
     int i, j, k;
     int loc[3];
 

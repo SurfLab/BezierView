@@ -13,7 +13,7 @@
 #include "util.h"
 
 
-void VVcross(VEC v1, VEC v2, VEC v3)
+void VVcross(vector v1, vector v2, vector v3)
 {
     v3[0] = (v1[1])*(v2[2]) - (v1[2])*(v2[1]);
     v3[1] = (v1[2])*(v2[0]) - (v1[0])*(v2[2]);
@@ -23,7 +23,7 @@ void VVcross(VEC v1, VEC v2, VEC v3)
        v3[3] = 0.0;  // only vectors can be cross-producted
 }/*VVcross*/
 
-void VVminus(VEC v1,VEC v2, VEC v3)
+void VVminus(vector v1,vector v2, vector v3)
 {
     int i;
 	if(DIM==3)
@@ -43,7 +43,7 @@ void VVminus(VEC v1,VEC v2, VEC v3)
 }/*minus*/
 
 
-double VVmult(VEC v1, VEC v2)
+double VVmult(vector v1, vector v2)
 {
     double res;
     int i;
@@ -54,7 +54,7 @@ double VVmult(VEC v1, VEC v2)
     return(res);
 }/*VVmult*/
 
-void Vcopy(VEC from, VEC to)
+void Vcopy(vector from, vector to)
 {
     int i;
     for (i=0; i<DIM; i++)
@@ -66,25 +66,25 @@ void Vcopy(VEC from, VEC to)
 }
 
 /* v3 <- m1*v1 + m2*v2 */
-void VVadd( double m1,VEC v1,double m2,VEC v2,VEC v3)
+void VVadd( double m1,vector v1,double m2,vector v2,vector v3)
 {
     int k;
     for (k=0; k<DIM; k++) v3[k] = m1*v1[k]+m2*v2[k];
 }
 
-void VVscale(double m, VEC v, VEC result)
+void VVscale(double m, vector v, vector result)
 {
     int k;
     for (k=0; k<DIM; k++) result[k] = m*v[k];
 }
 
-void VVaddto(double m, VEC v, VEC result)
+void VVaddto(double m, vector v, vector result)
 {
     int k;
     for (k=0; k<DIM; k++) result[k] += m*v[k];
 }
 
-void   VVzero(VEC v)
+void   VVzero(vector v)
 {
 	int k;
     for (k=0; k<DIM; k++) v[k] =0;
@@ -97,9 +97,9 @@ void   VVzero(VEC v)
  *  v = v/||v||
  *
  */
-double Normalize(VEC v)
+double Normalize(vector v)
 {
-    REAL m;
+    real m;
     int i;
     m  = v[0]*v[0] + v[1]* v[1] + v[2]*v[2];
     m  = sqrt(m);
@@ -107,14 +107,14 @@ double Normalize(VEC v)
         for (i=0;i<3;i++) v[i] = v[i]/m;
 	return m;
 }
-double Norm(VEC v)
+double Norm(vector v)
 {
 		    return sqrt(v[0]*v[0] + v[1]* v[1] + v[2]*v[2]);
 }
 // v2 = v1/ ||v1||
-double Vnorm(VEC v1, VEC v2)
+double Vnorm(vector v1, vector v2)
 {
-    REAL m;
+    real m;
     int i;
     m  = v1[0]*v1[0] + v1[1]* v1[1] + v1[2]*v1[2];
     m  = sqrt(m);
@@ -126,7 +126,7 @@ double Vnorm(VEC v1, VEC v2)
     return m;
 }
 
-void printV (VEC v)
+void printV (vector v)
 {
    int i;
    for (i =0; i<DIM; i++)
@@ -135,11 +135,11 @@ void printV (VEC v)
 }
 
 /*
-REAL Abs(REAL a)
+real Abs(real a)
 {
     return (a>0) ? a:(-a);
 }
-REAL fabs(REAL a)
+real fabs(real a)
 {
     return (a>0) ? a:(-a);
 }
@@ -175,10 +175,10 @@ double det3( double x11, double x12, double x13,
   
 
 // memeory allocation functions 
-REAL* alloc_mem_db(int size)
+real* alloc_mem_db(int size)
 {
-    REAL* add;
-    if( (add = (REAL*) malloc (size*sizeof(REAL))) == NULL)
+    real* add;
+    if( (add = (real*) malloc (size*sizeof(real))) == NULL)
     {
         printf("not enough memory\n");
         exit(1);
@@ -227,9 +227,9 @@ void *allocate(long size)
 
 //////////////////////////////////////////////////////////
 //
-REAL VVdist(VEC v1, VEC v2)
+real VVdist(vector v1, vector v2)
 {
-	VEC d;
+	vector d;
 	int m;
 	for(m=0;m<DIM;m++) d[m] = v1[m] - v2[m];
 	return Norm(d);

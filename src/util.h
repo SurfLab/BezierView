@@ -1,5 +1,4 @@
-#ifndef UTIL_H_
-#define UTIL_H_
+#pragma once
 
 #include "type.h"
 
@@ -9,35 +8,35 @@
 
 #define tol  0.0000001
 
-void   VVcross(VEC v1, VEC v2, VEC v3);  // v3 = v1 X v2
-void   VVminus(VEC v1,VEC v2, VEC v3);   // v3 = v1 - v2
-double VVmult(VEC v1, VEC v2);         // return v1 dot v2
-void   Vcopy(VEC from, VEC to);            // v2 = v1
-void   VVadd( double m1,VEC v1,double m2,VEC v2,VEC v3);
+void   VVcross(vector v1, vector v2, vector v3);  // v3 = v1 X v2
+void   VVminus(vector v1,vector v2, vector v3);   // v3 = v1 - v2
+double VVmult(vector v1, vector v2);         // return v1 dot v2
+void   Vcopy(vector from, vector to);            // v2 = v1
+void   VVadd( double m1,vector v1,double m2,vector v2,vector v3);
                                        // v3 = m1*v1 + v2*v2
-void   VVscale(double m, VEC v, VEC result);
-void   VVaddto(double m, VEC v, VEC result);
-void   VVzero(VEC v);
+void   VVscale(double m, vector v, vector result);
+void   VVaddto(double m, vector v, vector result);
+void   VVzero(vector v);
 
-REAL   VVdist(VEC v1, VEC v2);
+real   VVdist(vector v1, vector v2);
 
 
 ///////////////////////////////////////////////////
 // To use Pov-ray's vector commands
-inline void Assign_Vector(REAL* to, REAL* from) {
+inline void Assign_Vector(real* to, real* from) {
 	Vcopy(from, to);
 }
 
 // v2 = v1/ || v1 ||
-double  Vnorm(VEC v1, VEC v2);
+double  Vnorm(vector v1, vector v2);
 
 // v = v/||v||
-double  Normalize(REAL v[]);
-double  Norm(REAL v[]); // return  ||v||
-void    printV (VEC v);
+double  Normalize(real v[]);
+double  Norm(real v[]); // return  ||v||
+void    printV (vector v);
 
-//REAL Abs(REAL a);
-//REAL fabs(REAL a);
+//real Abs(real a);
+//real fabs(real a);
 
 // determine for 3*3 matrix, 4*4 matrix
 double det3( double x11, double x12, double x13,
@@ -60,8 +59,3 @@ void log_error(const char* context, const char* reason);
 #define arrcreate(pointer,count) (pointer =  malloc(sizeof(*pointer)*count))
 #define arrresize(pointer,count) (pointer =  realloc(pointer, sizeof(*pointer)*count))
 #define arrdelete(pointer) (free(pointer))
-
-
-
-#endif
-

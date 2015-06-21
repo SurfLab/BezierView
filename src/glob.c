@@ -65,7 +65,7 @@ double min_crv[5];
 
 // current type of curvature
 int crv_choice;
-REAL hl_step;   // highlight density
+real hl_step;   // highlight density
 
 // the light switches
 int    light_switch[3];

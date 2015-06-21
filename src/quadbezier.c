@@ -19,8 +19,8 @@
 // functions prototypes -------------------------
 
 // quad Bezier patch subdivision 
-void     RSubDiv(VEC bb[], int step, int degu, int degv, int sizeu, int sizev);
-void     BBcopy4(VEC *buf, int degu, int degv, int st, VEC * bb);
+void     RSubDiv(vector bb[], int step, int degu, int degv, int sizeu, int sizev);
+void     BBcopy4(vector *buf, int degu, int degv, int st, vector * bb);
 
 // Decastel algorithms for 1-D and 2-D Bezier
 void     DeCastel2(GLdouble (*position)[DIM], int degu, int degv,
@@ -42,7 +42,7 @@ int use_art_normal = 1;    // allow PN quads and PN triangles
  * size -- number of columns in the array
  *
  */
-void RSubDiv(VEC bb[], int step, int degu, int degv, int sizeu, int sizev)
+void RSubDiv(vector bb[], int step, int degu, int degv, int sizeu, int sizev)
 {    
     int 	m,k,l;
     int 	row,col,
@@ -96,9 +96,9 @@ void DeCastel2(GLdouble (*position)[DIM], int degu, int degv,
                 double u, double v, GLdouble pts[DIM])
 {
 	int i,j;
-    REAL (*Ubuffer)[DIM];
+    real (*Ubuffer)[DIM];
     arrcreate(Ubuffer, degu+1);
-    REAL (*Vbuffer)[DIM];
+    real (*Vbuffer)[DIM];
     arrcreate(Vbuffer, degv+1);
 
 	// calculate Du
@@ -132,7 +132,7 @@ void DeCastel1(GLdouble (*position)[DIM], int deg, double u, GLdouble pts[DIM])
 
 
 /* get a corner control point */
-REAL* QuadBezier_get_v(Patch*p,int s)
+real* QuadBezier_get_v(Patch*p,int s)
 {
     switch(s) {
 	case 0:
@@ -153,7 +153,7 @@ REAL* QuadBezier_get_v(Patch*p,int s)
 //  st: step
 //  degu, degv: degrees for bb
 //
-void BBcopy4( VEC * buf, int degu, int degv, int st, VEC * bb)
+void BBcopy4( vector * buf, int degu, int degv, int st, vector * bb)
 {
     int i,j;
     int C;
@@ -168,18 +168,18 @@ void BBcopy4( VEC * buf, int degu, int degv, int st, VEC * bb)
     C = st*degu +1;
     for (i=0; i<=degu; i++) {
         for (j=0; j<=degv; j++) {
-            VEC * v = buf + (i*(degv+1) + j);
+            vector * v = buf + (i*(degv+1) + j);
             Vcopy(v[0], bb[(j* st)* C + i*st]);
         }
     }
 }
 
 
-void QuadBezier_plot_highlights(Patch *p, VEC A, VEC H, REAL hl_step, int highlight_type)
+void QuadBezier_plot_highlights(Patch *p, vector A, vector H, real hl_step, int highlight_type)
 {
     int  i,j,k;
     int  loc[4];
-    REAL P[4][DIM], N[4][DIM];
+    real P[4][DIM], N[4][DIM];
 
     // evaluate the patch first if needed
     if(!p->evaluated) {
@@ -219,17 +219,17 @@ void QuadBezier_plot_highlights(Patch *p, VEC A, VEC H, REAL hl_step, int highli
 }
 
 
-void QuadBezier_plot_crv_needles(Patch *p, int crv_choice, REAL length)
+void QuadBezier_plot_crv_needles(Patch *p, int crv_choice, real length)
 {
     int i,j, loc;
-    REAL h;
+    real h;
     int st = 1; //pts;
 
     glDisable(GL_LIGHTING);  // curvature is shown with light off
     for(i=0;i<=p->pts;i+=st) {
         for(j=0;j<=p->pts;j+=st)
         {
-            VEC sum;
+            vector sum;
             loc = i*(p->pts+1)+j;
             if(normal_clipping && !point_clipped(&p->eval_P[loc][0])) {
 
@@ -257,7 +257,7 @@ void QuadBezier_plot_crv(Patch *p, int crv_choice)
 {
     int   i,j;
     int     loc;
-    REAL h;
+    real h;
 
     // evaluate the patch first if needed
     if(!p->evaluated) {
@@ -382,7 +382,7 @@ void QuadBezier_evaluate_patch(Patch *p, int subDepth)
     int     sizeu, sizev, bigstepu, bigstepv;
     int     i, r, rs, r1, r2, c, loc;
     double  h;
-    VEC*    bb;
+    vector*    bb;
 
     p->pts  = 1 << subDepth;
 
@@ -612,6 +612,6 @@ void QuadBezier_loadFile(Patch *p, FILE *fp, bool equal_deg, bool rational, bool
 }
 
 
-REAL *QuadBezier_get_bb(Patch *p, int i, int j) {
+real *QuadBezier_get_bb(Patch *p, int i, int j) {
     return &p->position[(i*(p->degv+1)+j)][0];
 }
