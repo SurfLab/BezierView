@@ -37,13 +37,13 @@ void Patch_translate(Patch*p,real* center)
 }
 
 
-void Patch_createSinglePolygon(Patch*p, int side, real (*V)[DIM], int *F)
+void Patch_createSinglePolygon(Patch*p, int side, vector *V, int *F)
 {
     p->pointCount = side;
     arrcreate(p->position, side);
-    real (*position)[DIM] = p->position;
+    vector *position = p->position;
     arrcreate(p->normal, side);
-    real (*normal)[DIM] = p->normal;
+    vector *normal = p->normal;
     for(int i = 0; i < side; i++)
     {
         real *v = V[F[i]];
@@ -57,7 +57,7 @@ void Patch_createSinglePolygon(Patch*p, int side, real (*V)[DIM], int *F)
     for(int i= 0; i < side; i++)
     {
         int prv = i, pt = (i+1)%side, nxt = (i+2)%side;
-        real V1[DIM], V2[DIM];
+        vector V1, V2;
         VVminus(position[prv], position[pt], V1);
         VVminus(position[nxt], position[pt], V2);
         VVcross(V2, V1, normal[pt]);

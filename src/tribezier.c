@@ -249,7 +249,7 @@ void TriBezier_evaluate_patch(Patch *p, int subDepth)
 
     //printf("evaluate starts\n");
 
-    GLdouble DeCastel[(MAXDEG+1)*(MAXDEG+2)/2][DIM];
+    vector DeCastel[(MAXDEG+1)*(MAXDEG+2)/2];
 
     if(p->degu>MAXDEG) {
         printf("Maximum degree %d reached, please increase the number.\n", MAXDEG);
@@ -270,7 +270,7 @@ void TriBezier_evaluate_patch(Patch *p, int subDepth)
     {
         for (vv=0;vv<=p->pts-uu;vv++)
         {
-            GLdouble Point[DIM];
+            vector Point;
             double h;
             GLdouble *V00,*V01, *V02,*V10, *V20, *V11;
 
@@ -519,8 +519,8 @@ void TriBezier_plot_crv_needles(Patch *p, int crv_choice, real length)
 
 void TriBezier_plot_highlights(Patch *p, vector A, vector H, real hl_step, int highlight_type)
 {
-    real P[3*DIM];
-    real N[3*DIM];
+    vector P[3];
+    vector N[3];
     int i, j, k;
     int loc[3];
 
@@ -541,8 +541,8 @@ void TriBezier_plot_highlights(Patch *p, vector A, vector H, real hl_step, int h
             }
 
             for (k=0; k<3; k++) {
-                Vcopy( &p->eval_P[loc[k]][0], &P[k*DIM]);
-                Vcopy( &p->eval_N[loc[k]][0], &N[k*DIM]);
+                Vcopy( &p->eval_P[loc[k]][0], P[k]);
+                Vcopy( &p->eval_N[loc[k]][0], N[k]);
             }
             Highlight(3, P, N, A, H, hl_step, highlight_type);
         }
@@ -562,8 +562,8 @@ void TriBezier_plot_highlights(Patch *p, vector A, vector H, real hl_step, int h
             }
 
             for (k=0; k<3; k++) {
-                Vcopy( &p->eval_P[loc[k]][0], &P[k*DIM]);
-                Vcopy( &p->eval_N[loc[k]][0], &N[k*DIM]);
+                Vcopy( &p->eval_P[loc[k]][0], P[k]);
+                Vcopy( &p->eval_N[loc[k]][0], N[k]);
             }
             Highlight(3, P, N, A, H, hl_step, highlight_type);
         }

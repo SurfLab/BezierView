@@ -89,7 +89,7 @@ void Polygon_plot_highlights(Patch*p,vector A, vector H, real hl_step, int highl
 	glPushAttrib(GL_ENABLE_BIT);
     glEnable(GL_LIGHTING);
 
-    Highlight(p->pointCount, &p->position[0][0], &p->normal[0][0], A, H, hl_step, highlight_type);
+    Highlight(p->pointCount, p->position, p->normal, A, H, hl_step, highlight_type);
 	glPopAttrib();
 }
 

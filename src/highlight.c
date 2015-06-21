@@ -29,8 +29,8 @@ real calc_D(vector P, vector N, vector A, vector H){
 
     */
 
-    real SA[DIM];
-    real temp[DIM];
+    vector SA;
+    vector temp;
     int m;
     real div;
 
@@ -57,7 +57,7 @@ real calc_ref_line(vector P, vector N, vector A, vector H, vector eye)
 {
 	vector RefN;
 	real th;
-    real SA[DIM];
+    vector SA;
 	int m;
     
 	for(m=0;m<DIM;m++)
@@ -115,7 +115,7 @@ void init_texture(GLubyte* forecolor, GLubyte* backcolor)
 //
 //  plot the high light
 //
-void Highlight(int n, real* P, real* N, vector A, vector H, real hl_step, int highlight_type) {
+void Highlight(int n, vector* P, vector* N, vector A, vector H, real hl_step, int highlight_type) {
 
 	real func[40];
     int i;
@@ -125,14 +125,14 @@ void Highlight(int n, real* P, real* N, vector A, vector H, real hl_step, int hi
 	for(i = 0; i<n; i++) 
 	{
 		if(highlight_type == HIGHLIGHTLINE) {
-			func[i] = calc_D( &P[i*DIM], &N[i*DIM], A, H);
-			//if (calc_D( &P[i*DIM], &N[i*DIM], A, H, &func[i]))
+            func[i] = calc_D( P[i], N[i], A, H);
+            //if (calc_D( P[i], N[i], A, H, &func[i]))
 			if (hl_error)	
 				return; // return if the patch is numerically unstable,
 		}
 		else {
-			func[i] = calc_ref_line( &P[i*DIM], &N[i*DIM], A, H, eye);
-		    //if (calc_ref_line( &P[i*DIM], &N[i*DIM], A, H, eye, &func[i]))
+            func[i] = calc_ref_line( P[i], N[i], A, H, eye);
+            //if (calc_ref_line( P[i], N[i], A, H, eye, &func[i]))
 			if (hl_error)	
 				return; // return if the patch is numerically unstable,
 		}
@@ -151,8 +151,8 @@ void Highlight(int n, real* P, real* N, vector A, vector H, real hl_step, int hi
 		color = f/hl_step;
 
 		glTexCoord1d(color);
-		glNormal3dv(&N[i*DIM]);
-		glVertex4dv(&P[i*DIM]);
+        glNormal3dv(N[i]);
+        glVertex4dv(P[i]);
 	}
 	glEnd();
 

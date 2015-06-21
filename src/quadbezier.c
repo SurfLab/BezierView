@@ -23,9 +23,9 @@ void     RSubDiv(vector bb[], int step, int degu, int degv, int sizeu, int sizev
 void     BBcopy4(vector *buf, int degu, int degv, int st, vector * bb);
 
 // Decastel algorithms for 1-D and 2-D Bezier
-void     DeCastel2(GLdouble (*position)[DIM], int degu, int degv,
-                double u, double v, GLdouble pts[DIM]);
-void     DeCastel1(GLdouble (*position)[DIM], int deg, double u, GLdouble pts[DIM]);
+void     DeCastel2(vector *position, int degu, int degv,
+                double u, double v, vector pts);
+void     DeCastel1(vector *position, int deg, double u, vector pts);
 
 // global variables -------------------------
 
@@ -92,13 +92,13 @@ void RSubDiv(vector bb[], int step, int degu, int degv, int sizeu, int sizev)
 }
 
 /* De Casteljau algorithm for tensor-product function */
-void DeCastel2(GLdouble (*position)[DIM], int degu, int degv,
-                double u, double v, GLdouble pts[DIM])
+void DeCastel2(vector *position, int degu, int degv,
+                double u, double v, vector pts)
 {
 	int i,j;
-    real (*Ubuffer)[DIM];
+    vector *Ubuffer;
     arrcreate(Ubuffer, degu+1);
-    real (*Vbuffer)[DIM];
+    vector *Vbuffer;
     arrcreate(Vbuffer, degv+1);
 
 	// calculate Du
@@ -115,7 +115,7 @@ void DeCastel2(GLdouble (*position)[DIM], int degu, int degv,
 }
 
 /* De Casteljau algorithm for 1 variable function */
-void DeCastel1(GLdouble (*position)[DIM], int deg, double u, GLdouble pts[DIM])
+void DeCastel1(vector *position, int deg, double u, vector pts)
 {
     double u1 = 1-u;
     int d, i, m;
@@ -179,7 +179,7 @@ void QuadBezier_plot_highlights(Patch *p, vector A, vector H, real hl_step, int 
 {
     int  i,j,k;
     int  loc[4];
-    real P[4][DIM], N[4][DIM];
+    vector P[4], N[4];
 
     // evaluate the patch first if needed
     if(!p->evaluated) {
@@ -212,7 +212,7 @@ void QuadBezier_plot_highlights(Patch *p, vector A, vector H, real hl_step, int 
                 Vcopy( p->eval_N[loc[k]], N[k]);
             }
 
-            Highlight(4, P[0], N[0], A, H, hl_step, highlight_type);
+            Highlight(4, P, N, A, H, hl_step, highlight_type);
         }
 
     //glEnable(GL_LIGHTING);  // turn the light back on

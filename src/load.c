@@ -191,7 +191,7 @@ void define_scene(FILE* fp)
             int VNum, FNum;
             fscanf(fp, "%d %d", &VNum, &FNum);
 
-            real (*V)[DIM]; arrcreate(V,VNum);
+            vector *V; arrcreate(V,VNum);
             int  *F = NULL;
 
             /* Read vertex data */

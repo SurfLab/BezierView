@@ -25,8 +25,8 @@ typedef struct Patch{
     int pointCount;
     //! Number of normal control points of the patch
     int normalCount;
-    real (*position)[DIM];
-    real (*normal)[DIM];
+    vector *position;
+    vector *normal;
 
     bool art_normal; // true: there is an artificial normal super-posed
                      //       on the patch
@@ -38,8 +38,8 @@ typedef struct Patch{
     int  pts;       // evaluate density -- how many points are evaluated
                     // on each edge
 
-    real (*eval_P)[DIM];   // result of the evaluated points
-    real (*eval_N)[DIM];   // result of the evaluated normal
+    vector *eval_P;   // result of the evaluated points
+    vector *eval_N;   // result of the evaluated normal
 
     real* crv_array; // result of the curvature
 
@@ -58,7 +58,7 @@ void Patch_flipnormal(Patch*p);
 void Patch_freeevalmem(Patch*p);
 
 
-void Patch_createSinglePolygon(Patch*p, int side, real (*V)[DIM], int *F);
+void Patch_createSinglePolygon(Patch*p, int side, vector *V, int *F);
 void Patch_loadQuadBezier(Patch*p, FILE* fp);
 void Patch_loadTriBezier(Patch*p, FILE* fp);
 

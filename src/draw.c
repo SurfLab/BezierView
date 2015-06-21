@@ -330,8 +330,8 @@ void draw(void)
 			// highlight lines (also called reflection lines if provided an eye poisition)
             if(isDisplayFlagEnabled(grp_id, DRAWFLAGS_HIGHLIGHT) || isDisplayFlagEnabled(grp_id, DRAWFLAGS_REFLLINE) )
 			{
-				real A[DIM] = {  0.0,  0.0, 40.0, 1.0 };
-				real H[DIM] = {  0.0,  1.0,  0.0, 0.0 };
+                vector A = {  0.0,  0.0, 40.0, 1.0 };
+                vector H = {  0.0,  1.0,  0.0, 0.0 };
 				GLubyte forecolor[3]  = {0, 128, 0};
 				GLubyte backcolor[3]  = {255, 255, 255};
 				int hl_type;
