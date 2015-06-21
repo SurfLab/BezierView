@@ -36,7 +36,6 @@ int   g_substs[MAXGROUP];
 color_t g_patchColor[MAXGROUP];
 
 int    environmapping=0;
-int    drawbox=0;
 
 // some other display controls
 double scale_factor =1.0;

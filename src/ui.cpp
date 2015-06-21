@@ -70,14 +70,14 @@ void BViewUI::createContextMenu()
     _signalMapper = new QSignalMapper(this);
     QObject::connect(_signalMapper, SIGNAL(mapped(int)), this, SLOT(command(int)));
 
-    addMenuAction(menuContext, "Zoom"  , ZOOM  , NULL, true, g_mouseMode == ZOOM   && clip_item == 0);
-    addMenuAction(menuContext, "Rotate", ROTATE, NULL, true, g_mouseMode == ROTATE && clip_item == 0);
-    addMenuAction(menuContext, "Move"  , MOVE  , NULL, true, g_mouseMode == MOVE   && clip_item == 0);
+    addMenuAction(menuContext, "Zoom"  , MENUCONTROL_ZOOM  , NULL, true, g_mouseMode == MENUCONTROL_ZOOM   && clip_item == 0);
+    addMenuAction(menuContext, "Rotate", MENUCONTROL_ROTATE, NULL, true, g_mouseMode == MENUCONTROL_ROTATE && clip_item == 0);
+    addMenuAction(menuContext, "Move"  , MENUCONTROL_MOVE  , NULL, true, g_mouseMode == MENUCONTROL_MOVE   && clip_item == 0);
 
     QMenu   *menuClipping   = menuContext->addMenu("Clipping");
-    addMenuAction(menuClipping, "Clip Near", CLIPNEAR, NULL, true, clip_item == CLIPNEAR);
-    addMenuAction(menuClipping, "Clip Far" , CLIPFAR , NULL, true, clip_item == CLIPFAR );
-    addMenuAction(menuClipping, "Clear Clipping", CLIPNEAR);
+    addMenuAction(menuClipping, "Clip Near", MENUCONTROL_CLIPNEAR, NULL, true, clip_item == MENUCONTROL_CLIPNEAR);
+    addMenuAction(menuClipping, "Clip Far" , MENUCONTROL_CLIPFAR , NULL, true, clip_item == MENUCONTROL_CLIPFAR );
+    addMenuAction(menuClipping, "Clear Clipping", MENUCONTROL_CLIPNEAR);
 
     menuContext->addSeparator();
 
@@ -85,64 +85,64 @@ void BViewUI::createContextMenu()
 
 
     QMenu   *menuDisplay    = menuContext->addMenu("Display");
-    addMenuAction(menuDisplay, "Patch", PATCH, "P", true, isDisplayFlagEnabled(g_current_grp, DRAWPATCH));
-    addMenuAction(menuDisplay, "Control Mesh", MESH, "M", true, isDisplayFlagEnabled(g_current_grp, DRAWMESH));
-    addMenuAction(menuDisplay, "Polygon Face", POLYPATCH, "P", true, isDisplayFlagEnabled(g_current_grp, DRAWPOLYPATCH));
-    addMenuAction(menuDisplay, "Polygon Mesh", POLYMESH, "M", true, isDisplayFlagEnabled(g_current_grp, DRAWPOLYMESH));
+    addMenuAction(menuDisplay, "Patch", MENUCONTROL_PATCH, "P", true, isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_PATCH));
+    addMenuAction(menuDisplay, "Control Mesh", MENUCONTROL_MESH, "M", true, isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_MESH));
+    addMenuAction(menuDisplay, "Polygon Face", MENUCONTROL_POLYPATCH, "P", true, isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_POLYPATCH));
+    addMenuAction(menuDisplay, "Polygon Mesh", MENUCONTROL_POLYMESH, "M", true, isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_POLYMESH));
     menuDisplay->addSeparator();
-    addMenuAction(menuDisplay, "Curvature", CURVA, "C", true, isDisplayFlagEnabled(g_current_grp, DRAWCRV));
-    addMenuAction(menuDisplay, "Curvature Needles", CURVANEEDLE, "N", true, isDisplayFlagEnabled(g_current_grp, DRAWCRVNEEDLE));
-    addMenuAction(menuDisplay, "Highlight Lines", HIGHLIGHT, "R", true, isDisplayFlagEnabled(g_current_grp, DRAWHIGHLIGHT));
-    addMenuAction(menuDisplay, "Reflection Lines", REFLINE, NULL, true, isDisplayFlagEnabled(g_current_grp, DRAWREFLLINE));
-    addMenuAction(menuDisplay, "Environment Mapping", ENVMAP, "E", true, isDisplayFlagEnabled(g_current_grp, ENVMAPPING));
-    addMenuAction(menuDisplay, "Bounding Box", DRAWBOX, "B", true, drawbox);
+    addMenuAction(menuDisplay, "Curvature", MENUCONTROL_CURVA, "C", true, isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_CRV));
+    addMenuAction(menuDisplay, "Curvature Needles", MENUCONTROL_CURVANEEDLE, "N", true, isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_CRVNEEDLE));
+    addMenuAction(menuDisplay, "Highlight Lines", MENUCONTROL_HIGHLIGHT, "R", true, isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_HIGHLIGHT));
+    addMenuAction(menuDisplay, "Reflection Lines", MENUCONTROL_REFLINE, NULL, true, isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_REFLLINE));
+    addMenuAction(menuDisplay, "Environment Mapping", MENUCONTROL_ENVMAP, "E", true, isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_ENVMAPPING));
+    addMenuAction(menuDisplay, "Bounding Box", MENUCONTROL_DRAWBOX, "B", true, isDisplayFlagEnabled(0, DRAWFLAGS_BOX));
 
     QMenu   *menuPatchDetail= menuContext->addMenu("Patch Detail");
     for(int i = 1; i <= 6; i++)
         addMenuAction(menuPatchDetail,QString("%1 %2 %1").arg(QString::number(1<<i)).arg(QChar(215)),
-                      SUBST1-1+i, NULL, true, g_substs[g_current_grp]==i);
+                      MENUCONTROL_SUBST1-1+i, NULL, true, g_substs[g_current_grp]==i);
 
     QMenu   *menuMaterial   = menuContext->addMenu("Material");
     for(int c=0;c<COLORNUM; c++)
-        addMenuAction(menuMaterial, mat_name[c], COLOR0 + c, NULL, true, g_Material[g_current_grp] == c);
+        addMenuAction(menuMaterial, mat_name[c], MENUCONTROL_COLOR0 + c, NULL, true, g_Material[g_current_grp] == c);
     QAction *customColor = menuMaterial->addAction("Custom Color...");
     customColor->setShortcut(Qt::Key_F5);
     QObject::connect(customColor,SIGNAL(triggered()), this, SLOT(colorDialog()));
 
     QMenu   *menuLineColor  = menuContext->addMenu("Line Color");
     for(int i=0;i<10;i++)
-        addMenuAction(menuLineColor,g_penColorNames[i],BLACKPEN+i,NULL, true,g_PenColor[g_current_grp] == i);
+        addMenuAction(menuLineColor,g_penColorNames[i],MENUCONTROL_BLACKPEN+i,NULL, true,g_PenColor[g_current_grp] == i);
 
     QMenu   *menuBackColor  = menuContext->addMenu("Background Color");
     for(int i=0; i < 10; i++)
-        addMenuAction(menuBackColor,g_BackColorNames[i],BLACKBACK+i,NULL,true,i == back_choice);
+        addMenuAction(menuBackColor,g_BackColorNames[i],MENUCONTROL_BLACKBACK+i,NULL,true,i == back_choice);
 
     QMenu   *menuAdvanced   = menuContext->addMenu("Advanced Options");
-    addMenuAction(menuAdvanced, "Smooth Shading", SMOOTHSHD, "D", true, isDisplayFlagEnabled(g_current_grp,SMOOTH));
-    addMenuAction(menuAdvanced, "Flip Normals", FLIPNORMAL, "F");
+    addMenuAction(menuAdvanced, "Smooth Shading", MENUCONTROL_SMOOTHSHD, "D", true, isDisplayFlagEnabled(g_current_grp,DRAWFLAGS_SMOOTH));
+    addMenuAction(menuAdvanced, "Flip Normals", MENUCONTROL_FLIPNORMAL, "F");
     menuAdvanced->addSeparator();
     for(int i = 0;i < 3;i++)
-        addMenuAction(menuAdvanced, "Light " + QString::number(i), MENU_LIGHT0+i, NULL, true, light_switch[i]);
+        addMenuAction(menuAdvanced, "Light " + QString::number(i), MENUCONTROL_LIGHT0+i, NULL, true, light_switch[i]);
     menuAdvanced->addSeparator();
-    addMenuAction(menuAdvanced, "Hidden Line Removal", HDNLINERMV, NULL, true, isDisplayFlagEnabled(g_current_grp,HIDDENLINE));
-    addMenuAction(menuAdvanced, "Anti Aliasing", ANTIALIAS, NULL, true, g_AntiAlias);
+    addMenuAction(menuAdvanced, "Hidden Line Removal", MENUCONTROL_HDNLINERMV, NULL, true, isDisplayFlagEnabled(g_current_grp,DRAWFLAGS_HIDDENLINE));
+    addMenuAction(menuAdvanced, "Anti Aliasing", MENUCONTROL_ANTIALIAS, NULL, true, g_AntiAlias);
     QMenu   *menuLineWidth = menuAdvanced->addMenu("Line Width");
     for(int i = 1; i <= 5; i++ )
-        addMenuAction(menuLineWidth,QString::number(i),LINEWIDTH1-1+i,NULL,true,g_LineWidth[g_current_grp]==i);
+        addMenuAction(menuLineWidth,QString::number(i),MENUCONTROL_LINEWIDTH1-1+i,NULL,true,g_LineWidth[g_current_grp]==i);
     menuAdvanced->addSeparator();
     QMenu   *menuHighlightLineDensity = menuAdvanced->addMenu("Highlight Line Density");
-    addMenuAction(menuHighlightLineDensity, "Increase", INHLDENSE, "+");
-    addMenuAction(menuHighlightLineDensity, "Decrease", DEHLDENSE, "-");
+    addMenuAction(menuHighlightLineDensity, "Increase", MENUCONTROL_INHLDENSE, "+");
+    addMenuAction(menuHighlightLineDensity, "Decrease", MENUCONTROL_DEHLDENSE, "-");
     QMenu   *menuCurvatureStyle = menuAdvanced->addMenu("Curvature Style");
-    addMenuAction(menuCurvatureStyle, "Color Shade", CRVSTYLE1,NULL,true, crv_style == 1);
-    addMenuAction(menuCurvatureStyle, "Gray Shade", CRVSTYLE2,NULL,true, crv_style == 2);
-    addMenuAction(menuCurvatureStyle, "Curvature Lines", CRVSTYLE0,NULL,true, crv_style == 0);
+    addMenuAction(menuCurvatureStyle, "Color Shade", MENUCONTROL_CRVSTYLE1,NULL,true, crv_style == 1);
+    addMenuAction(menuCurvatureStyle, "Gray Shade", MENUCONTROL_CRVSTYLE2,NULL,true, crv_style == 2);
+    addMenuAction(menuCurvatureStyle, "Curvature Lines", MENUCONTROL_CRVSTYLE0,NULL,true, crv_style == 0);
 
     QMenu   *menuCurvature  = menuContext->addMenu("Curvature Type");
-    addMenuAction(menuCurvature, "Gaussian", GAUSS_CRV, NULL, true, crv_choice == GAUSS_CRV);
-    addMenuAction(menuCurvature, "Mean", MEAN_CRV, NULL, true, crv_choice == MEAN_CRV);
-    addMenuAction(menuCurvature, "Max", MAX_CRV, NULL, true, crv_choice == MAX_CRV);
-    addMenuAction(menuCurvature, "Min", MIN_CRV, NULL, true, crv_choice == MIN_CRV);
+    addMenuAction(menuCurvature, "Gaussian", MENUCONTROL_GAUSS_CRV, NULL, true, crv_choice == GAUSS_CRV);
+    addMenuAction(menuCurvature, "Mean", MENUCONTROL_MEAN_CRV, NULL, true, crv_choice == MEAN_CRV);
+    addMenuAction(menuCurvature, "Max", MENUCONTROL_MAX_CRV, NULL, true, crv_choice == MAX_CRV);
+    addMenuAction(menuCurvature, "Min", MENUCONTROL_MIN_CRV, NULL, true, crv_choice == MIN_CRV);
     addMenuAction(menuCurvature, QString("%1 %3 Gauss + %2 %3 Mean%4").arg(curvature_ratio_a).arg(curvature_ratio_b).arg(QChar(215)).arg(QChar(178)), SPECIAL_CRV, NULL, true, crv_choice == SPECIAL_CRV);
     menuContext->addSeparator();
     QAction *actionOpen = menuContext->addAction("Open BV file...");
@@ -151,11 +151,11 @@ void BViewUI::createContextMenu()
 
     QMenu   *menuSavePosition= menuContext->addMenu("Save position");
     for(int i = 0;i < 6; i++)
-        addMenuAction(menuSavePosition,QString::number(i), SAVE0 + i);
+        addMenuAction(menuSavePosition,QString::number(i), MENUCONTROL_SAVE0 + i);
     QMenu   *menuLoadPosition= menuContext->addMenu("Load position");
     for(int i = 0;i < 6; i++)
-        addMenuAction(menuLoadPosition,QString::number(i), LOAD0 + i);
-    addMenuAction(menuContext, "Quit", QUIT, "Q");
+        addMenuAction(menuLoadPosition,QString::number(i), MENUCONTROL_LOAD0 + i);
+    addMenuAction(menuContext, "Quit", MENUCONTROL_QUIT, "Q");
 
     _contextMenu = menuContext;
 }
@@ -172,62 +172,62 @@ void BViewUI::updateContextMenu()
     if(group_num > 0) // if there are more than one group
     {
         _menuGroup->clear();
-        addMenuAction(_menuGroup, "All Groups", ALLGROUPS, NULL, true, g_current_grp == 0);
+        addMenuAction(_menuGroup, "All Groups", MENUCONTROL_ALLGROUPS, NULL, true, g_current_grp == 0);
         _menuGroup->addSeparator();
         for(int i=1;i<=group_num; i++)
-            addMenuAction(_menuGroup, group[i].name, GROUP1 + i - 1,NULL, true, g_current_grp == i);
+            addMenuAction(_menuGroup, group[i].name, MENUCONTROL_GROUP1 + i - 1,NULL, true, g_current_grp == i);
     }
 
-    updateMenuAction(ZOOM  ,g_mouseMode == ZOOM   && clip_item == 0);
-    updateMenuAction(ROTATE, g_mouseMode == ROTATE && clip_item == 0);
-    updateMenuAction( MOVE , g_mouseMode == MOVE   && clip_item == 0);
+    updateMenuAction(MENUCONTROL_ZOOM  ,g_mouseMode == MENUCONTROL_ZOOM   && clip_item == 0);
+    updateMenuAction(MENUCONTROL_ROTATE, g_mouseMode == MENUCONTROL_ROTATE && clip_item == 0);
+    updateMenuAction( MENUCONTROL_MOVE , g_mouseMode == MENUCONTROL_MOVE   && clip_item == 0);
 
-    updateMenuAction(CLIPNEAR, clip_item == CLIPNEAR);
-    updateMenuAction(CLIPFAR , clip_item == CLIPFAR );
+    updateMenuAction(MENUCONTROL_CLIPNEAR, clip_item == MENUCONTROL_CLIPNEAR);
+    updateMenuAction(MENUCONTROL_CLIPFAR , clip_item == MENUCONTROL_CLIPFAR );
 
-    updateMenuAction(PATCH, isDisplayFlagEnabled(g_current_grp, DRAWPATCH), has_patch);
-    updateMenuAction(MESH,  isDisplayFlagEnabled(g_current_grp, DRAWMESH), has_patch);
-    updateMenuAction(POLYPATCH, isDisplayFlagEnabled(g_current_grp, DRAWPOLYPATCH), has_polygon);
-    updateMenuAction(POLYMESH, isDisplayFlagEnabled(g_current_grp, DRAWPOLYMESH), has_polygon);
+    updateMenuAction(MENUCONTROL_PATCH, isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_PATCH), has_patch);
+    updateMenuAction(MENUCONTROL_MESH,  isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_MESH), has_patch);
+    updateMenuAction(MENUCONTROL_POLYPATCH, isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_POLYPATCH), has_polygon);
+    updateMenuAction(MENUCONTROL_POLYMESH, isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_POLYMESH), has_polygon);
 
-    updateMenuAction(CURVA, isDisplayFlagEnabled(g_current_grp, DRAWCRV));
-    updateMenuAction(CURVANEEDLE, isDisplayFlagEnabled(g_current_grp, DRAWCRVNEEDLE));
-    updateMenuAction(HIGHLIGHT,isDisplayFlagEnabled(g_current_grp, DRAWHIGHLIGHT));
-    updateMenuAction(REFLINE,  isDisplayFlagEnabled(g_current_grp, DRAWREFLLINE));
-    updateMenuAction(ENVMAP,  isDisplayFlagEnabled(g_current_grp, ENVMAPPING));
+    updateMenuAction(MENUCONTROL_CURVA, isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_CRV));
+    updateMenuAction(MENUCONTROL_CURVANEEDLE, isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_CRVNEEDLE));
+    updateMenuAction(MENUCONTROL_HIGHLIGHT,isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_HIGHLIGHT));
+    updateMenuAction(MENUCONTROL_REFLINE,  isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_REFLLINE));
+    updateMenuAction(MENUCONTROL_ENVMAP,  isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_ENVMAPPING));
 
     for(int i = 1; i <= 6; i++)
-        updateMenuAction(SUBST1-1+i, g_substs[g_current_grp]==i);
+        updateMenuAction(MENUCONTROL_SUBST1-1+i, g_substs[g_current_grp]==i);
 
     for(int c=0;c<COLORNUM; c++)
-        updateMenuAction(COLOR0+c, g_Material[g_current_grp] == c);
+        updateMenuAction(MENUCONTROL_COLOR0+c, g_Material[g_current_grp] == c);
 
     for(int i=0;i<10;i++)
-        updateMenuAction(BLACKPEN+i,g_PenColor[g_current_grp] == i);
+        updateMenuAction(MENUCONTROL_BLACKPEN+i,g_PenColor[g_current_grp] == i);
 
     for(int i=0; i < 10; i++)
-        updateMenuAction(BLACKBACK+i, i == back_choice);
+        updateMenuAction(MENUCONTROL_BLACKBACK+i, i == back_choice);
 
-    updateMenuAction(SMOOTHSHD,  isDisplayFlagEnabled(g_current_grp,SMOOTH));
+    updateMenuAction(MENUCONTROL_SMOOTHSHD,  isDisplayFlagEnabled(g_current_grp,DRAWFLAGS_SMOOTH));
 
     for(int i = 0;i < 3;i++)
-        updateMenuAction(MENU_LIGHT0+i, light_switch[i]);
+        updateMenuAction(MENUCONTROL_LIGHT0+i, light_switch[i]);
 
-    updateMenuAction( HDNLINERMV, isDisplayFlagEnabled(g_current_grp,HIDDENLINE));
-    updateMenuAction( ANTIALIAS,  g_AntiAlias);
+    updateMenuAction( MENUCONTROL_HDNLINERMV, isDisplayFlagEnabled(g_current_grp,DRAWFLAGS_HIDDENLINE));
+    updateMenuAction( MENUCONTROL_ANTIALIAS,  g_AntiAlias);
 
     for(int i = 1; i <= 5; i++ )
-        updateMenuAction(LINEWIDTH1-1+i, g_LineWidth[g_current_grp]==i);
+        updateMenuAction(MENUCONTROL_LINEWIDTH1-1+i, g_LineWidth[g_current_grp]==i);
 
-    updateMenuAction(CRVSTYLE1, crv_style == 1);
-    updateMenuAction(CRVSTYLE2, crv_style == 2);
-    updateMenuAction(CRVSTYLE0, crv_style == 0);
+    updateMenuAction(MENUCONTROL_CRVSTYLE1, crv_style == 1);
+    updateMenuAction(MENUCONTROL_CRVSTYLE2, crv_style == 2);
+    updateMenuAction(MENUCONTROL_CRVSTYLE0, crv_style == 0);
 
-    updateMenuAction(GAUSS_CRV, crv_choice == GAUSS_CRV);
-    updateMenuAction(MEAN_CRV,  crv_choice == MEAN_CRV);
-    updateMenuAction(MAX_CRV,  crv_choice == MAX_CRV);
-    updateMenuAction(MIN_CRV, crv_choice == MIN_CRV);
-    updateMenuAction(SPECIAL_CRV, crv_choice == SPECIAL_CRV, special_curv);
+    updateMenuAction(MENUCONTROL_GAUSS_CRV, crv_choice == GAUSS_CRV);
+    updateMenuAction(MENUCONTROL_MEAN_CRV,  crv_choice == MEAN_CRV);
+    updateMenuAction(MENUCONTROL_MAX_CRV,  crv_choice == MAX_CRV);
+    updateMenuAction(MENUCONTROL_MIN_CRV, crv_choice == MIN_CRV);
+    updateMenuAction(MENUCONTROL_SPECIAL_CRV, crv_choice == SPECIAL_CRV, special_curv);
 }
 
 BViewUI::BViewUI(QWidget *parent) :

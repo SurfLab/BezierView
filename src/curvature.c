@@ -114,7 +114,6 @@ double crv_conv(double in)
 }
 
 
-#define USE_REDBLUE_CURVATURE_SCALE false
 /*
  * relative curvature -> RGB value
  */

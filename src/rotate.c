@@ -151,12 +151,12 @@ void mouseMotion(int x, int y, KeyboardModifier modifiers )
 	}
 
     if(! (modifiers==ControlModifier) ) {
-		if(g_mouseMode == ZOOM ) {
+        if(g_mouseMode == MENUCONTROL_ZOOM ) {
 			motionZoom(x,y);
 			return;
 		}
 
-		if(g_mouseMode == MOVE ) {
+        if(g_mouseMode == MENUCONTROL_MOVE ) {
 			motionMove(x,y);
 			return;
 		}
@@ -231,11 +231,11 @@ void mouseMotion(int x, int y, KeyboardModifier modifiers )
 
         switch(clip_item)
         {
-        case CLIPNEAR:
+        case MENUCONTROL_CLIPNEAR:
 			//group[clipping_grp].ViewNear = (double)y/winHeight;
             ClipNear = -((float)y/winHeight - 0.5f)*ViewSize/2;
 			break;
-        case CLIPFAR:
+        case MENUCONTROL_CLIPFAR:
 			//group[clipping_grp].ViewFar = 
             ClipFar = -((float)y/winHeight - 0.5f)*ViewSize/2;
 			break;
@@ -376,7 +376,7 @@ void mouseButton(int button, int state, int x, int y, KeyboardModifier modifiers
 		}
 
         // first, check if the mouse is clicked on the curvature bar
-        if ( (isDisplayFlagEnabled(g_current_grp, DRAWCRV)|| isDisplayFlagEnabled(g_current_grp, DRAWCRVNEEDLE) )
+        if ( (isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_CRV)|| isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_CRVNEEDLE) )
 			&& ((scale_moving=clickon_crv_bar(x,y,winWidth,winHeight)) != -1)) 
         {
             return; 
@@ -420,9 +420,9 @@ void mouseButton(int button, int state, int x, int y, KeyboardModifier modifiers
 		else 
 			shift_plane = 0;
 
-		if(g_mouseMode ==	ROTATE)
+        if(g_mouseMode ==	MENUCONTROL_ROTATE)
 			startMotion( x,y);
-		else if(g_mouseMode ==	MOVE)
+        else if(g_mouseMode ==	MENUCONTROL_MOVE)
 			startMove( x,y);
 		else
 			startZoom( x,y);
