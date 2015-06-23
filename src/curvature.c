@@ -11,7 +11,14 @@
 #include "stdheaders.h"
 #include "util.h"
 
-void print_number(double x, double y, real v, real dist, color_t color);
+/* print a floating number on the screen */
+void print_number(double x, double y, real v, color_t color)
+{
+    char string[20];
+    glColorc(color);
+    snprintf(string, 20, "%.4f", v);
+    glDrawText(x, y, 1.0, string);
+}
 
 // ......................................................................
 //
@@ -136,11 +143,11 @@ color_t crv2color(double in)
     {
 
         // B -> C -> G -> Y -> R
-        color_t c[5] = { {0.0f, 0.0f, 0.85f},  // blue
-                            {0.0f, 0.9f, 0.9f},   // cyan
-                            {0.0f, 0.75f, 0.0f},  // green
-                            {0.9f, 0.9f, 0.0f},   // yellow
-                            {0.85f, 0.0f, 0.0f} };// red
+        color_t c[5] = { {0.0f, 0.0f, 0.85f, 1.0f},  // blue
+                            {0.0f, 0.9f, 0.9f, 1.0f},   // cyan
+                            {0.0f, 0.75f, 0.0f, 1.0f},  // green
+                            {0.9f, 0.9f, 0.0f, 1.0f},   // yellow
+                            {0.85f, 0.0f, 0.0f, 1.0f} };// red
 
 
         if (h>=crv_scale[4])
@@ -477,7 +484,7 @@ void draw_crv_bar(color_t color)
     {
         double u = (double)i/4;
         print_number ( leftC+widthC*2,
-             (1-u)*top_crd + u* bottom_crd, (1-u)*hi+u*low , 0.02, color);
+             (1-u)*top_crd + u* bottom_crd, (1-u)*hi+u*low , color);
     }
 	glPopAttrib();
 
@@ -489,14 +496,6 @@ void draw_crv_bar(color_t color)
 }
 
 
-/* print a floating number on the screen */
-void print_number(double x, double y, real v, real dist, color_t color)
-{
-    char string[20];
-    glColorc(color);
-    snprintf(string, 20, "%.4f", v);
-    glDrawText(x, y, 1.0, string);
-}
 
 
 /* check if the mouse clicked on the curvature bar 

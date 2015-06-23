@@ -29,7 +29,7 @@ void Polygon_flip_normal(Patch*p)
 
 
 
-void Polygon_plot_patch(Patch*p,bool smooth)
+void Polygon_plot_patch(Patch*p)
 {
     int j, pt;
 

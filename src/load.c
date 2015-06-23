@@ -61,10 +61,10 @@ void print_usage_and_exist(const char* exe)
  */
 void parse_arg(int argc, char* argv[])
 {
-    size_t i, j, name_pos;
+    int i, j, name_pos;
 
 	// Get the directory where the executable sits
-	for(i=strlen(argv[0])-1; i>=0; i--)
+    for(i=(int)strlen(argv[0])-1; i>=0; i--)
 		if (argv[0][i]=='\\' || argv[0][i]=='/' )
 		{
 //			printf("get %c, at %d of %d \n", argv[0][i], i, strlen(argv[0]));
@@ -399,8 +399,8 @@ void set_volumn()
 	
 	if(fp!=NULL)   // Manual size
 	{
-		if( fscanf(fp, "%f\n", &ViewSize)==1 && ViewSize>0)
-			printf("Manual Viewing Size: %f\n", ViewSize);
+        if( fscanf(fp, "%lf\n", &ViewSize)==1 && ViewSize>0)
+            printf("Manual Viewing Size: %lf\n", ViewSize);
 		fclose(fp);
 		return; 
 	}
@@ -478,8 +478,8 @@ void load_position(int n)
     for ( i = 0; i<16;i++)
        fscanf (posfile, "%lf\n", &matrix[i]);
 
-    fscanf (posfile, "%f %f ", &ViewCenter[0], &ViewCenter[1]);
-    fscanf (posfile, "%f", &scale_factor);
+    fscanf (posfile, "%lf %lf ", &ViewCenter[0], &ViewCenter[1]);
+    fscanf (posfile, "%lf", &scale_factor);
     updateProjection();
     fclose(posfile);
 
@@ -504,17 +504,17 @@ void readin_curv_bounds()
 			if( (ret=fscanf(crvfile, "%s", string))!=1) 
 				return;
 			if( !strcmp(string, "min:")){
-				ret = fscanf(crvfile, "%lg", &manual_low);
+                ret = fscanf(crvfile, "%lf", &manual_low);
 				manual_curvature_low =1;
 			}
 			else if( !strcmp(string, "max:")){
-				ret = fscanf(crvfile, "%lg", &manual_high);
+                ret = fscanf(crvfile, "%lf", &manual_high);
 				manual_curvature_high =1;
 			}
 			// added in June 31th 2003, for Kestas's request on
 			// looking at a*mean^2+b*gaussian 
 			else if( !strcmp(string, "ratio:")){
-				ret = fscanf(crvfile, "%lg %lg", &curvature_ratio_a, &curvature_ratio_b) -1;
+                ret = fscanf(crvfile, "%lf %lf", &curvature_ratio_a, &curvature_ratio_b) -1;
 				set_special_curvature(curvature_ratio_a, curvature_ratio_b);
 				special_curv = 1;
 			}

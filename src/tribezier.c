@@ -48,6 +48,7 @@ int b2i_k(int i, int j, int k, int d);
 
 int b2i_i (int i, int j, int k, int d)
 {
+    (void)i; /* i is not used but should be there */
     int lk = 0;
     int kk = 0;
 
@@ -71,6 +72,7 @@ int b2i_i (int i, int j, int k, int d)
 */
 int b2i_j (int i, int j, int k, int d)
 {
+    (void) j; /* j is not used but it should be in the prototype */
     int lk = 0;
     int kk = 0;
 
@@ -215,7 +217,14 @@ void TriBezier_plot_patch(Patch *p, bool smooth)
 }
 
 
-void TriBezier_plot_mesh(Patch *p, color_t bg_color)
+/*!
+ * \brief TriBezier_plot_mesh
+ * \param p
+ * \param bg_color
+ *
+ * TODO: why this function does not use bg_color?
+ */
+void TriBezier_plot_mesh(Patch *p)
 {
     int   i,j,k;
     int   d = p->degu-1;

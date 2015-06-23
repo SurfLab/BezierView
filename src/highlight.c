@@ -53,7 +53,7 @@ real calc_D(vector P, vector N, vector A, vector H){
 }
 
 // 
-real calc_ref_line(vector P, vector N, vector A, vector H, vector eye)
+real calc_ref_line(vector P, vector N, vector A, vector H)
 {
 	vector RefN;
 	real th;
@@ -120,7 +120,6 @@ void Highlight(int n, vector* P, vector* N, vector A, vector H, real hl_step, in
 	real func[40];
     int i;
 
-	real eye[3] = {0, 0, 1000};
 	// calculate the highlight values according to point and normal
 	for(i = 0; i<n; i++) 
 	{
@@ -131,7 +130,7 @@ void Highlight(int n, vector* P, vector* N, vector A, vector H, real hl_step, in
 				return; // return if the patch is numerically unstable,
 		}
 		else {
-            func[i] = calc_ref_line( P[i], N[i], A, H, eye);
+            func[i] = calc_ref_line( P[i], N[i], A, H);
             //if (calc_ref_line( P[i], N[i], A, H, eye, &func[i]))
 			if (hl_error)	
 				return; // return if the patch is numerically unstable,

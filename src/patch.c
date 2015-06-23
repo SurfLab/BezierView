@@ -141,7 +141,7 @@ void Patch_plotmesh(Patch *p, color_t bg_color)
         break;
     case TRIANG:
     case PNTRI:
-        TriBezier_plot_mesh(p, bg_color);
+        TriBezier_plot_mesh(p);
         break;
     }
 
@@ -153,7 +153,7 @@ void Patch_plotpatch(Patch *p, bool smooth)
     switch(p->type)
     {
     case POLY:
-        Polygon_plot_patch(p, smooth);
+        Polygon_plot_patch(p);
         break;
     case TP:
     case TP_EQ:

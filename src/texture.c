@@ -104,7 +104,7 @@ int LoadBitmapTexture(char *filename)
 	    return 0;
     }
 
-    for (i=0; i<(width*height *3); i+=3) { // switch bgr to rgb
+    for (int i=0; i<(width*height *3); i+=3) { // switch bgr to rgb
 	    temp = data[i];
 	    data[i] = data[i+2];
 	    data[i+2] = temp;
