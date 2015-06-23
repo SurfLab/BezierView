@@ -4,14 +4,13 @@ class BViewUI : public QGLWidget
 {
     Q_OBJECT
 public:
-    explicit BViewUI(QWidget *parent = 0);
+    explicit BViewUI();
 
     QSize minimumSizeHint() const;
     QSize sizeHint() const;
 
 
     void tryLoadFile(QString fn);
-    QMainWindow *mainwindow() const;
 
 protected:
     void contextMenuEvent(QContextMenuEvent *event);
@@ -33,7 +32,6 @@ public slots:
     void openFile();
     void saveFile();
 private:
-    QMainWindow *_mainwindow;
     QMenu* _contextMenu, *_menuGroup;
     QSignalMapper *_signalMapper;
 

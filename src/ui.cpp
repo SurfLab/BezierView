@@ -240,18 +240,10 @@ void BViewUI::updateContextMenu()
     updateMenuAction(MENUCONTROL_CURVATURE_TYPE , SPECIAL_CRV, crv_choice == SPECIAL_CRV, special_curv);
 }
 
-BViewUI::BViewUI(QWidget *parent) :
-    QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
+BViewUI::BViewUI() :
+    QGLWidget(QGLFormat(QGL::SampleBuffers))
 {
-    _mainwindow = new QMainWindow;
-    _mainwindow->setCentralWidget(this);
-
-    setContextMenuPolicy(Qt::DefaultContextMenu);
-
     createContextMenu();
-
-    setFocusPolicy(Qt::StrongFocus);
-    setFocus();
 }
 
 void BViewUI::initializeGL(){
@@ -373,7 +365,7 @@ void BViewUI::command(int entry)
 void BViewUI::tryLoadFile(QString fn){
     if(!fn.isEmpty()){
         if(QFile::exists(fn)){
-            _mainwindow->setWindowFilePath(fn);
+            setWindowFilePath(fn);
             loadDataFile(fn.toLatin1().data());
             updateGL();
         }else{
@@ -382,10 +374,10 @@ void BViewUI::tryLoadFile(QString fn){
             msg.setInformativeText("File Not Found");
             msg.setIcon(QMessageBox::Critical);
             msg.exec();
-            _mainwindow->setWindowFilePath("(Unloaded)");
+            setWindowFilePath("(Unloaded)");
         }
     }else
-        _mainwindow->setWindowFilePath("(Unloaded)");
+        setWindowFilePath("(Unloaded)");
 
 }
 
@@ -401,10 +393,6 @@ void BViewUI::saveFile()
                                0);
    if (!fileName.isEmpty())
        qDebug()<< "Saving is not implemented yet " <<  fileName;
-}
-QMainWindow *BViewUI::mainwindow() const
-{
-    return _mainwindow;
 }
 
 
@@ -434,10 +422,11 @@ int main(int argc, char *argv[])
     init_bezierview(argc,argv);
 
     a.setApplicationName(QString("SurfLab BezierView %1.%2.%3.%4").arg(VERSION_MAJOR).arg(VERSION_MINOR).arg(VERSION_PATCH).arg(VERSION_BUILD));
-    BViewUI viewer;
-    viewer.tryLoadFile(QString(dataFileName));
 
-    viewer.mainwindow()->setWindowIcon(QIcon(":/bezierview.ico"));
-    viewer.mainwindow()->show();
+    BViewUI viewer;
+
+    viewer.tryLoadFile(QString(dataFileName));
+    viewer.setWindowIcon(QIcon(":/bezierview.ico"));
+    viewer.show();
     return a.exec();
 }
