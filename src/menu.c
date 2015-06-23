@@ -85,16 +85,9 @@ void displayProc(int display_flag)
     case DRAWFLAGS_MESH:
         ToggleMode(g_current_grp, DRAWFLAGS_MESH);
         break;
-    case DRAWFLAGS_POLYPATCH:
-        ToggleMode(g_current_grp, DRAWFLAGS_POLYPATCH);
-        break;
-    case DRAWFLAGS_POLYMESH:
-        ToggleMode(g_current_grp, DRAWFLAGS_POLYMESH);
-        break;
     case DRAWFLAGS_CRV:
         ToggleMode(g_current_grp, DRAWFLAGS_CRV);
 //		DisableMode(g_current_grp, DRAWFLAGS_PATCH); // disable the patch display
-        DisableMode(g_current_grp, DRAWFLAGS_POLYPATCH); // disable the patch display
         DisableMode(g_current_grp, DRAWFLAGS_HIGHLIGHT); // disable the highlight display
         DisableMode(g_current_grp, DRAWFLAGS_REFLLINE); // disable the highlight display
         DisableMode(g_current_grp, DRAWFLAGS_ENVMAPPING);
@@ -108,7 +101,6 @@ void displayProc(int display_flag)
     case DRAWFLAGS_HIGHLIGHT:
         ToggleMode(g_current_grp, DRAWFLAGS_HIGHLIGHT);
 //		DisableMode(g_current_grp, DRAWFLAGS_PATCH); // disable the patch display
-        DisableMode(g_current_grp, DRAWFLAGS_POLYPATCH); // disable the patch display
         DisableMode(g_current_grp, DRAWFLAGS_CRV); // disable the highlight display
         DisableMode(g_current_grp, DRAWFLAGS_REFLLINE); // disable the highlight display
         DisableMode(g_current_grp, DRAWFLAGS_ENVMAPPING);
@@ -119,7 +111,6 @@ void displayProc(int display_flag)
     case DRAWFLAGS_REFLLINE:
         ToggleMode(g_current_grp, DRAWFLAGS_REFLLINE);
 //		DisableMode(g_current_grp, DRAWFLAGS_PATCH); // disable the patch display
-        DisableMode(g_current_grp, DRAWFLAGS_POLYPATCH); // disable the patch display
         DisableMode(g_current_grp, DRAWFLAGS_CRV); // disable the highlight display
         DisableMode(g_current_grp, DRAWFLAGS_HIGHLIGHT); // disable the highlight display
         DisableMode(g_current_grp, DRAWFLAGS_ENVMAPPING);
@@ -282,12 +273,6 @@ void keyboard(unsigned char key)
     case 'p':
         ToggleMode(g_current_grp, DRAWFLAGS_PATCH);
         break;
-    case 'M':
-        ToggleMode(g_current_grp, DRAWFLAGS_POLYMESH);
-        break;
-    case 'P':
-        ToggleMode(g_current_grp, DRAWFLAGS_POLYPATCH);
-        break;
     case 'c':
         ToggleMode(g_current_grp, DRAWFLAGS_CRV);
 //		DisableMode(g_current_grp, DRAWFLAGS_PATCH); // disable the patch display
@@ -317,7 +302,6 @@ void keyboard(unsigned char key)
     case 'h':
         ToggleMode(g_current_grp, DRAWFLAGS_HIGHLIGHT);
 //		DisableMode(g_current_grp, DRAWFLAGS_PATCH); // disable the patch display
-//		DisableMode(g_current_grp, DRAWFLAGS_POLYPATCH); // disable the patch display
         DisableMode(g_current_grp, DRAWFLAGS_CRV); // disable the highlight display
         DisableMode(g_current_grp, DRAWFLAGS_REFLLINE); // disable the highlight display
         DisableMode(g_current_grp, DRAWFLAGS_ENVMAPPING);
@@ -325,7 +309,6 @@ void keyboard(unsigned char key)
     case 'r':
         ToggleMode(g_current_grp, DRAWFLAGS_REFLLINE);
 //		DisableMode(g_current_grp, DRAWFLAGS_PATCH); // disable the patch display
-//		DisableMode(g_current_grp, DRAWFLAGS_POLYPATCH); // disable the patch display
         DisableMode(g_current_grp, DRAWFLAGS_CRV); // disable the highlight display
         DisableMode(g_current_grp, DRAWFLAGS_HIGHLIGHT); // disable the highlight display
         DisableMode(g_current_grp, DRAWFLAGS_ENVMAPPING);

@@ -29,7 +29,7 @@ void init_flags()
 	for(int i=0;i < MAXGROUP ; i++)
 	{
 		g_Material[i] = i;
-        g_Mode[i]     = DRAWFLAGS_PATCH | DRAWFLAGS_POLYPATCH | DRAWFLAGS_SMOOTH ;
+        g_Mode[i]     = DRAWFLAGS_PATCH | DRAWFLAGS_SMOOTH ;
 
 		g_PenColor[i]  = 1;  // light blue
 		g_LineWidth[i] = 3;
@@ -230,12 +230,10 @@ void draw(void)
 	//		// color of the group that this face belongs to
 
             if(isDisplayFlagEnabled(grp_id, DRAWFLAGS_NORMAL)){
-                g_Mode[i]= DRAWFLAGS_PATCH | DRAWFLAGS_POLYPATCH | DRAWFLAGS_SMOOTH ;
+                g_Mode[i]= DRAWFLAGS_PATCH | DRAWFLAGS_SMOOTH ;
             }
-            int patch_on = (isDisplayFlagEnabled(grp_id, DRAWFLAGS_POLYPATCH) && (patch_kind == POLY) )  ||
-                           (isDisplayFlagEnabled(grp_id, DRAWFLAGS_PATCH)     && (patch_kind != POLY) );
-            int mesh_on  = (isDisplayFlagEnabled(grp_id, DRAWFLAGS_POLYMESH) && (patch_kind == POLY) ) ||
-                           (isDisplayFlagEnabled(grp_id, DRAWFLAGS_MESH)     && (patch_kind != POLY) );
+            int patch_on = isDisplayFlagEnabled(grp_id, DRAWFLAGS_PATCH);
+            int mesh_on  = isDisplayFlagEnabled(grp_id, DRAWFLAGS_MESH);
 
             double line_width = g_LineWidth[grp_id];
 

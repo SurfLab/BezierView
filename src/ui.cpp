@@ -100,8 +100,6 @@ void BViewUI::createContextMenu()
     QMenu   *menuDisplay    = menuContext->addMenu("Display");
     addMenuAction(menuDisplay, "Patch", MENUCONTROL_DISPLAY , DRAWFLAGS_PATCH, "P", true, isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_PATCH));
     addMenuAction(menuDisplay, "Control Mesh", MENUCONTROL_DISPLAY , DRAWFLAGS_MESH, "M", true, isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_MESH));
-    addMenuAction(menuDisplay, "Polygon Face", MENUCONTROL_DISPLAY , DRAWFLAGS_POLYPATCH, "P", true, isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_POLYPATCH));
-    addMenuAction(menuDisplay, "Polygon Mesh", MENUCONTROL_DISPLAY , DRAWFLAGS_POLYMESH, "M", true, isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_POLYMESH));
     menuDisplay->addSeparator();
     addMenuAction(menuDisplay, "Curvature", MENUCONTROL_DISPLAY , DRAWFLAGS_CRV, "C", true, isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_CRV));
     addMenuAction(menuDisplay, "Curvature Needles", MENUCONTROL_DISPLAY , DRAWFLAGS_CRVNEEDLE, "N", true, isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_CRVNEEDLE));
@@ -195,10 +193,8 @@ void BViewUI::updateContextMenu()
     updateMenuAction(MENUCONTROL_MOUSEMODE , MOUSEMODE_CLIPNEAR, g_mouseMode == MOUSEMODE_CLIPNEAR);
     updateMenuAction(MENUCONTROL_MOUSEMODE , MOUSEMODE_CLIPFAR , g_mouseMode == MOUSEMODE_CLIPFAR );
 
-    updateMenuAction(MENUCONTROL_DISPLAY , DRAWFLAGS_PATCH, isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_PATCH), has_patch);
-    updateMenuAction(MENUCONTROL_DISPLAY , DRAWFLAGS_MESH,  isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_MESH), has_patch);
-    updateMenuAction(MENUCONTROL_DISPLAY , DRAWFLAGS_POLYPATCH, isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_POLYPATCH), has_polygon);
-    updateMenuAction(MENUCONTROL_DISPLAY , DRAWFLAGS_POLYMESH, isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_POLYMESH), has_polygon);
+    updateMenuAction(MENUCONTROL_DISPLAY , DRAWFLAGS_PATCH, isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_PATCH));
+    updateMenuAction(MENUCONTROL_DISPLAY , DRAWFLAGS_MESH,  isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_MESH));
 
     updateMenuAction(MENUCONTROL_DISPLAY , DRAWFLAGS_CRV, isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_CRV));
     updateMenuAction(MENUCONTROL_DISPLAY , DRAWFLAGS_CRVNEEDLE, isDisplayFlagEnabled(g_current_grp, DRAWFLAGS_CRVNEEDLE));
@@ -412,7 +408,135 @@ void BViewUI::openFile()
 
 }
 
+/*!
+ * \brief createToolWindow
+ * \param parent
+ * \return pointer to the tool window
+ *
+ * Create the UI for a tool window to change the parameters, we
+ * want this to replace the context menu
+ *
+ */
+QWidget *createToolWindow(QWidget *parent)
+{
+    QToolBox *w = new QToolBox(parent, Qt::WindowStaysOnTopHint | Qt::Tool | Qt::Dialog);
 
+    w->setFont(QFont("sans", 8));
+
+    int row = 1;
+
+    QWidget *mouseBox = new QWidget(w);
+    QVBoxLayout *mouseBoxLayout = new QVBoxLayout(mouseBox);
+    mouseBoxLayout->setSizeConstraint(QVBoxLayout::SetFixedSize);
+    mouseBoxLayout->addWidget(new QRadioButton("Zoom", mouseBox));
+    mouseBoxLayout->addWidget(new QRadioButton("Rotate", mouseBox));
+    mouseBoxLayout->addWidget(new QRadioButton("Move", mouseBox));
+    mouseBoxLayout->addWidget(new QRadioButton("Clip Near", mouseBox));
+    mouseBoxLayout->addWidget(new QRadioButton("Clip Far", mouseBox));
+    mouseBoxLayout->addWidget(new QPushButton("Clear Clipping", mouseBox));
+    mouseBoxLayout->addWidget(new QPushButton("Reset Projection", mouseBox));
+    mouseBox->setLayout(mouseBoxLayout);
+    w->addItem(mouseBox, "Transform");
+
+    QWidget *displayBox = new QWidget(w);
+    QVBoxLayout *displayBoxLayout = new QVBoxLayout(displayBox);
+    displayBoxLayout->setSizeConstraint(QVBoxLayout::SetFixedSize);
+    displayBoxLayout->addWidget(new QCheckBox("Patch", displayBox));
+    displayBoxLayout->addWidget(new QCheckBox("Control Mesh", displayBox));
+    displayBoxLayout->addWidget(new QCheckBox("Bounding Box", displayBox));
+    displayBoxLayout->addWidget(new QCheckBox("Smooth Shading", displayBox));
+    displayBoxLayout->addWidget(new QCheckBox("Hidden Line Removal", displayBox));
+    displayBoxLayout->addSpacing(5);
+    displayBoxLayout->addWidget(new QRadioButton("Curvature", displayBox));
+    displayBoxLayout->addWidget(new QRadioButton("Highlight Lines", displayBox));
+    displayBoxLayout->addWidget(new QRadioButton("Reflection Lines", displayBox));
+    displayBoxLayout->addWidget(new QRadioButton("Environment Mapping", displayBox));
+    displayBoxLayout->addWidget(new QPushButton("Flip Normals", displayBox));
+    displayBox->setLayout(displayBoxLayout);
+    w->addItem(displayBox, "Display");
+
+    /* Curvature tab */
+    QWidget *curvature = new QWidget(w);
+    curvature->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    QVBoxLayout *curvatureLayout = new QVBoxLayout(curvature);
+    curvatureLayout->setSizeConstraint(QVBoxLayout::SetFixedSize);
+    curvatureLayout->addWidget(new QRadioButton("Gauss", curvature));
+    curvatureLayout->addWidget(new QRadioButton("Mean", curvature));
+    curvatureLayout->addWidget(new QRadioButton("Min", curvature));
+    curvatureLayout->addWidget(new QRadioButton("Max", curvature));
+    curvatureLayout->addWidget(new QRadioButton("Special", curvature));
+    curvatureLayout->addWidget(new QCheckBox("Curvature needles", curvature));
+    curvature->setLayout(curvatureLayout);
+    w->addItem(curvature, "Curvature");
+
+    /* Settings tab */
+    QWidget *settings = new QWidget(w);
+    QGridLayout* layout = new QGridLayout(settings);
+    layout->setSizeConstraint(QVBoxLayout::SetFixedSize);
+
+    QWidget *lights = new QWidget(settings);
+    QHBoxLayout *lightsLayout = new QHBoxLayout(lights);
+    for(int i = 0;i < 3; i++)
+        lightsLayout->addWidget(new QCheckBox(QString::number(i), lights));
+    lights->setLayout(lightsLayout);
+    layout->addWidget(new QLabel("Lights:", settings), row, 1);
+    layout->addWidget(lights, row, 2);
+
+    row += 1;
+
+    layout->addWidget(new QCheckBox("Anti aliasing", settings), row, 1, 1, 2);
+
+    row += 1;
+
+    /* Patch detail */
+    QComboBox *patchDetail = new QComboBox(w);
+    for(int i = 1; i <= 6; i++)
+        patchDetail->addItem(QString("%1 %2 %1").arg(QString::number(1<<i)).arg(QChar(215)), i);
+    layout->addWidget(new QLabel("Patch detail", w), row, 1);
+    layout->addWidget(patchDetail, row, 2);
+
+    row += 1;
+
+    /* Material */
+    QComboBox *material = new QComboBox(w);
+    for(int c=0; c<COLORNUM; c++)
+        material->addItem(mat_name[c], c);
+    material->addItem("Custom Color...", -1);
+    layout->addWidget(new QLabel("Material", w), row, 1);
+    layout->addWidget(material, row, 2);
+
+    row += 1;
+
+    /* Line Color */
+    QComboBox *lineColor = new QComboBox(w);
+    for(int i =0; i < 10; i++)
+        lineColor->addItem(g_penColorNames[i], i);
+    layout->addWidget(new QLabel("Line Color:", w), row, 1);
+    layout->addWidget(lineColor, row, 2);
+
+    row += 1;
+
+    /* Background Color */
+    QComboBox *backColor = new QComboBox(w);
+    for(int i =0; i < 10; i++)
+        backColor->addItem(g_BackColorNames[i], i);
+    layout->addWidget(new QLabel("Background Color:", w), row, 1);
+    layout->addWidget(backColor, row, 2);
+
+    row += 1;
+
+    /* Line width */
+    QComboBox *lineWidth = new QComboBox(w);
+    for(int i = 1; i <= 5; i++)
+        lineWidth->addItem(QString("%1 pixel").arg(i), i);
+    layout->addWidget(new QLabel("Line Width:",w), row, 1);
+    layout->addWidget(lineWidth, row, 2);
+
+    w->addItem(settings, "Settings");
+
+    //w->setWindowTitle("Display Flags");
+    return w;
+}
 
 
 int main(int argc, char *argv[])
@@ -424,9 +548,9 @@ int main(int argc, char *argv[])
     a.setApplicationName(QString("SurfLab BezierView %1.%2.%3.%4").arg(VERSION_MAJOR).arg(VERSION_MINOR).arg(VERSION_PATCH).arg(VERSION_BUILD));
 
     BViewUI viewer;
-
     viewer.tryLoadFile(QString(dataFileName));
     viewer.setWindowIcon(QIcon(":/bezierview.ico"));
     viewer.show();
+    createToolWindow(&viewer)->show();
     return a.exec();
 }
