@@ -370,10 +370,10 @@ void BViewUI::tryLoadFile(QString fn){
             msg.setInformativeText("File Not Found");
             msg.setIcon(QMessageBox::Critical);
             msg.exec();
-            setWindowFilePath("(Unloaded)");
+            setWindowFilePath("");
         }
     }else
-        setWindowFilePath("(Unloaded)");
+        setWindowFilePath("");
 
 }
 
@@ -541,16 +541,22 @@ QWidget *createToolWindow(QWidget *parent)
 
 int main(int argc, char *argv[])
 {
-    printf("BezierView version %d.%d.%d.%d\n", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH, VERSION_BUILD);
+    QString appName = QString("SurfLab BezierView %1.%2.%3.%4").arg(VERSION_MAJOR).arg(VERSION_MINOR).arg(VERSION_PATCH).arg(VERSION_BUILD);
+    printf("%s\n", appName.toLatin1().data());
+
     QApplication a(argc, argv);
+    a.setApplicationName(appName);
+    #if QT_VERSION >= 0x050000
+      a.setApplicationDisplayName(appName);
+    #endif 
+
     init_bezierview(argc,argv);
 
-    a.setApplicationName(QString("SurfLab BezierView %1.%2.%3.%4").arg(VERSION_MAJOR).arg(VERSION_MINOR).arg(VERSION_PATCH).arg(VERSION_BUILD));
 
     BViewUI viewer;
-    viewer.tryLoadFile(QString(dataFileName));
     viewer.setWindowIcon(QIcon(":/bezierview.ico"));
     viewer.show();
-    createToolWindow(&viewer)->show();
+    viewer.tryLoadFile(QString(dataFileName));
+    /* createToolWindow(&viewer)->show(); */
     return a.exec();
 }
