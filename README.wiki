@@ -1,0 +1,167 @@
+= BezierView =
+OpenGL viewer for Bezier surfaces
+
+=== Features ===
+* Tensor product Bezier patches
+* Tensor product rational patches
+* Triangle Bezier patches
+* Polyhedron
+* PN triangles, PN quadrilateral patches
+* Gaussian/Mean/Max/Min curvature plot
+* Plane clipping
+* Position save/load
+* Object groups
+   different colors can be assigned to different groups
+* Environment mapping
+  (Image file: room.bmp)
+
+=== Build ===
+
+Prerequisites:
+ * Qt 4.8 development package
+    ** Linux: Look for qt4 in your distribution package manager
+    ** Windows & OSX: http://download.qt.io/archive/qt/4.8/4.8.6/
+ * [[http://www.qt.io/download-open-source/#section-6|QtCreator]] (optional)
+
+==== Option 1: QtCreator
+* Open QtCreator ({{{/usr/bin/qtcreator}}})
+* Open BezierView.pro by using "File -> Open File or Project..."
+* Accept the default configuration and hit "Configure Project"
+* Run Qmake from "Build -> Run QMake"
+* Build the project "Build -> Build All"
+* Run BezierView from "Build -> Run"
+
+==== Option 2: QMake
+{{{
+qmake BezierView.pro
+make
+./bview
+}}}
+
+
+
+== Data format ==
+ The data file contains segments, each segment represents one patch.
+
+ At the the beginning of each segment, there is a number
+ indicating the patch type, then a block of patch data should follow.
+
+==== Patch type:
+   * 1:    polyhedron
+   * 3:    triangular patch
+   * 4:    tensor-product patch with same degree in both directions.
+   * 5:    general tensor-product patch
+   * 8:    rational Bezier tensor-product
+   * 9:    PN triangle patches
+   * 10:    PN quads patches
+
+=== Patch Data:
+==== Polyhedron
+the patch data should contain:
+
+{{{
+Vnum Fnum
+v0x v0y v0z
+v1x v1y v1z
+..
+v(n-1)x v(n-1)y v(n-1)z
+3 f1v1 f1v2 f1v3   (OR: 4 f1v1 f1v2 f1v3 f1v4)
+...
+3 fmv1 fmv2 fmv3    ( vertices are indices from [0, n-1], not [1,n])
+}}}
+
+==== Tensor product patches
+it should contain:
+
+{{{
+degu degv (or type 3 and 4, only degu)
+}}}
+
+Then the x y z value of the control points.
+The control points are sorted using row-major order of following matrix
+with size ( rows= degu+1) x (columns= degv+1) :
+
+{{{
+p11       p12    .... p1(degv+1)
+p21       p22    .... p2(degv+1)
+..       ..     ....    ..
+p(degu+1)1 p(degu+1)1 .. p(degu+1)(degv+1)
+}}}
+
+i.e. 
+
+{{{ 
+p11 p12 ... p1(degv+1) p21 ... p2(degv+1) ....
+p(degu+1)1 ... p(degu+1)(degv+1)
+}}}
+
+==== Triangle Bezier patches
+it should contain:
+
+{{{
+deg
+}}}
+
+then the the x y z value of the (deg+2)*(deg+1)/2 control points.
+       the order of a cubic patch is , for instance, the following:
+
+{{{
+   9
+  7 8
+ 4 5 6
+0 1 2 3
+}}}
+
+the patch data then is
+
+{{{
+p0 p1 p2p p3 ... p9
+}}}
+
+==== PN triangle patches
+it should contain:
+
+{{{
+deg Ndeg
+}}}
+
+then the control points; then the normals arranged at the same order as the control points.
+
+==== PN quads
+it should contain:
+
+{{{
+degu degv Ndegu Ndegv
+}}}
+
+then the control points; then the normals arranged at the same order
+
+
+== Example files(in data/) ==
+
+* simple data
+** tensor product patches: {{{hex.bv hex2.bv tp2x1.bv tp3x3.bv}}}
+** triangular patches: {{{tri1.bv tri2.bv}}}
+** rational patches: {{{rat1.bv tor.bv sphear.bv}}}
+* utal teapot {{{teapot.bv teapot2.bv tpt_grp.bv}}}
+* polyhedra data {{{cube.bv closedcone.bv hand.bv tetra.bv}}}
+* mixed data {{{tp_poly.bv}}}
+* group data {{{tpt_grp.bv tridat.cube}}}
+* g2 patchs {{{  plm.icosa.260  plm.tw.700  plm.oct.100 cubeg2 twg2.bv cubeg2.bv}}}
+
+== License ==
+Copyright (C) 2015 SurfLab, University of Florida.
+
+This program is free for educational/research purpose.
+You will need to gain permissions from authors before you
+can use this program or any part of the source code for
+commercial usage.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY.
+
+Author(s):
+* Saleh Dindar
+* Xiaobin Wu
+* Jorg Peters
+
